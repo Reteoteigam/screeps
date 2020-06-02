@@ -1,17 +1,26 @@
 var LOGGER = require('util.log')
 const cleaner = require('util.cleaner');
 
+
+
 var roleSpawn = {
 
     /** @param {Creep} creep **/
     run: function(spawn,role ,roleMax, design) {
         LOGGER.debug("roleSpawn run");
     
-        if(!spawn.spawning){
+        
+        
+    
+        if(!spawn.spawning ){ //FIX ME FREIGABE BIT zum cleanen aller 1000 zyklen
             cleaner.clean(); 
         }   
          
         var creeps = _.filter(Game.creeps, (creep) => creep.memory.role == role);
+        if(!spawn.spawning && Game.time % 1000 == 1 ){
+            cleaner.clean();
+        }
+        
         
         if(!spawn.spawning && creeps.length < roleMax) {
             var newName = role + Game.time;

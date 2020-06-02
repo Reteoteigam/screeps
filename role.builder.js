@@ -15,10 +15,9 @@ var roleBuilder = {
   	    if(creep.memory.building && creep.store[RESOURCE_ENERGY] <= 0) {
             creep.memory.building = false;
             creep.say('🔄 harvest');
-	    }
-	    if(!creep.memory.building && creep.store[RESOURCE_ENERGY] >= 0) {
-	        creep.memory.building = true;
-	       // creep.say('🚧 build');
+	    }else if(!creep.memory.building && creep.store[RESOURCE_ENERGY] >= 0) {
+	            creep.memory.building = true;
+	            // creep.say('🚧 build');
 	    }
         var doneSomething= false;
 	    if(creep.memory.building) {
@@ -31,7 +30,7 @@ var roleBuilder = {
                 });
                  
                 // prio low hp + range;
-                repairSites.sort((a,b) => a.hits - b.hits+ a.pos.getRangeTo(creep.pos)-b.pos.getRangeTo(creep.pos));
+                repairSites.sort((a,b) => a.hits - b.hits     +     a.pos.getRangeTo(creep.pos)    + 1   -b.pos.getRangeTo(creep.pos));  //speichere diese entscheitung für in paar ticks -> paar ticks
                 LOGGER.debug( "REPAIR NEED? :"+repairSites );
                 if(repairSites[0]) {
                     if(creep.repair(repairSites[0]) == ERR_NOT_IN_RANGE) {
