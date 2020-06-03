@@ -13,7 +13,7 @@ const roleSpawn= require('role.spawn');
 
 
 //civil
-const MAX_BUILDER= 3;
+const MAX_BUILDER= 2;
 const ROLE_BUILDER = 'ROLE_BUILDER';
 
 const MAX_DELIVERER = 3;
@@ -54,14 +54,14 @@ var delegatorSpawn = {
             //creepBuilder
             roleSpawn.run(spawn, ROLE_BUILDER,MAX_BUILDER,[WORK,WORK,CARRY,MOVE,WORK,WORK,CARRY,MOVE,WORK,WORK,CARRY,MOVE])
             //creepRangeWorker
-            //creepFactory.run(creepRangeWorker,MAX_RANGE_WORKER,[WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE])    
+            roleSpawn.run(spawn, ROLE_RANGEWORKER,MAX_RANGE_WORKER,[WORK,CARRY,MOVE,WORK,CARRY,MOVE,WORK,CARRY,MOVE,WORK,CARRY,MOVE,WORK,CARRY,MOVE])    
             //creepHealer
             //roleSpawn.run(spawn, ROLE_HEAL,MAX_HEAL,[TOUGH,MOVE,HEAL,MOVE])
             ////creepTank
-            //creepFactory.run(creepTank,MAX_TANK,[TOUGH,ATTACK,MOVE,TOUGH,ATTACK,MOVE])
+            //roleSpawn.run(creepTank,MAX_TANK,[TOUGH,ATTACK,MOVE,TOUGH,ATTACK,MOVE])
             ////creepScout
-            //creepFactory.run(creepScout,MAX_SCOUT,[RANGED_ATTACK,MOVE,RANGED_ATTACK,MOVE])
-             
+            //roleSpawn.run(creepScout,MAX_SCOUT,[RANGED_ATTACK,MOVE,RANGED_ATTACK,MOVE])
+            roleSpawn.renew("ME");
             }
         
         LOGGER.debug("delegatorSpawn done");

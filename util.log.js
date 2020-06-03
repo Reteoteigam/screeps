@@ -1,5 +1,11 @@
 var d = new Date();
 
+var  debugLvl = false;
+
+var   infoLvl = true;
+
+
+
 var utilLog = {
     // /** @param {message} the message **/
     // test: function (message){
@@ -9,22 +15,14 @@ var utilLog = {
     
     /** @param {message} the message **/
     debug: function(message) {
+        if (debugLvl) {
         console.log(d.getMilliseconds()+" debug: "+message );
-        
-        
-        
-        
-        
-	
-	   // if(Memory.iterations > callCount ){
-	   //     console.log("LOGGER: Memory.iterations "+ Memory.iterations)
-    	//}else{
-    	   // Memory.iterations = callCount;
-	    
-	    
-	       // console.log("LOGGER: callCount "+callCount );
-	   // }
-	
+        }
+    },
+    info: function(message){
+        if (infoLvl) {
+        console.log(d.getMilliseconds()+" debug: "+message );
+        }
     }
 };
 

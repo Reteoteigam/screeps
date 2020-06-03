@@ -14,7 +14,6 @@ var roleHarvester = {
                 if(sources != null && !creep.memory.busy && creep.harvest(sources) == ERR_NOT_IN_RANGE) {
                     creep.moveTo(sources, {visualizePathStyle: {stroke: '#ffff00'}});
                     LOGGER.debug("go harvest: " + sources.pos);
-                //GEHT!     Game.spawns["HQ"].memory.NEWTEST = "BLUBBER";
                 }
         LOGGER.debug("roleHarvester done: "+creep);
 	}

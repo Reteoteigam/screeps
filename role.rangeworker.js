@@ -15,7 +15,7 @@ const LOGGER = require('util.log')
 var rangeworker = {
     
     run: function(creep){
-
+return;
 var homeControl = home.room.find(FIND_MY_STRUCTURES);
 
 var farSource = far.room.find(FIND_SOURCES_ACTIVE);

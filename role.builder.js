@@ -24,7 +24,7 @@ var roleBuilder = {
 	    if(creep.memory.building) {
 	        //repair
 	        var tower = creep.room.find(STRUCTURE_TOWER);
-	        if(!tower && tower[0]){
+	        if(!tower){
 	            
     	        var repairSites = creep.room.find(FIND_STRUCTURES, {
                     filter: object => object.hits < object.hitsMax

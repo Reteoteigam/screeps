@@ -81,7 +81,7 @@ var roleDeliverer = {
                         filter: (structure) => {
                             return (structure.structureType == STRUCTURE_EXTENSION ||
                                     structure.structureType == STRUCTURE_SPAWN || 
-                                    //structure.structureType == STRUCTURE_TOWER || 
+                                    structure.structureType == STRUCTURE_TOWER || 
                                     structure.structureType == STRUCTURE_CONTAINER) &&
                                     structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0;
                         }
@@ -105,7 +105,7 @@ var roleDeliverer = {
                     }
                 }
             }
-            var target = Game.getObjectById(creep.memory.currentTarget);
+            target = Game.getObjectById(creep.memory.currentTarget);
             if(target){
             	if(creep.transfer(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
 						creep.moveTo(target, {visualizePathStyle: {stroke: '#ffffff'}});
