@@ -10,7 +10,7 @@ var renewTicks = d.getSeconds() ;
 var roleDeliverer = {
     /** @param {Creep} creep **/
     run: function(creep) {
-
+  
         LOGGER.debug("rolePickuprun: "+creep);
         // var roadPossible = creep.pos.lookFor(LOOK_STRUCTURES).length <1;
         // roadPossible = roadPossible && creep.pos.lookFor(LOOK_CONSTRUCTION_SITES).length <1;
@@ -81,12 +81,12 @@ var roleDeliverer = {
                         filter: (structure) => {
                             return (structure.structureType == STRUCTURE_EXTENSION ||
                                     structure.structureType == STRUCTURE_SPAWN || 
-                                    structure.structureType == STRUCTURE_TOWER || 
+                                    //structure.structureType == STRUCTURE_TOWER || 
                                     structure.structureType == STRUCTURE_CONTAINER) &&
                                     structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0;
                         }
                 });
-                targets.sort((a,b) => a.store.getUsedCapacity(RESOURCE_ENERGY) - b.store.getUsedCapacity(RESOURCE_ENERGY) + a.pos.getRangeTo(creep.pos)-b.pos.getRangeTo(creep.pos));
+                targets.sort((a,b) => a.store.getUsedCapacity(RESOURCE_ENERGY) - b.store.getUsedCapacity(RESOURCE_ENERGY) /*+ a.pos.getRangeTo(creep.pos)-b.pos.getRangeTo(creep.pos)*/);
                 if (targets.length>=1) {
                 creep.memory.currentTarget=targets[0].id;
                 }else{
@@ -96,7 +96,7 @@ var roleDeliverer = {
 							creep.store.getFreeCapacity(RESOURCE_ENERGY) > 0;
 						}
 					});
-					targets.sort((a,b) => a.store.getUsedCapacity(RESOURCE_ENERGY) - b.store.getUsedCapacity(RESOURCE_ENERGY) + a.pos.getRangeTo(creep.pos)-b.pos.getRangeTo(creep.pos));
+					targets.sort((a,b) => a.store.getUsedCapacity(RESOURCE_ENERGY)- 10 - b.store.getUsedCapacity(RESOURCE_ENERGY)-10 /*+ a.pos.getRangeTo(creep.pos)-b.pos.getRangeTo(creep.pos)*/);
 					if (targets.length>=1) {
                         creep.memory.currentTarget=targets[0].id;
                     }else{
