@@ -7,6 +7,9 @@
  * mod.thing == 'a thing'; // true
  */
 
+var LOGGER = require("util.log");
+
+
 var tower = {
   run: function(){
     
@@ -17,14 +20,14 @@ if(!tower){
 	   // for(var name in Game.structures) {
     //     var structure = Game.structures[name];
 	        
-    //         if (structure.structureType == STRUCTURE_TOWER){
-                Game.flags['Home'].room.visual.text(
-            // "123456789_123456789_123456789_123456789_123456789_123456789_123456789_",
-            "HI",
-            Game.flags['Home'].pos.x + 1, 
-            Game.flags['Home'].pos.y, 
-            {align: 'left', opacity: 0.8}); 
-    //         }
+            // if (structure.structureType == STRUCTURE_TOWER){
+            //     Game.flags['Home'].room.visual.text(
+            // // "123456789_123456789_123456789_123456789_123456789_123456789_123456789_",
+            // "HI",
+            // Game.flags['Home'].pos.x + 1, 
+            // Game.flags['Home'].pos.y, 
+            // {align: 'left', opacity: 0.8}); 
+            // }
         
             var closestHostile = tower.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
             if (closestHostile) {
@@ -33,11 +36,16 @@ if(!tower){
             
             
               
-            var closestDamagedStructure = tower.pos.findClosestByRange(FIND_STRUCTURES, {
-                filter: (structure) => structure.hits < structure.hitsMax
+            var closestDamagedStructure = tower.room.find(FIND_STRUCTURES, {
+                filter: (structure) =>  
+                    ((structure.structureType != STRUCTURE_WALL && structure.structureType != STRUCTURE_RAMPART ) && structure.hits < structure.hitsMax)
+                    || ((structure.structureType == STRUCTURE_WALL || structure.structureType == STRUCTURE_RAMPART ) && structure.hits < 5000)
+
             });
-            if (closestDamagedStructure) {
-                tower.repair(closestDamagedStructure)
+            closestDamagedStructure.sort((a,b) => a.hits - b.hits);
+            if (closestDamagedStructure && closestDamagedStructure.length > 0) {
+                LOGGER.debug("[tower] repair"+ closestDamagedStructure[0].pos);
+                tower.repair(closestDamagedStructure[0])
             }
         
 	   // }

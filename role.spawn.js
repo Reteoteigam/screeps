@@ -1,6 +1,6 @@
 var LOGGER = require('util.log')
 const cleaner = require('util.cleaner');
-
+var reset = 5;
 
 
 var roleSpawn = {
@@ -72,8 +72,30 @@ var roleSpawn = {
      
         
 	},
-	renew: function(me){
-	    LOGGER.debug(me +me +me +me +me +me +me +me +me +me +me +me +me +me +me +me +me );
+
+
+	renew: function(spawn){
+	    reset --;
+	    LOGGER.debug("renew run "+reset);
+	    if(reset <= 0){
+        reset = 3;
+	    spawn.memory.creepsToRenew = spawn.pos.findInRange(FIND_MY_CREEPS, 1, {
+                        filter: (creep) => {
+                            return (creep.memory.role != "ROLE_CLAIMER" && creep.ticksToLive < 1400 );
+                        }
+                });
+	        
+	    }
+	    LOGGER.debug("renew run "+spawn.memory.creepsToRenew);
+	    if(spawn.memory.creepsToRenew && spawn.memory.creepsToRenew.length > 0){
+	    var target = Game.getObjectById(spawn.memory.creepsToRenew.pop().id);
+	    LOGGER.debug("renew HEAL "+target);
+        var error =  spawn.renewCreep(target);
+        LOGGER.debug(" renewed: "+error+ " target was "+ target );
+	    }
+        
+        
+	    
 	}
 };
 

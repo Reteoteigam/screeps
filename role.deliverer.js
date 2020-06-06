@@ -86,7 +86,7 @@ var roleDeliverer = {
                                     structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0;
                         }
                 });
-                targets.sort((a,b) => a.store.getUsedCapacity(RESOURCE_ENERGY) - b.store.getUsedCapacity(RESOURCE_ENERGY) /*+ a.pos.getRangeTo(creep.pos)-b.pos.getRangeTo(creep.pos)*/);
+                targets.sort((a,b) => a.store.getUsedCapacity(RESOURCE_ENERGY) - b.store.getUsedCapacity(RESOURCE_ENERGY) + (a.pos.getRangeTo(creep.pos)-b.pos.getRangeTo(creep.pos))*2);
                 if (targets.length>=1) {
                 creep.memory.currentTarget=targets[0].id;
                 }else{

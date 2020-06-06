@@ -19,8 +19,9 @@ var delegator = {
 	  
 	    for(var name in Game.creeps) {
 			var creep = Game.creeps[name];
+		    //if(!renewCreeps.renewTicks(creep)){
+		    if(true){
             var role = creep.memory.role;
-		    if(!renewCreeps.renewTicks(creep)){
                 switch (role) {
     				case "ROLE_SCOUT":
     				case "ROLE_HEAL":

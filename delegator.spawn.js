@@ -61,7 +61,7 @@ var delegatorSpawn = {
             //roleSpawn.run(creepTank,MAX_TANK,[TOUGH,ATTACK,MOVE,TOUGH,ATTACK,MOVE])
             ////creepScout
             //roleSpawn.run(creepScout,MAX_SCOUT,[RANGED_ATTACK,MOVE,RANGED_ATTACK,MOVE])
-            roleSpawn.renew("ME");
+            roleSpawn.renew(spawn);
             }
         
         LOGGER.debug("delegatorSpawn done");
