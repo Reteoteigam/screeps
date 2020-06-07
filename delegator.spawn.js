@@ -25,6 +25,8 @@ const ROLE_HARVESTER = 'ROLE_HARVESTER';
 const MAX_RANGE_WORKER = 1;
 const ROLE_RANGEWORKER = "ROLE_RANGEWORKER";
 
+const MAX_DISCOVERER = 1;
+const ROLE_DISCOVERER = "ROLE_DISCOVERER";
 //millitary
 const MAX_SCOUT = 1;
 const ROLE_SCOUT = 'ROLE_SCOUT';
@@ -47,14 +49,16 @@ var delegatorSpawn = {
         for (var id in Game.spawns) {
             var spawn = Game.spawns[id];
                
-            //creepHarvester
+            //ROLE_HARVESTER
             roleSpawn.run(spawn, ROLE_HARVESTER,MAX_HARVESTER,[WORK,WORK,WORK,WORK,WORK,MOVE]) //enought for one resource
-            //creepDeliverer
+            //ROLE_DELIVERER
             roleSpawn.run(spawn, ROLE_DELIVERER,MAX_DELIVERER,[CARRY,MOVE,CARRY,MOVE,CARRY,MOVE,CARRY,MOVE,CARRY,MOVE])    
-            //creepBuilder
+            //ROLE_BUILDER
             roleSpawn.run(spawn, ROLE_BUILDER,MAX_BUILDER,[WORK,WORK,CARRY,MOVE,WORK,WORK,CARRY,MOVE,WORK,WORK,CARRY,MOVE])
-            //creepRangeWorker
+            //ROLE_RANGEWORKER
             roleSpawn.run(spawn, ROLE_RANGEWORKER,MAX_RANGE_WORKER,[WORK,CARRY,MOVE,WORK,CARRY,MOVE,WORK,CARRY,MOVE,WORK,CARRY,MOVE,WORK,CARRY,MOVE])    
+            //ROLE_DISCOVERER
+            roleSpawn.run(spawn, ROLE_DISCOVERER,MAX_DISCOVERER,[MOVE,MOVE])    
             //creepHealer
             //roleSpawn.run(spawn, ROLE_HEAL,MAX_HEAL,[TOUGH,MOVE,HEAL,MOVE])
             ////creepTank

@@ -12,34 +12,36 @@ var roleDeliverer = {
     run: function(creep) {
   
         LOGGER.debug("rolePickuprun: "+creep);
-        // var roadPossible = creep.pos.lookFor(LOOK_STRUCTURES).length <1;
-        // roadPossible = roadPossible && creep.pos.lookFor(LOOK_CONSTRUCTION_SITES).length <1;
-        // if(roadPossible){
-        //     creep.say('🚧 construct');
-        //  creep.pos.createConstructionSite(STRUCTURE_ROAD);
-        // }
 
-        //get source
-        //capacity?
-        
-        
-        
-        
         //improved to 30 -70% work
         if(creep.memory.filling || (creep.store.getUsedCapacity()/creep.store.getCapacity()) <= 0.3) {
         creep.memory.filling=true;
             //pickup
-	        var sources = creep.pos.findClosestByRange(FIND_DROPPED_RESOURCES, {
-                        filter: (droptedSource) => {
-                            return droptedSource.energy > 10
+            var sources = creep.pos.findClosestByRange(FIND_TOMBSTONES, {
+                        filter: (tombstone) => {
+                            return tombstone.creep.store.energy >10
                         }
                 });
 
-            if(sources != null && creep.pickup(sources) == ERR_NOT_IN_RANGE) {
+            if(sources != null && creep.withdraw(sources) == ERR_NOT_IN_RANGE) {
                 creep.moveTo(sources, {visualizePathStyle: {stroke: '#ffff00'}});
-                creep.say("🔄: R" + sources.pos.x +" " + sources.pos.y);
+                creep.say("🔄: T" + sources.pos.x +" " + sources.pos.y);
                 LOGGER.debug("go pickup: " + sources.pos);
                 
+            }
+            if(!sources){
+    	        var sources = creep.pos.findClosestByRange(FIND_DROPPED_RESOURCES, {
+                            filter: (droptedSource) => {
+                                return droptedSource.energy > 10
+                            }
+                    });
+    
+                if(sources != null && creep.pickup(sources) == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(sources, {visualizePathStyle: {stroke: '#ffff00'}});
+                    creep.say("🔄: R" + sources.pos.x +" " + sources.pos.y);
+                    LOGGER.debug("go pickup: " + sources.pos);
+                    
+                }   
             }
             if(!sources){
             // CONTAINER GRABBING nicht gehen
