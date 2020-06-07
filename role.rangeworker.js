@@ -20,6 +20,21 @@ var rangeworker = {
 	
         var freeCapacity = creep.store.getFreeCapacity(RESOURCE_ENERGY) >0 ;
         LOGGER.info("rangeworker freeCapacity " +freeCapacity);
+        if (!creep.memory.moving &&  freeCapacity) {
+            var homeSpawn = Game.getObjectById(creep.memory.home);
+            for (var sourceIterator in  homeSpawn.memory.roomSources) {
+                var sourceCurrent =  homeSpawn.memory.roomSources[sourceIterator];
+                LOGGER.info("sourceCurrent.pos" + Game.getObjectById(sourceCurrent))
+            }
+        creep.memory.moving= true;
+        }else{
+            creep.memory.moving = false;
+            
+            
+            
+            
+            
+        }
         LOGGER.debug("rangeworker done: "+creep);
     }
 }

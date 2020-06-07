@@ -25,6 +25,9 @@ var scout = {
         //attack something?
         if(activeWeapons ){
             var target = creep.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
+            
+            
+            
             if(target) {
                 
                 if(creep.rangedAttack(target) == ERR_NOT_IN_RANGE) {
