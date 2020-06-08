@@ -56,6 +56,7 @@ var discoverer = {
 			
 		    if(!creep.memory.targetRoom){
 		        LOGGER.info("discoverer Nothing to do, dead in: " + creep.ticksToLive +" ticks.");
+		        creep.moveTo(homespawn);
 		        return;
 		    }else{
 				homespawn.memory.roomInProgress.push(creep.memory.targetRoom);
