@@ -7,15 +7,13 @@
  * mod.thing == 'a thing'; // true
  */
 
-const LOGGER = require('util.log')
-var isInit = false;
-
+const LOGGER = require('util.log');
+const managerMap = require('manager.map');
 var discoverer = {
     
     run: function(creep){
+        
 		LOGGER.debug("discoverer run: "+creep);
-	    //firstRun? create memory buckets
-	    
         var homespawn = Game.getObjectById(creep.memory.home);
 	    //was attacked
 	    if(creep.memory.wasAttackedin){
@@ -23,121 +21,79 @@ var discoverer = {
             return;
         }
 	    
-		//initi
-        if(!isInit){
-	        if(!homespawn.memory.roomHasSource){
- 		        homespawn.memory.roomHasSource = new Array();
- 		    }
- 		    if(!homespawn.memory.roomNoSource){
- 		        homespawn.memory.roomNoSource = new Array();
- 		    }
- 		    if(!homespawn.memory.roomInvalid){
- 		        homespawn.memory.roomInvalid = new Array();
- 		    }
- 		    if(!homespawn.memory.roomUndiscovered){
- 		        homespawn.memory.roomUndiscovered = new Array();
- 		        homespawn.memory.roomUndiscovered.push(Game.getObjectById(creep.memory.home).room.name);
- 		    }
- 		    if(!homespawn.memory.roomDiscovered){
- 		        homespawn.memory.roomDiscovered = new Array();
- 		    }
-			if(!homespawn.memory.roomInProgress){
- 		        homespawn.memory.roomInProgress = new Array();
- 		    }
- 		    if(!homespawn.memory.roomDanger){
- 		        homespawn.memory.roomDanger = new Array();
- 		    }
- 		    isInit = true;
-        }
-
-		//startRoom?    
+		//startRoom?  
 		if(!creep.memory.targetRoom){
-		    creep.memory.targetRoom = homespawn.memory.roomUndiscovered.shift();
-			
+		    creep.memory.targetRoom = managerMap.nextUndiscovered(homespawn);
+
+		LOGGER.debug("discoverer "+creep.memory.targetRoom);			
 		    if(!creep.memory.targetRoom){
-		        LOGGER.info("discoverer Nothing to do, dead in: " + creep.ticksToLive +" ticks.");
+		        LOGGER.debug("discoverer Nothing to do, dead in: " + creep.ticksToLive +" ticks.");
 		        creep.moveTo(homespawn);
 		        return;
-		    }else{
-				homespawn.memory.roomInProgress.push(creep.memory.targetRoom);
-			}
+		    }
 		}
 
 		//was Attacked
-		var danger = false;
-		let eventLog = creep.room.getEventLog();
-		let attackEvents = _.filter(eventLog, {event: EVENT_ATTACK});
+		var eventLog = creep.room.getEventLog();
+		var attackEvents = _.filter(eventLog, {event: EVENT_ATTACK});
+		
 		attackEvents.forEach(event => {
-			let target = Game.getObjectById(event.data.targetId);
+			var target = Game.getObjectById(event.data.targetId);
 			if(target && target.my) {
-				danger = true;
-				if(homespawn.memory.roomDanger.includes(creep.room.name)){
-				    LOGGER.info("discoverer Room was danger before: "+creep.room.name);
-				}else{
-				    homespawn.memory.roomDanger.push(creep.room.name);
-				    LOGGER.info("discoverer Room is danger: "+creep.room.name);
-				}
-				homespawn.memory.roomUndiscovered.push(creep.memory.targetRoom);
-				// remove current target and remove it from InProgress
-				for( var i = 0; i < homespawn.memory.roomInProgress.length; i++){
-					if ( homespawn.memory.roomInProgress[i] == creep.memory.targetRoom) {
-                        homespawn.memory.roomInProgress.splice(i, 1);
-					    homespawn.memory.roomUndiscovered.push(creep.memory.targetRoom);
-                        creep.memory.targetRoom = false
-                        creep.memory.wasAttackedin = creep.room.name
-						return;
-					}
-				}
+				managerMap.newDanger(homespawn,creep.room.name);
+				managerMap.addUndiscovered(homespawn,creep.memory.targetRoom);
+				managerMap.stopDiscovering(homespawn,creep.memory.targetRoom);
+				creep.memory.targetRoom = false;
+                creep.memory.wasAttackedin = creep.room.name;
+				LOGGER.debug("discoverer creep.memory.wasAttackedin "+creep.memory.wasAttackedin);	
 			    return;	
 			}
 		});
+		//is dangerous -> hostile entity?
+		var hostileCreep= creep.room.find(FIND_HOSTILE_CREEPS);
+		var hostilePowerCreep= creep.room.find(FIND_HOSTILE_POWER_CREEPS);
+		var hostileStructureTower= creep.room.find(FIND_HOSTILE_STRUCTURES, {
+                filter: (structure) =>  
+                    ((structure.structureType == STRUCTURE_TOWER)||(structure.structureType == STRUCTURE_KEEPER_LAIR))
 
-		LOGGER.info("discoverer targetRoom " +creep.memory.targetRoom);
-		LOGGER.info("discoverer currentRoom " +creep.room.name);      
+            });
+		var hostile = hostileCreep.concat(hostilePowerCreep).concat(hostileStructureTower);
+		if(hostile && hostile.length >= 1) {
+				managerMap.newDanger(homespawn,creep.room.name);
+				managerMap.newDiscovered(homespawn,creep.memory.targetRoom);
+				managerMap.stopDiscovering(homespawn,creep.memory.targetRoom);              
+				LOGGER.debug("discoverer hostiles in "+creep.memory.targetRoom);	
+				creep.memory.targetRoom= homespawn.room.name;
+				LOGGER.debug("discoverer Go home");
 
+		}
+		
+		
 
+		LOGGER.debug("discoverer targetRoom " +creep.memory.targetRoom);
+		LOGGER.debug("discoverer currentRoom " +creep.room.name);      
 		if(creep.memory.targetRoom == creep.room.name){
 		    //are there sources?
 		    var sources = creep.room.find(FIND_SOURCES);
-			LOGGER.info("discoverer sources here?: "+sources.length ); 
-
-			if(sources.length>0){
-				
-				if(homespawn.memory.roomHasSource.includes(creep.memory.targetRoom)){
-					LOGGER.info("discoverer Source was discovered before: "+creep.memory.targetRoom);
-				}else{
-					homespawn.memory.roomHasSource.push(creep.memory.targetRoom);
-					LOGGER.info("discoverer Source is discovered: "+ creep.memory.targetRoom);
-				}
+			LOGGER.debug("discoverer sources here?: "+sources.length ); 
+			for( var i = 0; i < sources.length; i++){
+				managerMap.newSourceLocation(homespawn,sources[i].id,creep.room.name);
 			}
 			
-			LOGGER.info("discoverer look for exits in targetRoom "+creep.room.name);   
+			LOGGER.debug("discoverer look for exits in targetRoom "+creep.room.name);   
 			//find exits
 			var exits = Game.map.describeExits(creep.room.name);
 			for (var name in exits) {
 			    var aNewRoom = exits[name];
-			    LOGGER.info("discoverer Find exit: "+aNewRoom);
-			    if(homespawn.memory.roomDiscovered.includes(aNewRoom)){
-				    LOGGER.info("discoverer Room was discovered before: "+aNewRoom);    
-			    }else if(homespawn.memory.roomUndiscovered.includes(aNewRoom,0)){
-			        LOGGER.info("discoverer Exit was discovered before: "+aNewRoom);  
-				}else{
-					LOGGER.info("discoverer Undiscovered exit to Room: "+ aNewRoom);
-				    homespawn.memory.roomUndiscovered.push(aNewRoom);
-				}
+			    LOGGER.debug("discoverer Find exit: "+aNewRoom);
+				managerMap.newExit(homespawn,aNewRoom);
 			}
-			homespawn.memory.roomDiscovered.push(creep.memory.targetRoom);
-			// remove current target and remove it from InProgress
-			for( var i = 0; i < homespawn.memory.roomInProgress.length; i++){
-				if ( homespawn.memory.roomInProgress[i] === creep.memory.targetRoom) {
-					homespawn.memory.roomInProgress.splice(i, 1);
-					return;
-				}
-			}
+			managerMap.newDiscovered(homespawn,creep.room.name);
+			managerMap.stopDiscovering(homespawn,creep.room.name);
 			creep.memory.targetRoom=false;
 		}else{
 		    var newPosition= new RoomPosition(25,25,creep.memory.targetRoom);
-		    LOGGER.info("discoverer Move to: "+newPosition);
+		    LOGGER.debug("discoverer Move to: "+newPosition);
 			var error = creep.moveTo(newPosition);
 			
 		    switch (error) {
@@ -150,12 +106,13 @@ var discoverer = {
 		        case ERR_NO_PATH:
 		        case ERR_NOT_FOUND:
 		        case ERR_INVALID_TARGET:
-		            LOGGER.info("discoverer move failed"+ newPosition +" error "+error);
+		            //FIXME: geht nicht richtig bei roaum wechsel, macht -2 tortz das der creep hätte durchgehen können
+		            LOGGER.debug("discoverer move failed"+ newPosition +" error "+error);
 					if(homespawn.memory.roomInvalid.includes(creep.memory.targetRoom)){
-					    LOGGER.info("discoverer Room was invalid before: "+creep.memory.targetRoom);
+					    LOGGER.debug("discoverer Room was invalid before: "+creep.memory.targetRoom);
 					}else{
 					    homespawn.memory.roomInvalid.push(creep.memory.targetRoom);
-					    LOGGER.info("discoverer Room was invalid before: "+creep.memory.targetRoom);
+					    LOGGER.debug("discoverer Room was invalid before: "+creep.memory.targetRoom);
 					}
 					// remove current target and remove it from InProgress
 					for( var i = 0; i < homespawn.memory.roomInProgress.length; i++){
@@ -170,11 +127,11 @@ var discoverer = {
 		        default:
 		            LOGGER.error("discoverer move failed"+ newPosition +" UNEXPECTED error "+error);
 					if(homespawn.memory.roomInvalid.includes(creep.memory.targetRoom)){
-					    LOGGER.info("discoverer Room was invalid before: "+creep.memory.targetRoom);
+					    LOGGER.debug("discoverer Room was invalid before: "+creep.memory.targetRoom);
 					    creep.memory.targetRoom =false;
 					}else{
 					    homespawn.memory.roomInvalid.push(creep.memory.targetRoom);
-					    LOGGER.info("discoverer Room is invalid: "+creep.memory.targetRoom);
+					    LOGGER.debug("discoverer Room is invalid: "+creep.memory.targetRoom);
 					    creep.memory.targetRoom =false;
 					}
 					// remove current target and remove it from InProgress

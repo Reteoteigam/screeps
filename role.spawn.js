@@ -8,7 +8,10 @@ var roleSpawn = {
     run: function(spawn,role ,roleMax, design) {
         LOGGER.debug("roleSpawn run");
     
-            //FIX ME FREIGABE BIT zum cleanen aller 1000 zyklen
+    
+    
+    
+        
         
         var creeps = _.filter(Game.creeps, (creep) => creep.memory.role == role);
         if(!spawn.spawning && Game.time % 1000 == 0){

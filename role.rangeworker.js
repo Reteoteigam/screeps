@@ -7,9 +7,9 @@
  * mod.thing == 'a thing'; // true
  */
 
-
 const LOGGER = require('util.log')
 var isInit = false;
+const DEFAULTROOM = Game.spawns["HQ"].room.name;
 
 
 var rangeworker = {
@@ -17,8 +17,7 @@ var rangeworker = {
     run: function(creep){
 
 		LOGGER.info("rangeworker run: "+creep);
-	isInit = false;
-        
+
         //init
         var homeSpawn = Game.getObjectById(creep.memory.home);
         if(!isInit){
@@ -42,7 +41,7 @@ var rangeworker = {
                         if(homeSpawn.room.name != currentRoom){
                             creep.memory.target = currentRoom
                             if(!homeSpawn.memory.sourceInUse.includes(currentRoom) && !homeSpawn.memory.sourceInvalid.includes(currentRoom) ){
-                                homeSpawn.memory.sourceInUse.push(currentRoom);wwww
+                                homeSpawn.memory.sourceInUse.push(currentRoom);
                                 creep.memory.targetRoom = currentRoom
                             break;
                             }
@@ -56,10 +55,12 @@ var rangeworker = {
                     var sources = creep.room.find(FIND_SOURCES);
         			LOGGER.info("rangeworker sources here?: "+sources.length ); 
         			if(sources.length>0){
-        				
-            			if(creep.harvest(sources[0]) == ERR_NOT_IN_RANGE) {
+        				var error = creep.harvest(sources[0]) ;
+            			if(error == ERR_NOT_IN_RANGE) {
                             creep.moveTo(sources[0], {visualizePathStyle: {stroke: '#ffff00'},reusePath: 50});
                             LOGGER.debug("go harvest: " + sources[0].pos);
+                        }else if(error == ERR_NOT_OWNER){
+                            LOGGER.info("rangeworker !!!!!!!!!!!!!!!"+error);
                         }
         			}
                 }else{
@@ -68,11 +69,11 @@ var rangeworker = {
                     var error = creep.moveTo(new RoomPosition(25,25, creep.memory.targetRoom), {visualizePathStyle: {stroke: '#ffff00'},reusePath: 50});
                     LOGGER.info("!!!!!!!!!!!!!!!"+ error);
         			}else{
-        			   homeSpawn.memory.sourceInvalid = creep.memory.targetRoom;
-        			   creep.memory.targetRoom=false;
+        			 //  homeSpawn.memory.sourceInvalid = creep.memory.targetRoom;
+        			 //  creep.memory.targetRoom=false;
         			}
         			if(!creep.memory.targetRoom){
-                        creep.memory.targetRoom = "W9S59"; 
+                        creep.memory.targetRoom = DEFAULTROOM; 
         			}
                 }
                 
@@ -86,6 +87,8 @@ var rangeworker = {
                 if(creep.ticksToLive >= 1400){
                     creep.drop(RESOURCE_ENERGY);
                 }else{
+                    creep.moveTo(homeSpawn);
+                                        creep.drop(RESOURCE_ENERGY);
                     LOGGER.info("rangeworker Wait for Repair");
                 }
                 
