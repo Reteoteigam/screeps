@@ -5,7 +5,7 @@ const managerharvest = require('manager.harvest');
 var roleHarvester = {
     /** @param {Creep} creep **/
     run: function(creep) {
- LOGGER.debug("roleHarvester run: "+creep);
+		LOGGER.debug("roleHarvester run: "+creep);
                 // creep.say("❗ " +creep.ticksToLive);
             
 
@@ -15,15 +15,11 @@ var roleHarvester = {
 			managerharvest.registerAsHarvester(homespawn,creep);
 		}
 
-		  
-			
-		LOGGER.debug("harvester targetRoom " +creep.memory.targetRoom);
-		LOGGER.debug("harvester currentRoom " +creep.room.name);      
 		if(creep.memory.targetRoom != creep.room.name){
-			var newPosition= new RoomPosition(25,25,creep.memory.targetRoom);
-		    LOGGER.debug("discoverer Move to: "+newPosition);
+			var newPosition = new RoomPosition(25,25,creep.memory.targetRoom);
+		    LOGGER.debug("roleHarvester Move to: "+newPosition);
 			var error = creep.moveTo(newPosition);
-			LOGGER.debug("discoverer Move to error: "+error);
+			LOGGER.debug("roleHarvester Move to error: "+error);
 		}else{
 			//harvest
 			sources= Game.getObjectById(creep.memory.target);
@@ -32,7 +28,7 @@ var roleHarvester = {
 					visualizePathStyle: {stroke: '#ffff00'},
 					reusePath: 50
 				});
-				LOGGER.debug("go harvest: " + sources.pos);
+				LOGGER.debug("roleHarvester go harvest: " + sources.pos);
 			}
 			
 		}

@@ -8,53 +8,58 @@
  */
 
 var LOGGER = require('util.log')
-var init = false;
 
-    
-const INDEX_INVALID     =0;
-const INDEX_UNDISCOVERED=1;
-const INDEX_DISCOVERED  =2;
-const INDEX_DISCOVERING =3;
-const INDEX_SOURCE      =4;
+const INDEX_INIT 		=0
+const INDEX_INVALID     =1;
+const INDEX_UNDISCOVERED=2;
+const INDEX_DISCOVERED  =3;
+const INDEX_DISCOVERING =4;
+const INDEX_SOURCE      =5;
 const INDEX_SOURCE_ID   =0;
 const INDEX_SOURCE_ROOM =1;
-const INDEX_DANGER      =5;
+const INDEX_DANGER      =6;
 
 
 var managermap = {
     // memory  
     init : function(mainBaseName){
-		LOGGER.debug("init: "+init);
 		//init=false;
-        if(!init){
+		var memoryObject = Game.spawns[mainBaseName];
+		LOGGER.debug("init: "+memoryObject.memory.managermap || memoryObject.memory.managermap.init);
+		if(!memoryObject.memory.managermap || !memoryObject.memory.managermap[INDEX_INIT]){
+			LOGGER.debug("managermap Init with "+memoryObject);
+			//init datamodel
+			memoryObject.memory.managermap = new Array();
+			//INDEX_INIT
+			memoryObject.memory.managermap.push(false);
+			//INDEX_INVALID 1
+			memoryObject.memory.managermap.push(new Array(0));
+			//INDEX_UNDISCOVERED 2
+			memoryObject.memory.managermap.push(new Array(0));
+			//INDEX_DISCOVERED 3
+			memoryObject.memory.managermap.push(new Array(0));
+			//INDEX_DISCOVERING 4
+			memoryObject.memory.managermap.push(new Array(0)); 			
 			
-			var memoryObject = Game.spawns[mainBaseName];
-			if(!memoryObject.memory.managermap){
-				LOGGER.debug("managermap Init with "+memoryObject);
-				//init datamodel
-				memoryObject.memory.managermap = new Array();
-				memoryObject.memory.managermap.push(new Array(0));
-				memoryObject.memory.managermap.push(new Array(0));
-				memoryObject.memory.managermap.push(new Array(0));
-				memoryObject.memory.managermap.push(new Array(0));                
-				
-				//sourcetable
-				memoryObject.memory.managermap.push(new Array(0));
-				memoryObject.memory.managermap[INDEX_SOURCE].push(new Array(0));
-				memoryObject.memory.managermap[INDEX_SOURCE].push(new Array(0));
-	   
-				memoryObject.memory.managermap.push(new Array(0));
-				memoryObject.memory.managermap.push(new Array(0));
-				// starting point
-				memoryObject.memory.managermap[INDEX_UNDISCOVERED].push(memoryObject.room.name);
-			}
-		init= true;
+			//INDEX_SOURCE 5
+			memoryObject.memory.managermap.push(new Array(0));
+			//INDEX_SOURCE_ID 5 1
+			memoryObject.memory.managermap[INDEX_SOURCE].push(new Array(0));
+			//INDEX_SOURCE_ROOM 5 2
+			memoryObject.memory.managermap[INDEX_SOURCE].push(new Array(0));
+   
+			//INDEX_DANGER 6
+			memoryObject.memory.managermap.push(new Array(0));
+			// starting point
+			memoryObject.memory.managermap[INDEX_UNDISCOVERED].push(memoryObject.room.name);
+
+            memoryObject.memory.managermap[INDEX_INIT] = true;
         }
     },
     
     nextUndiscovered : function (spawn){
-        if(!init){
-            LOGGER.error("managermap No init");
+        if(!spawn.memory.managermap[INDEX_INIT]){
+            LOGGER.error("managermap nextUndiscovered No init");
             return;
         }
 		if(spawn.memory.managermap[INDEX_UNDISCOVERED].length <=0){
@@ -69,12 +74,12 @@ var managermap = {
     },
     
     addUndiscovered : function (spawn, newUndiscovered){
-        if(!init){
-            LOGGER.error("managermap No init");
+        if(!spawn.memory.managermap[INDEX_INIT]){
+            LOGGER.error("managermap addUndiscovered No init");
             return;
         }
         
-        var undiscovered = spawn.memory.managermap[INDEX_UNDISCOVERED]			
+        var undiscovered = spawn.memory.managermap[INDEX_UNDISCOVERED];			
 		if(undiscovered.includes(newUndiscovered)){
 		    LOGGER.debug("managermap Room was undiscovered before: "+newUndiscovered);
 		}else{
@@ -84,12 +89,12 @@ var managermap = {
     },
     
     newDanger : function (spawn, newDanger){
-        if(!init){
-            LOGGER.error("managermap No init");
+        if(!spawn.memory.managermap[INDEX_INIT]){
+            LOGGER.error("managermap newDanger No init");
             return;
         }
         
-        var dangerList = spawn.memory.managermap[INDEX_DANGER]			
+        var dangerList = spawn.memory.managermap[INDEX_DANGER];	
 		if(dangerList.includes(newDanger)){
 		    LOGGER.debug("managermap Room was danger before: "+newDanger);
 		}else{
@@ -97,10 +102,25 @@ var managermap = {
 		    LOGGER.debug("managermap Room is danger: "+newDanger);
 		}
     },
+	
+    newInvalid : function (spawn, newInvalid){
+        if(!spawn.memory.managermap[INDEX_INIT]){
+            LOGGER.error("managermap newInvalid No init");
+            return;
+        }
+				
+        var invalidList = spawn.memory.managermap[INDEX_INVALID];			
+		if(invalidList.includes(newInvalid)){
+		    LOGGER.debug("managermap Room was invalid before: "+newInvalid);
+		}else{
+		    invalidList.push(newInvalid);
+		    LOGGER.debug("managermap Room is invalid: "+newInvalid);
+		}
+    },
     
     stopDiscovering : function(spawn,stopDiscovering){
-        if(!init){
-            LOGGER.error("managermap No init");
+        if(!spawn.memory.managermap[INDEX_INIT]){
+            LOGGER.error("managermap stopDiscovering No init");
             return;
         }
         // remove current target and remove it from InProgress
@@ -115,8 +135,8 @@ var managermap = {
     },
     
     newSourceLocation : function(spawn,newSourceID,newSourceRoom){
-        if(!init){
-            LOGGER.error("managermap No init");
+        if(!spawn.memory.managermap[INDEX_INIT]){
+            LOGGER.error("managermap newSourceLocation No init");
             return;
         }
 		
@@ -134,8 +154,8 @@ var managermap = {
     },
 	
 	getAllSourceIDs : function(spawn){
-        if(!init){
-            LOGGER.error("managermap No init");
+        if(!spawn.memory.managermap[INDEX_INIT]){
+            LOGGER.error("managermap getAllSourceIDs No init");
             return;
         }
 		
@@ -146,8 +166,8 @@ var managermap = {
     },
     
     newExit : function (spawn, newExit){
-        if(!init){
-            LOGGER.error("managermap No init");
+        if(!spawn.memory.managermap[INDEX_INIT]){
+            LOGGER.error("managermap newExit No init");
             return;
         }
 
@@ -164,7 +184,7 @@ var managermap = {
     },
     
     newDiscovered : function (spawn, newDiscovered){
-        if(!init){
+        if(!spawn.memory.managermap[INDEX_INIT]){
             LOGGER.error("managermap newDiscovered No init!");
             return;
         }
@@ -179,8 +199,8 @@ var managermap = {
     },
 	
 	getAllSourceRooms : function(spawn){
-        if(!init){
-            LOGGER.error("managermap No init");
+        if(!spawn.memory.managermap[INDEX_INIT]){
+            LOGGER.error("managermap getAllSourceRooms No init");
             return;
         }
 		

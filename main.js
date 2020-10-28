@@ -3,6 +3,7 @@ LOGGER.debug("INIT");
 
 const managermap = require('manager.map');
 const managerharvest = require('manager.harvest');
+const cleaner = require('util.cleaner');
 
 var delegator = require('delegator');
 var delegatorSpawn = require('delegator.spawn')
@@ -15,6 +16,7 @@ module.exports.loop = function () {
 LOGGER.debug("TICK");    
 
     managermap.init(startBaseName);
+
     managerharvest.init(startBaseName);
 
     delegatorSpawn.run();
