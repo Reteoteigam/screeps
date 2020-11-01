@@ -1,17 +1,13 @@
-var LOGGER = require('util.log')
+const LOGGER = require('util.log')
 const cleaner = require('util.cleaner');
 var reset = 5;
-
+var inDoing = -1;
 
 var roleSpawn = {
     /** @param {Creep} creep **/
     run: function(spawn,role ,roleMax, design) {
         LOGGER.debug("roleSpawn run");
     
-    
-    
-    
-        
         
         var creeps = _.filter(Game.creeps, (creep) => creep.memory.role == role);
         if(!spawn.spawning && Game.time % 1000 == 0){
@@ -25,38 +21,31 @@ var roleSpawn = {
                 var element = Game.creeps[i];
                 if(element.memory.role == role && element.ticksToLive <60 && creeps.length <= roleMax) {
                     isNearDead = element;
+					break;
                 }
             }
 		    if(isNearDead ||  creeps.length < roleMax){
-		
                 var testIfCanSpawn;
                 while(!spawn.spawning){
                     testIfCanSpawn = spawn.spawnCreep(design, 
                         'DryRun', { dryRun: true });
-                    if (testIfCanSpawn!=0 && design.length >3) {
+                    if (ERR_NOT_ENOUGH_ENERGY == testIfCanSpawn && design.length >3) {
                         design = design.slice(1);
                     }else{
                         break;
                     }
-            
                 }
-                
-                
-                
-                var newName = role + Game.time;
-                LOGGER.debug('Spawning new ' + role);
-                
-                spawn.spawnCreep(design, newName,{
-                    memory: {
+				var newName = role + Game.time;
+				LOGGER.error("roleSpawn try "+role+ design);
+				inDoing =  spawn.spawnCreep(design, newName,{
+					memory: {
     				"role": role ,
     				"home": spawn.id
     				}
-                    
                 });
+				
             }
-        }
-    
-        if(spawn.spawning) {
+        } else {
             var spawningCreep = Game.creeps[spawn.spawning.name];
             spawn.room.visual.text(
                 '🛠️' + spawningCreep.memory.role,
@@ -64,16 +53,8 @@ var roleSpawn = {
                 spawn.pos.y,
                 {align: 'left', opacity: 0.8});
         }
-
-     
-     
-     
-     
-     
-
         LOGGER.debug("roleSpawn done");
-     
-        
+		return inDoing;
 	},
 
 

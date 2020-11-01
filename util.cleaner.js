@@ -1,5 +1,10 @@
 const LOGGER = require('util.log');
+const managerMap = require('manager.map');
 const managerHarvest = require('manager.harvest');
+const managerTransport = require('manager.transport');
+
+
+
 var utilCleaner = {
 
     /** @param {message} the message **/
@@ -14,9 +19,23 @@ var utilCleaner = {
             }
         }
 		for (var id in Game.spawns) {
+		managerMap.cleanupLists(Game.spawns[id]);
 		managerHarvest.cleanupLists(Game.spawns[id]);
+		managerTransport.cleanupLists(Game.spawns[id]);
 		}
-    }
+    },
+	
+	restart:function(){
+		
+		for (var id in Game.spawns) {
+			managerMap.restart(Game.spawns[id]);
+			managerHarvest.restart(Game.spawns[id]);
+			managerTransport.restart(Game.spawns[id]);
+
+		}
+		return true;
+		
+	}
 };
 
 module.exports = utilCleaner;

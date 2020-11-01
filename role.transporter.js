@@ -1,17 +1,21 @@
-var LOGGER = require('util.log')
-
-
-
+const LOGGER = require('util.log');
+const managertransport = require('manager.transport');
 
 const d = new Date();
-var renewTicks = d.getSeconds() ;
+var renewTicks = d.getSeconds();
 
 
-var roleDeliverer = {
+var roleTransporter = {
     /** @param {Creep} creep **/
     run: function(creep) {
   
         LOGGER.debug("rolePickuprun: "+creep);
+		
+		//registerTransport
+        var homespawn = Game.getObjectById(creep.memory.home);
+		if(!creep.memory.target){
+			managertransport.registerAsTransporter(homespawn,creep);
+		}
 
         //improved to 30 -70% work
         if(creep.memory.filling || (creep.store.getUsedCapacity()/creep.store.getCapacity()) <= 0.3) {
@@ -24,7 +28,7 @@ var roleDeliverer = {
                 });
 
             if(sources != null && creep.withdraw(sources) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(sources, {visualizePathStyle: {stroke: '#ffff00'}});
+                creep.moveTo(sources, {visualizePathStyle: {stroke: '#ffff00'}, reusePath: 25});
                 creep.say("🔄: T" + sources.pos.x +" " + sources.pos.y);
                 LOGGER.debug("go pickup: " + sources.pos);
                 
@@ -37,7 +41,7 @@ var roleDeliverer = {
                     });
     
                 if(sources != null && creep.pickup(sources) == ERR_NOT_IN_RANGE) {
-                    creep.moveTo(sources, {visualizePathStyle: {stroke: '#ffff00'}});
+                    creep.moveTo(sources, {visualizePathStyle: {stroke: '#ffff00'}, reusePath: 25});
                     creep.say("🔄: R" + sources.pos.x +" " + sources.pos.y);
                     LOGGER.debug("go pickup: " + sources.pos);
                     
@@ -52,7 +56,7 @@ var roleDeliverer = {
                 });
 
                 if(sources != null && creep.withdraw(sources, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(sources, {visualizePathStyle: {stroke: '#ffff00'}});
+                creep.moveTo(sources, {visualizePathStyle: {stroke: '#ffff00'}, reusePath: 25});
                 creep.say("🔄: C" + sources.pos.x +" " + sources.pos.y);
                 }
 
@@ -61,7 +65,7 @@ var roleDeliverer = {
 				//harvest
 				sources = creep.pos.findClosestByRange(FIND_SOURCES);
 				if(sources != null && !creep.memory.busy && creep.harvest(sources) == ERR_NOT_IN_RANGE) {
-					creep.moveTo(sources, {visualizePathStyle: {stroke: '#ffff00'}});
+					creep.moveTo(sources, {visualizePathStyle: {stroke: '#ffff00'}, reusePath: 25});
 					LOGGER.debug("go harvest: " + sources.pos);
 					creep.say("🔄: S" + sources.pos.x +" " + sources.pos.y);
 				}
@@ -72,13 +76,13 @@ var roleDeliverer = {
             //deliver
    
             
-            var target = Game.getObjectById(creep.memory.currentTarget);
+            var target = Game.getObjectById(creep.memory.target);
             if(!target || target.store.getFreeCapacity(RESOURCE_ENERGY) == 0){
-                creep.memory.debug = null;//creep.memory.debug + 1;
-                creep.memory.debugCurrent = null;//creep.memory.debug;
+                
+                
                 // renewTicks = d.getMilliseconds();
                 target= null;
-                creep.memory.currentTarget=null;
+                creep.memory.target=false;
                 targets = creep.room.find(FIND_MY_STRUCTURES, {
                         filter: (structure) => {
                             return (structure.structureType == STRUCTURE_EXTENSION ||
@@ -90,7 +94,7 @@ var roleDeliverer = {
                 });
                 targets.sort((a,b) => a.store.getUsedCapacity(RESOURCE_ENERGY) - b.store.getUsedCapacity(RESOURCE_ENERGY) + (a.pos.getRangeTo(creep.pos)-b.pos.getRangeTo(creep.pos))*2);
                 if (targets.length>=1) {
-                creep.memory.currentTarget=targets[0].id;
+                creep.memory.target=targets[0].id;
                 }else{
                     var targets = creep.room.find(FIND_MY_CREEPS, {
 						filter: (creep) => {
@@ -100,21 +104,21 @@ var roleDeliverer = {
 					});
 					targets.sort((a,b) => a.store.getUsedCapacity(RESOURCE_ENERGY)- 10 - b.store.getUsedCapacity(RESOURCE_ENERGY)-10 /*+ a.pos.getRangeTo(creep.pos)-b.pos.getRangeTo(creep.pos)*/);
 					if (targets.length>=1) {
-                        creep.memory.currentTarget=targets[0].id;
+                        creep.memory.target=targets[0].id;
                     }else{
-                        creep.memory.currentTarget= null;
+                        creep.memory.target= false;
 
                     }
                 }
             }
-            target = Game.getObjectById(creep.memory.currentTarget);
+            target = Game.getObjectById(creep.memory.target);
             if(target){
             	if(creep.transfer(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-						creep.moveTo(target, {visualizePathStyle: {stroke: '#ffffff'}});
+						creep.moveTo(target, {visualizePathStyle: {stroke: '#ffffff'}, reusePath: 25});
 						LOGGER.debug("go transfering: " + target.pos);
             	}else{
 					if(target && creep.transfer(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-						creep.moveTo(target, {visualizePathStyle: {stroke: '#ffffff'}});
+						creep.moveTo(target, {visualizePathStyle: {stroke: '#ffffff'}, reusePath: 25});
 						LOGGER.debug("go transfering: " + target.pos);
 					}
 				}
@@ -124,4 +128,4 @@ var roleDeliverer = {
 	}
 };
  
-module.exports = roleDeliverer;
+module.exports = roleTransporter;

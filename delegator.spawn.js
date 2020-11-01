@@ -13,17 +13,14 @@ const managerharvest = require('manager.harvest');
 
 
 //civil
-const MAX_BUILDER= 2;
+const MAX_BUILDER= 4;//2 beggining
 const ROLE_BUILDER = 'ROLE_BUILDER';
 
-const MAX_DELIVERER = 4;
-const ROLE_DELIVERER = 'ROLE_DELIVERER';
+const MAX_TRANSPORTER = 4;//4 normal
+const ROLE_TRANSPORTER = 'ROLE_TRANSPORTER';
 
-var maxHarvester = 1;
+var MAX_HARVESTER = 2;
 const ROLE_HARVESTER = 'ROLE_HARVESTER';
-
-const MAX_RANGE_WORKER = 2;
-const ROLE_RANGEWORKER = "ROLE_RANGEWORKER";
 
 const MAX_DISCOVERER = 1;
 const ROLE_DISCOVERER = "ROLE_DISCOVERER";
@@ -45,20 +42,18 @@ var delegatorSpawn = {
         LOGGER.debug("delegatorSpawn run");
 
 
-    
+    //return;
         for (var id in Game.spawns) {
             var spawn = Game.spawns[id];
-               
+            LOGGER.debug("delegatorSpawn spawn.energy "+spawn.energy);
             //ROLE_HARVESTER
-            maxHarvester=managerharvest.calculateMaxHarvester(spawn);
-            roleSpawn.run(spawn, ROLE_HARVESTER,maxHarvester,[WORK,WORK,WORK,WORK,WORK,MOVE]) //enought for one resource
-            //ROLE_DELIVERER
-            // roleSpawn.run(spawn, ROLE_DELIVERER,MAX_DELIVERER,[CARRY,MOVE,CARRY,MOVE,CARRY,MOVE,CARRY,MOVE,CARRY,MOVE])    
+			//MAX_HARVESTER=managerharvest.calculateMaxHarvester(spawn);
+			var inDoing = roleSpawn.run(spawn, ROLE_HARVESTER,MAX_HARVESTER,[WORK,WORK,WORK,WORK,WORK,MOVE]) //enought for one resource
+			//ROLE_TRANSPORTER
+            roleSpawn.run(spawn, ROLE_TRANSPORTER,MAX_TRANSPORTER,[CARRY,MOVE,CARRY,MOVE,CARRY,MOVE,CARRY,MOVE,CARRY,MOVE])    
             //ROLE_BUILDER
-            // roleSpawn.run(spawn, ROLE_BUILDER,MAX_BUILDER,[WORK,WORK,CARRY,MOVE,WORK,WORK,CARRY,MOVE,WORK,WORK,CARRY,MOVE])
-            //ROLE_RANGEWORKER
-            // roleSpawn.run(spawn, ROLE_RANGEWORKER,MAX_RANGE_WORKER,[WORK,CARRY,MOVE,WORK,CARRY,MOVE,WORK,CARRY,MOVE,WORK,CARRY,MOVE,WORK,CARRY,MOVE])    
-            //ROLE_DISCOVERER
+            roleSpawn.run(spawn, ROLE_BUILDER,MAX_BUILDER,[WORK,WORK,CARRY,MOVE,WORK,WORK,CARRY,MOVE,WORK,WORK,CARRY,MOVE])
+			//ROLE_DISCOVERER
             roleSpawn.run(spawn, ROLE_DISCOVERER,MAX_DISCOVERER,[MOVE])    
             //creepHealer
             //roleSpawn.run(spawn, ROLE_HEAL,MAX_HEAL,[TOUGH,MOVE,HEAL,MOVE])

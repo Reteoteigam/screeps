@@ -1,6 +1,6 @@
+const LOGGER = require('util.log');
+const operationMove = require('util.operation.move');
 
-var LOGGER = require('util.log')
-var anotherRoomName = "W09W59";
 var inspector = require('util.inspector');
 
 

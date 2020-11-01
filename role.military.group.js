@@ -34,14 +34,14 @@ var group = {
         
         if(scouting && creep.ticksToLive>1000){   
             LOGGER.debug("move from "+ creep.pos +" to "+Game.flags["Group"].pos);
-	        creep.moveTo(Game.flags["Group"] , {visualizePathStyle: {stroke: '#ff0000'}});
+	        creep.moveTo(Game.flags["Group"] , {visualizePathStyle: {stroke: '#ff0000'}, reusePath: 25});
         }
 	    
 	    if(creep.ticksToLive<200){
 	        LOGGER.debug("move from "+ creep.pos +" to "+Game.flags["Home"].pos);
 	        var target= Game.flags["Home"].pos; 
 	        
-	        creep.moveTo(target , {visualizePathStyle: {stroke: '#ff0000'}});
+	        creep.moveTo(target , {visualizePathStyle: {stroke: '#ff0000'}, reusePath: 25});
 	    }
 	    
 	    

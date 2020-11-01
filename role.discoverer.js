@@ -6,77 +6,28 @@
  * var mod = require('role.rangeworker');
  * mod.thing == 'a thing'; // true
  */
+ 
+
 
 const LOGGER = require('util.log');
 const managerMap = require('manager.map');
 var discoverer = {
     
-    printError: function(error){	
-		result = "";
-		switch (error) {
-		    case OK:
-				result = "OK";
-				break;
-		    case ERR_NOT_OWNER:
-				result = "ERR_NOT_OWNER";
-				break;
-			case ERR_BUSY:
-				result = "ERR_BUSY";
-				break;
-			case ERR_TIRED:
-				result = "ERR_TIRED";
-				break;
-			case ERR_NO_PATH:
-				result = "ERR_NO_PATH";
-				break;
-			case ERR_NOT_FOUND:
-				result = "ERR_NOT_FOUND";
-				break;
-			case ERR_INVALID_TARGET:
-				result = "ERR_INVALID_TARGET";
-				break;
-			default:
-				result = "unknown:"+error;
-				break;
-		}
-		return result+"("+error+")";
-	},
-	
-	discovererMoveTo: function(creep,target){
-		error = creep.moveTo(target,{visualizePathStyle: {stroke: '#999999'}});
-		switch (error) {
-			case OK:
-			case ERR_NOT_OWNER:
-			case ERR_BUSY:
-			case ERR_TIRED:
-				LOGGER.debug("discoverer moved correct to "+ target +" error was "+ this.printError(error));
-				break;
-			case ERR_NO_PATH:
-			case ERR_NOT_FOUND:
-			case ERR_INVALID_TARGET:
-				//FIXME: geht nicht richtig bei raum wechsel, macht -2 trotz das der creep hätte durchgehen können
-				LOGGER.error("discoverer move failed "+ target +" error " + this.printError(error));
-				var homespawn = Game.getObjectById(creep.memory.home);
-				managerMap.newInvalid(homespawn,creep.memory.targetRoom);
-				managerMap.stopDiscovering(homespawn,creep.memory.targetRoom);			
-				creep.memory.targetRoom =false;
-				break;
-			default:
-				LOGGER.error("discoverer move failed"+ target +" UNEXPECTED error " + this.printError(error));
-				var homespawn = Game.getObjectById(creep.memory.home);
-				managerMap.newInvalid(newInvalid,creep.memory.targetRoom);
-				managerMap.stopDiscovering(homespawn,creep.memory.targetRoom);			
-				creep.memory.targetRoom =false;
-				break;
-		}
-	},
+ 
 	
     run: function(creep){
 		LOGGER.debug("discoverer run: "+creep);
         var homespawn = Game.getObjectById(creep.memory.home);
+		
+		// visualize the path
+		if(true){
+			const path = PathFinder.search(creep.pos, homespawn.pos).path;
+			Game.map.visual.poly(path, {stroke: '#ffffff', strokeWidth: .8, opacity: .2, lineStyle: 'dashed'});
+    	}
+
 	    //was attacked
 	    if(creep.memory.wasAttackedin){
-			this.move(creep, homespawn);
+			creep.move(creep, homespawn);
             return;
         }
 	    
@@ -84,10 +35,10 @@ var discoverer = {
 		if(!creep.memory.targetRoom){
 		    creep.memory.targetRoom = managerMap.nextUndiscovered(homespawn);
 
-		LOGGER.debug("discoverer "+creep.memory.targetRoom);			
+		LOGGER.error("discoverer "+creep.memory.targetRoom);			
 		    if(!creep.memory.targetRoom){
-		        LOGGER.debug("discoverer Nothing to do, dead in: " + creep.ticksToLive +" ticks.");
-		        this.discovererMoveTo(creep, homespawn);
+		        LOGGER.error("discoverer Nothing to do, dead in: " + creep.ticksToLive +" ticks.");
+		        creep.moveTo(homespawn, {reusePath: 25});
 		        return;
 		    }
 		}
@@ -151,9 +102,11 @@ var discoverer = {
 			managerMap.stopDiscovering(homespawn,creep.room.name);
 			creep.memory.targetRoom=false;
 		}else{
-		    var newPosition= new RoomPosition(25,25,creep.memory.targetRoom);
-		    LOGGER.debug("discoverer Move to: "+newPosition);
-			this.discovererMoveTo(creep, newPosition);
+		    //move to new room
+            exitDir = Game.map.findExit(creep.room, creep.memory.targetRoom);
+			exit = creep.pos.findClosestByRange(exitDir);
+			var result = creep.moveTo(exit,{visualizePathStyle: {stroke: '#999999'}, reusePath: 25});
+			LOGGER.debug("discoverer moveTo "+exit +" "+ result);
         }
         if(creep.ticksToLive < 5){
             homespawn.memory.roomUndiscovered.push(creep.memory.targetRoom);

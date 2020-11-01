@@ -1,8 +1,8 @@
 var d = new Date();
 
-var  debugLvl = true;
+var  debugLvl = false;
 
-var   infoLvl = true;
+var   infoLvl = false;
 var   errorLvl = true;
 var counter = 0;
 

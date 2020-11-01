@@ -1,23 +1,35 @@
-var LOGGER = require('util.log');
+const PROTOTYPES = require('prototypes');
+const LOGGER = require('util.log');
 LOGGER.debug("INIT");
 
 const managermap = require('manager.map');
 const managerharvest = require('manager.harvest');
+const managertransport = require('manager.transport');
 const cleaner = require('util.cleaner');
 
 var delegator = require('delegator');
 var delegatorSpawn = require('delegator.spawn')
 
 
-const startBaseName = "HQ";
+const startBaseName = "Spawn1";
 
 
 module.exports.loop = function () {
 LOGGER.debug("TICK");    
 
-    managermap.init(startBaseName);
 
-    managerharvest.init(startBaseName);
+	
+//	cleaner.restart();
+//	return;
+	
+	
+	cleaner.clean();
+	
+	var memoryObject = Game.spawns[startBaseName];
+    managermap.init(memoryObject);
+    managerharvest.init(memoryObject);
+    managertransport.init(memoryObject);
+
 
     delegatorSpawn.run();
     

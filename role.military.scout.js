@@ -31,13 +31,13 @@ var scout = {
             if(target) {
                 
                 if(creep.rangedAttack(target) == ERR_NOT_IN_RANGE) {
-                    creep.moveTo(target);
+                    creep.moveTo(target,{visualizePathStyle: {stroke: '#ff0000'}});
                 }else{
                     
                 }
             }
                 if(creep.attack(target) == ERR_NOT_IN_RANGE) {
-                    creep.moveTo(target);
+                    creep.moveTo(target,{visualizePathStyle: {stroke: '#ff0000'}});
                 }
         }
         

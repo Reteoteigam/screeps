@@ -6,9 +6,8 @@
  * var mod = require('role.civil.group');
  * mod.thing == 'a thing'; // true
  */
-var roleDeliverer = require('role.deliverer');
+var roleTransporter = require('role.transporter');
 var roleHarvester = require('role.harvester');
-var roleUpgrader = require('role.upgrader');
 var roleBuilder =  require('role.builder');
 
 var LOGGER = require('util.log')
@@ -19,22 +18,18 @@ var group = {
     run: function(creep) {
             switch (creep.memory.role) {
                 case 'ROLE_BUILDER':
-                    LOGGER.debug("tryBuild");
-                    var hasResource = roleBuilder.run(creep);
-                    if(!hasResource){
-                        LOGGER.debug("tryUpgrade");
-                        hasResource = roleUpgrader.run(creep);
-                    }
-                    
+                    LOGGER.debug("group tryBuild");
+					roleBuilder.run(creep);
+
                     break;
                     
-                case "ROLE_DELIVERER":    
-                    LOGGER.debug("tryDeliver");
-                    roleDeliverer.run(creep);
+                case "ROLE_TRANSPORTER":    
+                    LOGGER.debug("group tryTransport");
+                    roleTransporter.run(creep);
                     break;
                 
                 default:
-                    LOGGER.debug("UNKNOWN ROLE"+ role);
+                    LOGGER.error("group UNKNOWN ROLE"+ role);
 				    break;
             }
                     
