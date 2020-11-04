@@ -143,9 +143,7 @@ let roleTransporter = {
 			}
 		}
 		return error;
-	}
-	
-	
+	},
 	
 	pickupOrWithdraw: function(creep,target){
 		let error = this.pickupFromDropped(creep,target);
