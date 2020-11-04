@@ -22,7 +22,8 @@ let roleTransporter = {
 //run order
 		if(creep.memory.orderDoing){
 			//prefer 90% storage
-			if((creep.store.getUsedCapacity()/creep.store.getCapacity()) <= 0.8){
+			if(creep.memory.filling=true || (creep.store.getUsedCapacity()/creep.store.getCapacity()) <= 0.8){
+				creep.memory.filling=true;
 				let target = Game.getObjectById(creep.memory.from);
 				if(target){
 					let error =this.pickupOrWithdraw(creep,target);
@@ -30,13 +31,16 @@ let roleTransporter = {
 				}else{
 					creep.memory.orderDoing = false;
 				}
-				
-				
-
-				
+			}else if(!creep.memory.filling || creep.store.getUsedCapacity()/creep.store.getCapacity() >= 0.99) {
+				creep.memory.filling=false;
+				let target = Game.getObjectById(creep.memory.to);
+				if(target){
+					this.transferTo(creep, target);
+					LOGGER.error("##########transferTo: "+creep+error);
+				}else{
+					creep.memory.orderDoing = false;
+				}
 			}
-			
-			
 		}	
 
 		// DEFAULT:
@@ -118,20 +122,30 @@ let roleTransporter = {
                 }
             }
             target = Game.getObjectById(creep.memory.target);
-            if(target){
-            	if(creep.transfer(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-						creep.moveTo(target, {visualizePathStyle: {stroke: '#ffffff'}, reusePath: 25});
-						LOGGER.debug("go transfering: " + target.pos);
-            	}else{
-					if(target && creep.transfer(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-						creep.moveTo(target, {visualizePathStyle: {stroke: '#ffffff'}, reusePath: 25});
-						LOGGER.debug("go transfering: " + target.pos);
-					}
-				}
-            }   
+			if(target){
+				this.transferTo(creep, target);
+			}
+			
         }
 
 	},
+	
+	transferTo: function(creep, target){
+		let error = creep.transfer(target, RESOURCE_ENERGY);
+		if(error == ERR_NOT_IN_RANGE) {
+			error = creep.moveTo(target, {visualizePathStyle: {stroke: '#ffffff'}, reusePath: 25});
+			LOGGER.debug("go transfering: " + target.pos);
+		}else{
+			error = creep.transfer(target, RESOURCE_ENERGY);
+			if( error == ERR_NOT_IN_RANGE) {
+				creep.moveTo(target, {visualizePathStyle: {stroke: '#ffffff'}, reusePath: 25});
+				LOGGER.debug("go transfering: " + target.pos);
+			}
+		}
+		return error;
+	}
+	
+	
 	
 	pickupOrWithdraw: function(creep,target){
 		let error = this.pickupFromDropped(creep,target);
