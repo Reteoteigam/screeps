@@ -46,6 +46,7 @@ if(!Creep.prototype._moveTo){
 }
 
 Creep.prototype.saveMove = function(error, arguments){
+    
 	switch(error){
 		case OK:
 			LOGGER.debug("protoypes SAVEMOVE "+this.name+" was at "+this.pos+" with result "+error+" OK arguments were "+arguments); 
@@ -54,6 +55,7 @@ Creep.prototype.saveMove = function(error, arguments){
 			LOGGER.debug("protoypes SAVEMOVE "+this.name+" was at "+this.pos + " with result "+error+" ERR_TIRED arguments were "+arguments); 								
 		break;
 		default:
+		return;
 			let direction = Math.floor(Math.random()*8)
 			direction = direction* (direction%2);
 			LOGGER.error("protoypes SAVEMOVE "+this.name+" was at "+this.pos + " with result "+error+" UNKNOWN arguments were "+arguments); 
