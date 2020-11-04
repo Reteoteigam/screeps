@@ -1,31 +1,31 @@
 const LOGGER = require('util.log')
 const cleaner = require('util.cleaner');
-var reset = 5;
-var inDoing = -1;
+let reset = 5;
+let inDoing = -1;
 
-var roleSpawn = {
+let roleSpawn = {
     /** @param {Creep} creep **/
     run: function(spawn,role ,roleMax, design) {
         LOGGER.debug("roleSpawn run");
     
         
-        var creeps = _.filter(Game.creeps, (creep) => creep.memory.role == role);
+        let creeps = _.filter(Game.creeps, (creep) => creep.memory.role == role);
         if(!spawn.spawning && Game.time % 1000 == 0){
             cleaner.clean();
         }
   
         if(!spawn.spawning){
   
-            var isNearDead ;
-            for(var i in Game.creeps) {
-                var element = Game.creeps[i];
+            let isNearDead ;
+            for(let i in Game.creeps) {
+                let element = Game.creeps[i];
                 if(element.memory.role == role && element.ticksToLive <60 && creeps.length <= roleMax) {
                     isNearDead = element;
 					break;
                 }
             }
 		    if(isNearDead ||  creeps.length < roleMax){
-                var testIfCanSpawn;
+                let testIfCanSpawn;
                 while(!spawn.spawning){
                     testIfCanSpawn = spawn.spawnCreep(design, 
                         'DryRun', { dryRun: true });
@@ -35,7 +35,7 @@ var roleSpawn = {
                         break;
                     }
                 }
-				var newName = role + Game.time;
+				let newName = role + Game.time;
 				LOGGER.error("roleSpawn try "+role+ design);
 				inDoing =  spawn.spawnCreep(design, newName,{
 					memory: {
@@ -46,7 +46,7 @@ var roleSpawn = {
 				
             }
         } else {
-            var spawningCreep = Game.creeps[spawn.spawning.name];
+            let spawningCreep = Game.creeps[spawn.spawning.name];
             spawn.room.visual.text(
                 '🛠️' + spawningCreep.memory.role,
                 spawn.pos.x + 1,
@@ -72,9 +72,9 @@ var roleSpawn = {
 	    }
 	    LOGGER.debug("renew run "+spawn.memory.creepsToRenew);
 	    if(spawn.memory.creepsToRenew && spawn.memory.creepsToRenew.length > 0){
-	    var target = Game.getObjectById(spawn.memory.creepsToRenew.pop().id);
+	    let target = Game.getObjectById(spawn.memory.creepsToRenew.pop().id);
 	    LOGGER.debug("renew HEAL "+target);
-        var error =  spawn.renewCreep(target);
+        let error =  spawn.renewCreep(target);
         LOGGER.debug(" renewed: "+error+ " target was "+ target );
 	    }
         

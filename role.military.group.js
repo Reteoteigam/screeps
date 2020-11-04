@@ -3,15 +3,15 @@
  * module.exports.thing = 'a thing';
  *
  * You can import it from another modules like this:
- * var mod = require('role.military.group');
+ * let mod = require('role.military.group');
  * mod.thing == 'a thing'; // true
  */
-var scouting = false;
+let scouting = false;
 const LOGGER = require('util.log')
-var roleMilitaryHealer =  require('role.military.healer');
-var roleMilitaryScout =  require('role.military.scout');
+let roleMilitaryHealer =  require('role.military.healer');
+let roleMilitaryScout =  require('role.military.scout');
 
-var group = {
+let group = {
         
     /** @param {reep} creep **/
     group :function(creep){
@@ -39,7 +39,7 @@ var group = {
 	    
 	    if(creep.ticksToLive<200){
 	        LOGGER.debug("move from "+ creep.pos +" to "+Game.flags["Home"].pos);
-	        var target= Game.flags["Home"].pos; 
+	        let target= Game.flags["Home"].pos; 
 	        
 	        creep.moveTo(target , {visualizePathStyle: {stroke: '#ff0000'}, reusePath: 25});
 	    }

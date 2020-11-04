@@ -14,11 +14,11 @@ if (!Creep.prototype._say) {
 		
 		// Create our new function
 		Creep.prototype.say = function(txt) {
-			var error = 0;
+			let error = 0;
 			// Add custom functionality
 			if(Game.time % 4 >=2){
 				// Call and return the original method
-				var error = this._say(txt);
+				let error = this._say(txt);
 			}
 			return error;
 		}
@@ -32,10 +32,10 @@ if(!Creep.prototype._moveTo){
 		// Add custom functionality
 
 		// Call and return the original method
-		var error = this._moveTo.apply(this,arguments);
+		let error = this._moveTo.apply(this,arguments);
 		
 		if(error != OK  ){
-			for (var prop in arguments){
+			for (let prop in arguments){
 				arguments[prop]
 				LOGGER.error("protoypes MOVETO "+this.name+" was at "+this.pos+" error "+ error +" arg "+arguments[prop]);
 			}
@@ -54,7 +54,7 @@ Creep.prototype.saveMove = function(error, arguments){
 			LOGGER.debug("protoypes SAVEMOVE "+this.name+" was at "+this.pos + " with result "+error+" ERR_TIRED arguments were "+arguments); 								
 		break;
 		default:
-			var direction = Math.floor(Math.random()*8)
+			let direction = Math.floor(Math.random()*8)
 			direction = direction* (direction%2);
 			LOGGER.error("protoypes SAVEMOVE "+this.name+" was at "+this.pos + " with result "+error+" UNKNOWN arguments were "+arguments); 
 			error = this.move(direction);

@@ -3,13 +3,13 @@
  * module.exports.thing = 'a thing';
  *
  * You can import it from another modules like this:
- * var mod = require('util.path');
+ * let mod = require('util.path');
  * mod.thing == 'a thing'; // true
  */
 
-var LOGGER = require('util.log')
+let LOGGER = require('util.log')
 
-var utilpath = {
+let utilpath = {
    
     calculatePath: function(from,to){
         LOGGER.info( "from"+ from +" to "+ to );

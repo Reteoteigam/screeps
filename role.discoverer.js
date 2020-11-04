@@ -3,7 +3,7 @@
  * module.exports.thing = 'a thing';
  *
  * You can import it from another modules like this:
- * var mod = require('role.rangeworker');
+ * let mod = require('role.rangeworker');
  * mod.thing == 'a thing'; // true
  */
  
@@ -11,13 +11,13 @@
 
 const LOGGER = require('util.log');
 const managerMap = require('manager.map');
-var discoverer = {
+let discoverer = {
     
  
 	
     run: function(creep){
 		LOGGER.debug("discoverer run: "+creep);
-        var homespawn = Game.getObjectById(creep.memory.home);
+        let homespawn = Game.getObjectById(creep.memory.home);
 		
 		// visualize the path
 		if(true){
@@ -35,7 +35,7 @@ var discoverer = {
 		if(!creep.memory.targetRoom){
 		    creep.memory.targetRoom = managerMap.nextUndiscovered(homespawn);
 
-		LOGGER.error("discoverer "+creep.memory.targetRoom);			
+		LOGGER.debug("discoverer "+creep.memory.targetRoom);			
 		    if(!creep.memory.targetRoom){
 		        LOGGER.error("discoverer Nothing to do, dead in: " + creep.ticksToLive +" ticks.");
 		        creep.moveTo(homespawn, {reusePath: 25});
@@ -44,11 +44,11 @@ var discoverer = {
 		}
 
 		//was Attacked
-		var eventLog = creep.room.getEventLog();
-		var attackEvents = _.filter(eventLog, {event: EVENT_ATTACK});
+		let eventLog = creep.room.getEventLog();
+		let attackEvents = _.filter(eventLog, {event: EVENT_ATTACK});
 		
 		attackEvents.forEach(event => {
-			var target = Game.getObjectById(event.data.targetId);
+			let target = Game.getObjectById(event.data.targetId);
 			if(target && target.my) {
 				managerMap.newDanger(homespawn,creep.room.name);
 				managerMap.addUndiscovered(homespawn,creep.memory.targetRoom);
@@ -60,14 +60,14 @@ var discoverer = {
 			}
 		});
 		//is dangerous -> hostile entity?
-		var hostileCreep= creep.room.find(FIND_HOSTILE_CREEPS);
-		var hostilePowerCreep= creep.room.find(FIND_HOSTILE_POWER_CREEPS);
-		var hostileStructureTower= creep.room.find(FIND_HOSTILE_STRUCTURES, {
+		let hostileCreep= creep.room.find(FIND_HOSTILE_CREEPS);
+		let hostilePowerCreep= creep.room.find(FIND_HOSTILE_POWER_CREEPS);
+		let hostileStructureTower= creep.room.find(FIND_HOSTILE_STRUCTURES, {
                 filter: (structure) =>  
                     ((structure.structureType == STRUCTURE_TOWER)||(structure.structureType == STRUCTURE_KEEPER_LAIR))
 
             });
-		var hostile = hostileCreep.concat(hostilePowerCreep).concat(hostileStructureTower);
+		let hostile = hostileCreep.concat(hostilePowerCreep).concat(hostileStructureTower);
 		if(hostile && hostile.length >= 1) {
 				managerMap.newDanger(homespawn,creep.room.name);
 				managerMap.newDiscovered(homespawn,creep.memory.targetRoom);
@@ -84,18 +84,18 @@ var discoverer = {
 		LOGGER.debug("discoverer currentRoom " +creep.room.name);      
 		if(creep.memory.targetRoom == creep.room.name){
 		    //are there sources?
-		    var sources = creep.room.find(FIND_SOURCES);
+		    let sources = creep.room.find(FIND_SOURCES);
 			LOGGER.debug("discoverer sources here?: "+sources.length ); 
-			for( var i = 0; i < sources.length; i++){
+			for( let i = 0; i < sources.length; i++){
 				managerMap.newSourceLocation(homespawn,sources[i].id,creep.room.name);
 			}
 			
-			LOGGER.error("discoverer look for exits in targetRoom "+creep.room.name);   
+			LOGGER.debug("discoverer look for exits in targetRoom "+creep.room.name);   
 			//find exits
-			var exits = Game.map.describeExits(creep.room.name);
-			for (var name in exits) {
-			    var aNewRoom = exits[name];
-			    LOGGER.error("discoverer Find exit: "+aNewRoom);
+			let exits = Game.map.describeExits(creep.room.name);
+			for (let name in exits) {
+			    let aNewRoom = exits[name];
+			    LOGGER.debug("discoverer Find exit: "+aNewRoom);
 				managerMap.newExit(homespawn,aNewRoom);
 			}
 			managerMap.newDiscovered(homespawn,creep.room.name);
@@ -105,7 +105,7 @@ var discoverer = {
 		    //move to new room
             exitDir = Game.map.findExit(creep.room, creep.memory.targetRoom);
 			exit = creep.pos.findClosestByRange(exitDir);
-			var result = creep.moveTo(exit,{visualizePathStyle: {stroke: '#999999'}, reusePath: 25});
+			let result = creep.moveTo(exit,{visualizePathStyle: {stroke: '#999999'}, reusePath: 25});
 			LOGGER.debug("discoverer moveTo "+exit +" "+ result);
         }
         if(creep.ticksToLive < 5){

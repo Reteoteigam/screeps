@@ -1,12 +1,12 @@
-var d = new Date();
+let d = new Date();
 
-var  debugLvl = false;
+let  debugLvl = false;
 
-var   infoLvl = false;
-var   errorLvl = true;
-var counter = 0;
+let   infoLvl = false;
+let   errorLvl = true;
+let counter = 0;
 
-var utilLog = {
+let utilLog = {
     initCounter: function(){
 		counter=0;
 	},

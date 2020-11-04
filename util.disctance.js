@@ -3,20 +3,20 @@
  * module.exports.thing = 'a thing';
  *
  * You can import it from another modules like this:
- * var mod = require('util.inspector');
+ * let mod = require('util.inspector');
  * mod.thing == 'a thing'; // true
  */
- var LOGGER = require('util.log')
+ let LOGGER = require('util.log')
  
- var distance = {
+ let distance = {
      
      between: function(posA,posB){
      
-     var pos = posA
+     let pos = posA
      
      
-     var distanceX = poasA.x -posB.x;
-     var distancey = poasA.y -posB.y;
+     let distanceX = poasA.x -posB.x;
+     let distancey = poasA.y -posB.y;
      
      distanceX
      

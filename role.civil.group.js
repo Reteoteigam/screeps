@@ -3,16 +3,16 @@
  * module.exports.thing = 'a thing';
  *
  * You can import it from another modules like this:
- * var mod = require('role.civil.group');
+ * let mod = require('role.civil.group');
  * mod.thing == 'a thing'; // true
  */
-var roleTransporter = require('role.transporter');
-var roleHarvester = require('role.harvester');
-var roleBuilder =  require('role.builder');
+let roleTransporter = require('role.transporter');
+let roleHarvester = require('role.harvester');
+let roleBuilder =  require('role.builder');
 
-var LOGGER = require('util.log')
+let LOGGER = require('util.log')
 
-var group = {
+let group = {
     
     /** @param {Creep} creep **/
     run: function(creep) {

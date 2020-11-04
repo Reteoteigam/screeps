@@ -40,32 +40,30 @@ Creep.prototype.sayHello = function() {
 	}
 	
 	function newMoveTo(creep,target,ops){
-		LOGGER.error("!!!111" + creep +"   "+target +"   "+ops);
 		if(!ops){
 			ops = {visualizePathStyle: {stroke: '#999999'}};
 		}
-		LOGGER.error("!!!2222" + creep +"   "+target +"   "+ops.visualizePathStyle.stroke);
 		error = creep.moveTo(target,{ops});
 		switch (error) {
 			case OK:
 			case ERR_NOT_OWNER:
 			case ERR_BUSY:
 			case ERR_TIRED:
-				LOGGER.debug("discoverer moved correct to "+ target +" error was "+ this.printError(error));
+				LOGGER.debug("newMoveTo moved correct to "+ target +" error was "+ this.printError(error));
 				break;
 			case ERR_NO_PATH:
 			case ERR_NOT_FOUND:
 			case ERR_INVALID_TARGET:
 				//FIXME: geht nicht richtig bei raum wechsel, macht -2 trotz das der creep hätte durchgehen können
-				LOGGER.error("discoverer move failed "+ target +" error " + this.printError(error));
-				var homespawn = Game.getObjectById(creep.memory.home);
+				LOGGER.error("newMoveTo move failed "+ target +" error " + this.printError(error));
+				let homespawn = Game.getObjectById(creep.memory.home);
 				managerMap.newInvalid(homespawn,creep.memory.targetRoom);
 				managerMap.stopDiscovering(homespawn,creep.memory.targetRoom);			
 				creep.memory.targetRoom =false;
 				break;
 			default:
-				LOGGER.error("discoverer move failed"+ target +" UNEXPECTED error " + this.printError(error));
-				var homespawn = Game.getObjectById(creep.memory.home);
+				LOGGER.error("newMoveTo move failed"+ target +" UNEXPECTED error " + this.printError(error));
+				let homespawn = Game.getObjectById(creep.memory.home);
 				managerMap.newInvalid(newInvalid,creep.memory.targetRoom);
 				managerMap.stopDiscovering(homespawn,creep.memory.targetRoom);			
 				creep.memory.targetRoom =false;

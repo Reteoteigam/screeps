@@ -1,28 +1,30 @@
-var LOGGER = require('util.log')
+let LOGGER = require('util.log')
 const MAPPING_STRUCTURETYPE= require('util.mapping.structureType');
 const managertransport = require('manager.transport');
 
-var roleBuilder = {
+let roleBuilder = {
 
     /** @param {Creep} creep **/
     run: function(creep) {
         LOGGER.debug("roleBuilder run: "+creep);
 
 		creep.memory.building = false;
-		var homespawn = Game.getObjectById(creep.memory.home);
+		let homespawn = Game.getObjectById(creep.memory.home);
 		
 
 
         
 		
 		
-		//orderEnergy
-		managertransport.registerOrder(homespawn,creep);
+		//orderEnergy if need
+		if((creep.store.getUsedCapacity()/creep.store.getCapacity()) <= 0.3){
+			managertransport.orderTo(homespawn,creep);
+		}
 		
 		//repair
 		//first core
 		if(homespawn.room.controller.ticksToDowngrade < 300){
-			var error = creep.upgradeController(creep.room.controller)
+			let error = creep.upgradeController(creep.room.controller)
 			switch (error){
 				case OK:
 					LOGGER.debug("roleBuilder upgradeController at " +creep.pos);
@@ -40,7 +42,7 @@ var roleBuilder = {
 			return;		
 		}
 		
-		var repairSites = creep.room.find(FIND_STRUCTURES, {
+		let repairSites = creep.room.find(FIND_STRUCTURES, {
 			filter: object => object.hits < object.hitsMax
 		});
 		// prio low hp + range;
@@ -48,7 +50,7 @@ var roleBuilder = {
 		LOGGER.debug( "REPAIR NEED? :"+repairSites );
 		if(repairSites[0]) {
 			
-			var error = creep.repair(repairSites[0]);
+			let error = creep.repair(repairSites[0]);
 			if(error == ERR_NOT_IN_RANGE) {
 				error = creep.moveTo(repairSites[0], {visualizePathStyle: {stroke: '#ffff00'}, reusePath: 25});
 			}
@@ -60,12 +62,12 @@ var roleBuilder = {
 			return;
 		}
 		
-		var toBuilds = creep.room.find(FIND_CONSTRUCTION_SITES);
+		let toBuilds = creep.room.find(FIND_CONSTRUCTION_SITES);
 		// prio low hp + range;
 		toBuilds.sort((a,b) => MAPPING_STRUCTURETYPE.valueOf(a.structureType) - MAPPING_STRUCTURETYPE.valueOf(b.structureType) +  a.pos.getRangeTo(creep.pos)-b.pos.getRangeTo(creep.pos));
 		LOGGER.debug( "BUILD NEED? :"+toBuilds );
 		if(toBuilds[0]) {
-					var error = creep.build(toBuilds[0]);			
+					let error = creep.build(toBuilds[0]);			
 			if(error == ERR_NOT_IN_RANGE) {
 				creep.moveTo(toBuilds[0], {visualizePathStyle: {stroke: '#ffff00'}, reusePath: 25});
 			}

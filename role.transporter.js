@@ -2,26 +2,49 @@ const LOGGER = require('util.log');
 const managertransport = require('manager.transport');
 
 const d = new Date();
-var renewTicks = d.getSeconds();
+let renewTicks = d.getSeconds();
 
 
-var roleTransporter = {
+let roleTransporter = {
     /** @param {Creep} creep **/
     run: function(creep) {
   
         LOGGER.debug("rolePickuprun: "+creep);
 		
 		//registerTransport
-        var homespawn = Game.getObjectById(creep.memory.home);
-		if(!creep.memory.target){
-			managertransport.registerAsTransporter(homespawn,creep);
+        let homespawn = Game.getObjectById(creep.memory.home);
+		if(!creep.memory.orderDoing){
+			managertransport.registerAsTransporter(homespawn,creep);			
+			creep.memory.orderDoing=true;
 		}
 
+		
+//run order
+		if(creep.memory.orderDoing){
+			//prefer 90% storage
+			if((creep.store.getUsedCapacity()/creep.store.getCapacity()) <= 0.8){
+				let target = Game.getObjectById(creep.memory.from);
+				if(target){
+					let error =this.pickupOrWithdraw(creep,target);
+					LOGGER.error("##########pickupOrWithdraw: "+creep+error);
+				}else{
+					creep.memory.orderDoing = false;
+				}
+				
+				
+
+				
+			}
+			
+			
+		}	
+
+		// DEFAULT:
         //improved to 30 -70% work
         if(creep.memory.filling || (creep.store.getUsedCapacity()/creep.store.getCapacity()) <= 0.3) {
-        creep.memory.filling=true;
+        creep.memory.filling=true;	
             //pickup
-            var sources = creep.pos.findClosestByRange(FIND_TOMBSTONES, {
+            let sources = creep.pos.findClosestByRange(FIND_TOMBSTONES, {
                         filter: (tombstone) => {
                             return tombstone.creep.store.energy >10
                         }
@@ -34,18 +57,13 @@ var roleTransporter = {
                 
             }
             if(!sources){
-    	        var sources = creep.pos.findClosestByRange(FIND_DROPPED_RESOURCES, {
+    	        let sources = creep.pos.findClosestByRange(FIND_DROPPED_RESOURCES, {
                             filter: (droptedSource) => {
                                 return droptedSource.energy > 10
                             }
                     });
     
-                if(sources != null && creep.pickup(sources) == ERR_NOT_IN_RANGE) {
-                    creep.moveTo(sources, {visualizePathStyle: {stroke: '#ffff00'}, reusePath: 25});
-                    creep.say("🔄: R" + sources.pos.x +" " + sources.pos.y);
-                    LOGGER.debug("go pickup: " + sources.pos);
-                    
-                }   
+                this.pickupFromDropped(creep, sources);   
             }
             if(!sources){
             // CONTAINER GRABBING nicht gehen
@@ -55,28 +73,16 @@ var roleTransporter = {
                         }
                 });
 
-                if(sources != null && creep.withdraw(sources, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(sources, {visualizePathStyle: {stroke: '#ffff00'}, reusePath: 25});
-                creep.say("🔄: C" + sources.pos.x +" " + sources.pos.y);
-                }
+				this.withdrawFromContainer(creep, sources);
 
             }
-			if(!sources){
-				//harvest
-				sources = creep.pos.findClosestByRange(FIND_SOURCES);
-				if(sources != null && !creep.memory.busy && creep.harvest(sources) == ERR_NOT_IN_RANGE) {
-					creep.moveTo(sources, {visualizePathStyle: {stroke: '#ffff00'}, reusePath: 25});
-					LOGGER.debug("go harvest: " + sources.pos);
-					creep.say("🔄: S" + sources.pos.x +" " + sources.pos.y);
-				}
-			}
         }
         if(!creep.memory.filling || creep.store.getUsedCapacity()/creep.store.getCapacity() >= 0.7) {
         creep.memory.filling=false;
             //deliver
    
             
-            var target = Game.getObjectById(creep.memory.target);
+            let target = Game.getObjectById(creep.memory.target);
             if(!target || target.store.getFreeCapacity(RESOURCE_ENERGY) == 0){
                 
                 
@@ -96,7 +102,7 @@ var roleTransporter = {
                 if (targets.length>=1) {
                 creep.memory.target=targets[0].id;
                 }else{
-                    var targets = creep.room.find(FIND_MY_CREEPS, {
+                    let targets = creep.room.find(FIND_MY_CREEPS, {
 						filter: (creep) => {
 							return (creep.memory.role == 'ROLE_BUILDER') &&
 							creep.store.getFreeCapacity(RESOURCE_ENERGY) > 0;
@@ -125,6 +131,35 @@ var roleTransporter = {
             }   
         }
 
+	},
+	
+	pickupOrWithdraw: function(creep,target){
+		let error = this.pickupFromDropped(creep,target);
+		if(error != OK){
+			error = this.withdrawFromContainer(creep,target);
+		}
+		return error;
+	},
+	
+	
+	pickupFromDropped: function(creep, sources){
+		let error = creep.pickup(sources);
+		if(error == ERR_NOT_IN_RANGE) {
+			error = creep.moveTo(sources, {visualizePathStyle: {stroke: '#ffff00'}, reusePath: 25});
+			creep.say("🔄: R" + sources.pos.x +" " + sources.pos.y);
+			LOGGER.debug("go pickup: " + sources.pos);
+		}
+		return error;
+		
+	},
+	
+	withdrawFromContainer: function(creep, sources){
+		let error = creep.withdraw(sources, RESOURCE_ENERGY);
+		if(sources != null && creep.withdraw(sources, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+			error = creep.moveTo(sources, {visualizePathStyle: {stroke: '#ffff00'}, reusePath: 25});
+			creep.say("🔄: C" + sources.pos.x +" " + sources.pos.y);
+		}
+		return error;
 	}
 };
  

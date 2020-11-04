@@ -3,16 +3,16 @@
  * module.exports.thing = 'a thing';
  *
  * You can import it from another modules like this:
- * var mod = require('util.renew');
+ * let mod = require('util.renew');
  * mod.thing == 'a thing'; // true
  */
 
 
-var LOGGER = require('util.log')
-var utilpath = require("util.path");
+let LOGGER = require('util.log')
+let utilpath = require("util.path");
 
 
-var renewCreeps = {
+let renewCreeps = {
     /** @param {message} the message **/
     renewTicks: function(creep) {
 // return;
@@ -22,14 +22,14 @@ var renewCreeps = {
         if(creep.memory.role == 'ROLE_HARVESTER'){
                 
             if(creep.memory.role == 'ROLE_HARVESTER' && creep.memory.resetPathTicks <=0){
-            var spawn = Game.getObjectById(creep.memory.home);
-            var distanceRoom = Game.map.getRoomLinearDistance(spawn.room.name,creep.room.name);
-            var distancePos =Math.ceil (Math.sqrt(Math.pow( creep.pos.x - spawn.pos.x,2) + Math.pow( creep.pos.y - spawn.pos.y,2)));
-            var distance = distanceRoom *50 + distancePos;
-            var ticksPerField= creep.getActiveBodyparts(MOVE);
+            let spawn = Game.getObjectById(creep.memory.home);
+            let distanceRoom = Game.map.getRoomLinearDistance(spawn.room.name,creep.room.name);
+            let distancePos =Math.ceil (Math.sqrt(Math.pow( creep.pos.x - spawn.pos.x,2) + Math.pow( creep.pos.y - spawn.pos.y,2)));
+            let distance = distanceRoom *50 + distancePos;
+            let ticksPerField= creep.getActiveBodyparts(MOVE);
             ticksPerField= creep.body.length - ticksPerField;
-            var tickToReturn = distance*ticksPerField;
-            var pointOfNoReturn = creep.ticksToLive-distance*ticksPerField;
+            let tickToReturn = distance*ticksPerField;
+            let pointOfNoReturn = creep.ticksToLive-distance*ticksPerField;
             
                 LOGGER.info("################### INIT ####################");
                 LOGGER.info("!!!!!!creep.memory.selfMaintain: " + !creep.memory.selfMaintain);
@@ -54,8 +54,8 @@ var renewCreeps = {
             if (creep.memory.selfMaintain) {
             
                   LOGGER.info("################### INIT #################### 1 "+creep.memory.renewPath.path );
-                  // var error= creep.moveByPath(creep.memory.renewPath);
-                var error= creep.moveByPath(creep.memory.renewPath.path);
+                  // let error= creep.moveByPath(creep.memory.renewPath);
+                let error= creep.moveByPath(creep.memory.renewPath.path);
                 if(error == OK){
                 creep.memory.renewPath.path.splice(0,1);
                     // creep.memory.renewPath.splice(0,2);
@@ -73,7 +73,7 @@ var renewCreeps = {
                 }
                 
                 
-                var error =  Game.getObjectById(creep.memory.home).renewCreep(creep);
+                error =  Game.getObjectById(creep.memory.home).renewCreep(creep);
                 LOGGER.info("#############DO HEAL!!!! 3 "+error);
                 
             }

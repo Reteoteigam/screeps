@@ -3,7 +3,7 @@
  * module.exports.thing = 'a thing';
  *
  * You can import it from another modules like this:
- * var mod = require('manager.map');
+ * let mod = require('manager.map');
  * mod.thing == 'a thing'; // true
  */
 
@@ -17,7 +17,7 @@ const INDEX_SOURCE_INUSEFROM 	=2;
 
 
 
-var managerharvest = {
+let managerharvest = {
 	restart: function (memoryObject){
 			memoryObject.memory.managerharvest = new Array();
 			//INDEX_INIT
@@ -48,12 +48,12 @@ var managerharvest = {
             return;
         }
 
-		var sourceIDs = managermap.getAllSourceIDs(memoryObject);
-		var sourceRooms = managermap.getAllSourceRooms(memoryObject);
+		let sourceIDs = managermap.getAllSourceIDs(memoryObject);
+		let sourceRooms = managermap.getAllSourceRooms(memoryObject);
 		if(sourceIDs && sourceIDs.length >0){
-			for( var i = 0; i < sourceIDs.length; i++){
-				var currentID = sourceIDs[i];
-				var currentRoom = sourceRooms[i];
+			for( let i = 0; i < sourceIDs.length; i++){
+				let currentID = sourceIDs[i];
+				let currentRoom = sourceRooms[i];
 		
 				if(!memoryObject.memory.managerharvest[INDEX_SOURCE_INUSEID].includes(currentID)){
 					memoryObject.memory.managerharvest[INDEX_SOURCE_INUSEID].push(currentID);
@@ -77,8 +77,8 @@ var managerharvest = {
 		inUseIDs = memoryObject.memory.managerharvest[INDEX_SOURCE_INUSEID];
 		inUseFroms = memoryObject.memory.managerharvest[INDEX_SOURCE_INUSEFROM];
 
-		for( var i = 0; i < inUseFroms.length; i++){
-			var currentTarget = inUseFroms[i];
+		for( let i = 0; i < inUseFroms.length; i++){
+			let currentTarget = inUseFroms[i];
 			
 			if(!Game.creeps[currentTarget]) {
 				inUseIDs.splice(i,1);
@@ -96,7 +96,7 @@ var managerharvest = {
             return;
         }
 		
-		var sourceIDsCount = managermap.getAllSourceIDs(memoryObject).length;
+		let sourceIDsCount = managermap.getAllSourceIDs(memoryObject).length;
 		return sourceIDsCount;
 	}
 };

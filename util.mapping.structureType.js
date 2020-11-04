@@ -3,7 +3,7 @@
  * module.exports.thing = 'a thing';
  *
  * You can import it from another modules like this:
- * var mod = require('util.mapping.sctructuretype');
+ * let mod = require('util.mapping.sctructuretype');
  * mod.thing == 'a thing'; // true
  */
  
@@ -33,9 +33,9 @@ const sortedStructures = [ STRUCTURE_ROAD,
      STRUCTURE_NUKER,
      STRUCTURE_FACTORY,
      STRUCTURE_INVADER_CORE];
-var isInit = false;
+let isInit = false;
 
-var mapping = {
+let mapping = {
     valueOf: function(structureType){
         return sortedStructures.indexOf(structureType); 
     }

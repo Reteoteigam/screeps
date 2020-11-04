@@ -3,16 +3,16 @@
  * module.exports.thing = 'a thing';
  *
  * You can import it from another modules like this:
- * var mod = require('util.inspector');
+ * let mod = require('util.inspector');
  * mod.thing == 'a thing'; // true
  */
- var LOGGER = require('util.log')
+ let LOGGER = require('util.log')
  
- var inspector = {
+ let inspector = {
      
      stringMe: function(object){
      
-         var me = object;
+         let me = object;
          
          return ""+
          "\nme.name" + object.name +

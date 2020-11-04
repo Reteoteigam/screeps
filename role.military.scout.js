@@ -1,16 +1,16 @@
 
-var LOGGER = require('util.log')
-var anotherRoomName = "W09W59";
-var inspector = require('util.inspector');
+let LOGGER = require('util.log')
+let anotherRoomName = "W09W59";
+let inspector = require('util.inspector');
 
-var scout = {
+let scout = {
 
 
     /** @param {Creep} creep **/
     run: function(creep) {
         LOGGER.debug("roleScout run: "+creep);
         
-        var activeWeapons = creep.getActiveBodyparts(ATTACK) >0 
+        let activeWeapons = creep.getActiveBodyparts(ATTACK) >0 
             LOGGER.debug("can attack" + activeWeapons);
         activeWeapons = activeWeapons || creep.getActiveBodyparts(RANGED_ATTACK) >0;
             LOGGER.debug("can attackranged " + activeWeapons);
@@ -24,7 +24,7 @@ var scout = {
      
         //attack something?
         if(activeWeapons ){
-            var target = creep.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
+            let target = creep.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
             
             
             

@@ -3,23 +3,24 @@
  * module.exports.thing = 'a thing';
  *
  * You can import it from another modules like this:
- * var mod = require('util.renew');
+ * let mod = require('util.renew');
  * mod.thing == 'a thing'; // true
  */
-var LOGGER = require('util.log');
+let LOGGER = require('util.log');
 
 const roleSpawn= require('role.spawn');
 const managerharvest = require('manager.harvest');
+const managertransporter = require('manager.transport');
 
 
 //civil
 const MAX_BUILDER= 4;//2 beggining
 const ROLE_BUILDER = 'ROLE_BUILDER';
 
-const MAX_TRANSPORTER = 4;//4 normal
+let MAX_TRANSPORTER = 4;//4 normal
 const ROLE_TRANSPORTER = 'ROLE_TRANSPORTER';
 
-var MAX_HARVESTER = 2;
+let MAX_HARVESTER = 2;
 const ROLE_HARVESTER = 'ROLE_HARVESTER';
 
 const MAX_DISCOVERER = 1;
@@ -35,7 +36,7 @@ const MAX_HEAL = 1;
 const ROLE_HEAL = 'ROLE_HEAL';
     
 
-var delegatorSpawn = {
+let delegatorSpawn = {
 
     /** @param {message} the message **/
     run: function() {
@@ -43,13 +44,14 @@ var delegatorSpawn = {
 
 
     //return;
-        for (var id in Game.spawns) {
-            var spawn = Game.spawns[id];
+        for (let id in Game.spawns) {
+            let spawn = Game.spawns[id];
             LOGGER.debug("delegatorSpawn spawn.energy "+spawn.energy);
             //ROLE_HARVESTER
 			//MAX_HARVESTER=managerharvest.calculateMaxHarvester(spawn);
-			var inDoing = roleSpawn.run(spawn, ROLE_HARVESTER,MAX_HARVESTER,[WORK,WORK,WORK,WORK,WORK,MOVE]) //enought for one resource
+			let inDoing = roleSpawn.run(spawn, ROLE_HARVESTER,MAX_HARVESTER,[WORK,WORK,WORK,WORK,WORK,MOVE]) //enought for one resource
 			//ROLE_TRANSPORTER
+			MAX_TRANSPORTER = managertransporter.calculateMaxTransporter(spawn);
             roleSpawn.run(spawn, ROLE_TRANSPORTER,MAX_TRANSPORTER,[CARRY,MOVE,CARRY,MOVE,CARRY,MOVE,CARRY,MOVE,CARRY,MOVE])    
             //ROLE_BUILDER
             roleSpawn.run(spawn, ROLE_BUILDER,MAX_BUILDER,[WORK,WORK,CARRY,MOVE,WORK,WORK,CARRY,MOVE,WORK,WORK,CARRY,MOVE])

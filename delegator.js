@@ -1,15 +1,15 @@
-var LOGGER = require('util.log')
-var renewCreeps = require('util.renew');
+let LOGGER = require('util.log')
+let renewCreeps = require('util.renew');
 
 
-var roleDiscoverer = require('role.discoverer');
-var roleHarvester = require('role.harvester');
-var tower =  require('tower');
+let roleDiscoverer = require('role.discoverer');
+let roleHarvester = require('role.harvester');
+let tower =  require('tower');
 
-var militaryGroup = require('role.military.group');
-var civilGroup = require('role.civil.group');
+let militaryGroup = require('role.military.group');
+let civilGroup = require('role.civil.group');
 
-var delegator = {
+let delegator = {
     
     /** @param {Creep} creep **/
     run: function() {
@@ -18,11 +18,11 @@ var delegator = {
         tower.run();
     
 	  
-	    for(var name in Game.creeps) {
-			var creep = Game.creeps[name];
+	    for(let name in Game.creeps) {
+			let creep = Game.creeps[name];
 		    //if(!renewCreeps.renewTicks(creep)){
 		    if(true){
-            var role = creep.memory.role;
+            let role = creep.memory.role;
             switch (role) {
 				case "ROLE_SCOUT":
 				case "ROLE_HEAL":

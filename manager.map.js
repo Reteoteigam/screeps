@@ -3,11 +3,11 @@
  * module.exports.thing = 'a thing';
  *
  * You can import it from another modules like this:
- * var mod = require('manager.map');
+ * let mod = require('manager.map');
  * mod.thing == 'a thing'; // true
  */
 
-var LOGGER = require('util.log')
+let LOGGER = require('util.log')
 
 const INDEX_INIT 		=0
 const INDEX_INVALID     =1;
@@ -20,7 +20,7 @@ const INDEX_SOURCE_ROOM =1;
 const INDEX_DANGER      =6;
 
 
-var managermap = {
+let managermap = {
 	restart: function (memoryObject){
 				memoryObject.memory.managermap = new Array();
 				//INDEX_INIT
@@ -70,7 +70,7 @@ if(!memoryObject.memory.managermap || !memoryObject.memory.managermap[INDEX_INIT
 		
 		// clean invalids into undiscovered
 		while(memoryObject.memory.managermap[INDEX_INVALID].length >0){
-			var next = memoryObject.memory.managermap[INDEX_INVALID].shift();
+			let next = memoryObject.memory.managermap[INDEX_INVALID].shift();
 			if(next){
 			memoryObject.memory.managermap[INDEX_UNDISCOVERED].push(next);
 			return
@@ -78,7 +78,7 @@ if(!memoryObject.memory.managermap || !memoryObject.memory.managermap[INDEX_INIT
 		}
 		// clean invalids into undiscovered
 		while(memoryObject.memory.managermap[INDEX_INVALID].length >0){
-			var next = memoryObject.memory.managermap[INDEX_INVALID].shift();
+			let next = memoryObject.memory.managermap[INDEX_INVALID].shift();
 			if(next){
 			memoryObject.memory.managermap[INDEX_UNDISCOVERED].push(next);
 			return;
@@ -86,7 +86,7 @@ if(!memoryObject.memory.managermap || !memoryObject.memory.managermap[INDEX_INIT
 		}
 		
 		while(memoryObject.memory.managermap[INDEX_DISCOVERING].length >0){
-			var next = memoryObject.memory.managermap[INDEX_DISCOVERING].shift();
+			let next = memoryObject.memory.managermap[INDEX_DISCOVERING].shift();
 			if(next){
 			memoryObject.memory.managermap[INDEX_UNDISCOVERED].push(next);
 			return;
@@ -104,7 +104,7 @@ if(!memoryObject.memory.managermap || !memoryObject.memory.managermap[INDEX_INIT
 		if(memoryObject.memory.managermap[INDEX_UNDISCOVERED].length <=0){
 			return;
 		}
-        var next = memoryObject.memory.managermap[INDEX_UNDISCOVERED].shift();
+        let next = memoryObject.memory.managermap[INDEX_UNDISCOVERED].shift();
         if(next){
         memoryObject.memory.managermap[INDEX_DISCOVERING].push(next);
         return next;
@@ -118,7 +118,7 @@ if(!memoryObject.memory.managermap || !memoryObject.memory.managermap[INDEX_INIT
             return;
         }
         
-        var undiscovered = memoryObject.memory.managermap[INDEX_UNDISCOVERED];			
+        let undiscovered = memoryObject.memory.managermap[INDEX_UNDISCOVERED];			
 		if(undiscovered.includes(newUndiscovered)){
 		    LOGGER.debug("managermap Room was undiscovered before: "+newUndiscovered);
 		}else{
@@ -133,7 +133,7 @@ if(!memoryObject.memory.managermap || !memoryObject.memory.managermap[INDEX_INIT
             return;
         }
         
-        var dangerList = memoryObject.memory.managermap[INDEX_DANGER];	
+        let dangerList = memoryObject.memory.managermap[INDEX_DANGER];	
 		if(dangerList.includes(newDanger)){
 		    LOGGER.debug("managermap Room was danger before: "+newDanger);
 		}else{
@@ -148,7 +148,7 @@ if(!memoryObject.memory.managermap || !memoryObject.memory.managermap[INDEX_INIT
             return;
         }
 				
-        var invalidList = memoryObject.memory.managermap[INDEX_INVALID];			
+        let invalidList = memoryObject.memory.managermap[INDEX_INVALID];			
 		if(invalidList.includes(newInvalid)){
 		    LOGGER.debug("managermap Room was invalid before: "+newInvalid);
 		}else{
@@ -163,8 +163,8 @@ if(!memoryObject.memory.managermap || !memoryObject.memory.managermap[INDEX_INIT
             return;
         }
         // remove current target and remove it from InProgress
-        var discoveringList = memoryObject.memory.managermap[INDEX_DISCOVERING];	
-        for( var i = 0; i < discoveringList.length; i++){
+        let discoveringList = memoryObject.memory.managermap[INDEX_DISCOVERING];	
+        for( let i = 0; i < discoveringList.length; i++){
         	if ( discoveringList[i] == stopDiscovering) {
                 discoveringList.splice(i, 1);
         		return;
@@ -179,9 +179,9 @@ if(!memoryObject.memory.managermap || !memoryObject.memory.managermap[INDEX_INIT
             return;
         }
 		
-        var sourceLocationList = memoryObject.memory.managermap[INDEX_SOURCE];
-        var sourceLocationID = sourceLocationList[INDEX_SOURCE_ID];
-        var sourceLocationRoom = sourceLocationList[INDEX_SOURCE_ROOM];
+        let sourceLocationList = memoryObject.memory.managermap[INDEX_SOURCE];
+        let sourceLocationID = sourceLocationList[INDEX_SOURCE_ID];
+        let sourceLocationRoom = sourceLocationList[INDEX_SOURCE_ROOM];
 		LOGGER.debug(sourceLocationList);
         if(sourceLocationID.includes(newSourceID)){
         	LOGGER.debug("managermap Source was discovered before: "+newSourceID + " in room "+newSourceRoom);
@@ -198,8 +198,8 @@ if(!memoryObject.memory.managermap || !memoryObject.memory.managermap[INDEX_INIT
             return;
         }
 		
-        var sourceLocationList = memoryObject.memory.managermap[INDEX_SOURCE];
-        var sourceLocationIDs = sourceLocationList[INDEX_SOURCE_ID];
+        let sourceLocationList = memoryObject.memory.managermap[INDEX_SOURCE];
+        let sourceLocationIDs = sourceLocationList[INDEX_SOURCE_ID];
 		return sourceLocationIDs; 
 		
     },
@@ -210,8 +210,8 @@ if(!memoryObject.memory.managermap || !memoryObject.memory.managermap[INDEX_INIT
             return;
         }
 
-        var discovered = memoryObject.memory.managermap[INDEX_DISCOVERED];
-        var unDiscovered = memoryObject.memory.managermap[INDEX_UNDISCOVERED];
+        let discovered = memoryObject.memory.managermap[INDEX_DISCOVERED];
+        let unDiscovered = memoryObject.memory.managermap[INDEX_UNDISCOVERED];
     	if(discovered.includes(newExit)){
 		    LOGGER.debug("managermap Room was discovered before: "+newExit);    
 	    }else if(unDiscovered.includes(newExit,0)){
@@ -228,7 +228,7 @@ if(!memoryObject.memory.managermap || !memoryObject.memory.managermap[INDEX_INIT
             return;
         }
         
-        var discoveredList = memoryObject.memory.managermap[INDEX_DISCOVERED]			
+        let discoveredList = memoryObject.memory.managermap[INDEX_DISCOVERED]			
         if(discoveredList.includes(newDiscovered)){
             LOGGER.debug("managermap Room was danger before: "+newDiscovered);
         }else{
@@ -243,8 +243,8 @@ if(!memoryObject.memory.managermap || !memoryObject.memory.managermap[INDEX_INIT
             return;
         }
 		
-        var sourceLocationList = memoryObject.memory.managermap[INDEX_SOURCE];
-        var sourceLocationRooms = sourceLocationList[INDEX_SOURCE_ROOM];
+        let sourceLocationList = memoryObject.memory.managermap[INDEX_SOURCE];
+        let sourceLocationRooms = sourceLocationList[INDEX_SOURCE_ROOM];
 		return sourceLocationRooms; 
 		
     }

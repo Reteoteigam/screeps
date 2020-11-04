@@ -1,23 +1,23 @@
 const LOGGER = require('util.log');
 const operationMove = require('util.operation.move');
 
-var inspector = require('util.inspector');
+let inspector = require('util.inspector');
 
 
 PathFinder.use(true);
-var healer = {
+let healer = {
     /** @param {Creep} creep **/
     run: function(creep) {
         LOGGER.debug("healer run: "+inspector.stringMe(creep));
 
 
-        var activeWeapons = creep.getActiveBodyparts(HEAL)<0;
+        let activeWeapons = creep.getActiveBodyparts(HEAL)<0;
         if(activeWeapons ){
             LOGGER.debug("cannot heal");
             return;
         }
             
-        var target = creep.pos.findClosestByRange(
+        let target = creep.pos.findClosestByRange(
             FIND_MY_CREEPS, {
                 filter: function(object) {
                     return object.hits < object.hitsMax;
