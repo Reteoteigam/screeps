@@ -6,8 +6,8 @@ const managertransport = require('manager.transport');
 let roleHarvester = {
     /** @param {Creep} creep **/
     run: function(creep) {
-		
-		
+
+
 		LOGGER.debug("roleHarvester run: "+creep);
         creep.say("❗ " +creep.ticksToLive);
 
@@ -28,14 +28,24 @@ let roleHarvester = {
 				error = creep.harvest(source);
             switch (error) {
                 case OK:
-                    managertransport.orderFrom(homespawn,source);
+                    // calculate the from target
+                    let look = creep.pos.look();
+                    look.forEach(function(lookObject) {
+                      if(lookObject.type == LOOK_STRUCTURES && look.structureType == STRUCTURE_CONTAINER && look.store[RESOURCE_ENERGY] > 50){
+                          managertransport.orderFrom(homespawn,look);
+                      }
+                      if(lookObject.type == LOOK_RESOURCES && look.amount() >=50) {
+                          managertransport.orderFrom(homespawn,look);
+                      }
+                  });
+
                     break;
-                
+
                 case ERR_NOT_IN_RANGE:
                     creep.moveTo(source,{range: 1, reusePath: 25});
             		LOGGER.debug("roleHarvester go harvest: " + source.pos);
             		break;
-                
+
                 default:
                     LOGGER.error("roleHarvester harvest unknown error"+error);
             }
