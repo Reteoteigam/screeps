@@ -31,11 +31,13 @@ let roleHarvester = {
                     // calculate the from target
                     let look = creep.pos.look();
                     look.forEach(function(lookObject) {
-                      if(lookObject.type == LOOK_STRUCTURES && look.structureType == STRUCTURE_CONTAINER && look.store[RESOURCE_ENERGY] > 50){
-                          managertransport.orderFrom(homespawn,look);
+                      if(lookObject.type == LOOK_STRUCTURES && lookObject.structureType == STRUCTURE_CONTAINER && lookObject.store[RESOURCE_ENERGY] > 50){
+                          managertransport.orderFrom(homespawn,lookObject);
+                          return;
                       }
-                      if(lookObject.type == LOOK_RESOURCES && look.amount() >=50) {
-                          managertransport.orderFrom(homespawn,look);
+                      if(lookObject.type == LOOK_RESOURCES && lookObject.amount >=50) {
+                          managertransport.orderFrom(homespawn,lookObject);
+                          return;
                       }
                   });
 
