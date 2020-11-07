@@ -23,14 +23,15 @@ let roleBuilder = {
 
       //repair
       //first core
-      if (homespawn.room.controller.ticksToDowngrade < 300) {
-        let error = creep.upgradeController(creep.room.controller)
+      var homecontroller = homespawn.room.controller;
+      if (homecontroller.ticksToDowngrade < 300) {
+        let error = creep.upgradeController(homecontroller)
         switch (error) {
           case OK:
             LOGGER.debug("roleBuilder upgradeController at " + creep.pos);
             break;
           case ERR_NOT_IN_RANGE:
-            creep.moveTo(creep.room.controller, {
+            creep.moveTo(homecontroller, {
               visualizePathStyle: {
                 stroke: '#ffffff'
               },
@@ -42,7 +43,7 @@ let roleBuilder = {
             break;
         }
         creep.memory.building = true;
-        creep.say("🚧" + creep.room.controller.structureType);
+        creep.say("🚧" + homecontroller.structureType);
 
         return;
       }
@@ -90,9 +91,9 @@ let roleBuilder = {
         creep.say("🚧" + toBuilds[0].structureType);
         return;
       } else {
-        if (creep.upgradeController(creep.room.controller) == ERR_NOT_IN_RANGE) {
-            creep.moveTo(creep.room.controller);
-            creep.upgradeController(creep.room.controller);
+        if (creep.upgradeController(homecontroller) == ERR_NOT_IN_RANGE) {
+            creep.moveTo(homecontroller);
+            creep.upgradeController(homecontroller);
           }
         }
         LOGGER.debug("roleBuilder done: " + creep);
