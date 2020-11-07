@@ -48,7 +48,7 @@ let delegatorSpawn = {
             let spawn = Game.spawns[id];
             LOGGER.debug("delegatorSpawn spawn.energy "+spawn.energy);
             //ROLE_HARVESTER
-			//MAX_HARVESTER=managerMineEnergy.calculateMaxMiner(spawn);
+			MAX_HARVESTER=managerMineEnergy.calculateMaxMiner(spawn);
       LOGGER.error("äääääääääääääääääääää"+MAX_HARVESTER);
 			let inDoing = roleSpawn.run(spawn, ROLE_HARVESTER,MAX_HARVESTER,[WORK,WORK,WORK,WORK,WORK,MOVE]) //enought for one resource
 			//ROLE_TRANSPORTER

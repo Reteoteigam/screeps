@@ -21,7 +21,7 @@ let roleHarvester = {
             exitDir = Game.map.findExit(creep.room, creep.memory.targetRoom);
 			exit = creep.pos.findClosestByRange(exitDir);
       // ignore swampCost
-			creep.moveTo(exit, {reusePath: 25 ,swampCost:2});
+			creep.moveTo(exit, {visualizePathStyle: {stroke: '#00ffff'}, reusePath: 25 ,swampCost:2});
 		}else{
 			//harvest
 			source= Game.getObjectById(creep.memory.target);
@@ -45,7 +45,7 @@ let roleHarvester = {
                     break;
 
                 case ERR_NOT_IN_RANGE:
-                    creep.moveTo(source,{range: 1, reusePath: 25});
+                    creep.moveTo(source,{visualizePathStyle: {stroke: '#00ffff'}, range: 1, reusePath: 25});
             		LOGGER.debug("roleHarvester go harvest: " + source.pos);
             		break;
 

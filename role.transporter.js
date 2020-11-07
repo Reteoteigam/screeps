@@ -55,7 +55,7 @@ let roleTransporter = {
                 });
 
             if(sources != null && creep.withdraw(sources) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(sources, {visualizePathStyle: {stroke: '#ffff00'}, reusePath: 25});
+                creep.moveTo(sources, {visualizePathStyle: {stroke: '#00ff00'}, reusePath: 25});
                 creep.say("🔄: T" + sources.pos.x +" " + sources.pos.y);
                 LOGGER.debug("go pickup: " + sources.pos);
 
@@ -133,12 +133,12 @@ let roleTransporter = {
 	transferTo: function(creep, target){
 		let error = creep.transfer(target, RESOURCE_ENERGY);
 		if(error == ERR_NOT_IN_RANGE) {
-			error = creep.moveTo(target, {visualizePathStyle: {stroke: '#ffffff'}, reusePath: 25});
+			error = creep.moveTo(target, {visualizePathStyle: {stroke: '#00ff00'}, reusePath: 25});
 			LOGGER.debug("go transfering: " + target.pos);
 		}else{
 			error = creep.transfer(target, RESOURCE_ENERGY);
 			if( error == ERR_NOT_IN_RANGE) {
-				creep.moveTo(target, {visualizePathStyle: {stroke: '#ffffff'}, reusePath: 25});
+				creep.moveTo(target, {visualizePathStyle: {stroke: '#00ff00'}, reusePath: 25});
 				LOGGER.debug("go transfering: " + target.pos);
 			}
 		}
@@ -157,7 +157,7 @@ let roleTransporter = {
 	pickupFromDropped: function(creep, sources){
 		let error = creep.pickup(sources);
 		if(error == ERR_NOT_IN_RANGE) {
-			error = creep.moveTo(sources, {visualizePathStyle: {stroke: '#ffff00'}, reusePath: 25});
+			error = creep.moveTo(sources, {visualizePathStyle: {stroke: '#00ff00'}, reusePath: 25});
 			creep.say("🔄: R" + sources.pos.x +" " + sources.pos.y);
 			LOGGER.debug("go pickup: " + sources.pos);
 		}
@@ -168,7 +168,7 @@ let roleTransporter = {
 	withdrawFromContainer: function(creep, sources){
 		let error = creep.withdraw(sources, RESOURCE_ENERGY);
 		if(sources != null && creep.withdraw(sources, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-			error = creep.moveTo(sources, {visualizePathStyle: {stroke: '#ffff00'}, reusePath: 25});
+			error = creep.moveTo(sources, {visualizePathStyle: {stroke: '#00ff00'}, reusePath: 25});
 			creep.say("🔄: C" + sources.pos.x +" " + sources.pos.y);
 		}
 		return error;
