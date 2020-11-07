@@ -1,5 +1,5 @@
 const LOGGER = require('util.log');
-const managerharvest = require('manager.harvest');
+const managerharvest = require('manager.mine.energy');
 const managertransport = require('manager.transport');
 
 
@@ -13,15 +13,13 @@ let roleHarvester = {
 
         let homespawn = Game.getObjectById(creep.memory.home);
 		if(!creep.memory.target){
-			managerharvest.registerAsHarvester(homespawn,creep);
+			managerharvest.registerAsMiner(homespawn,creep);
 		}
 
 		if(creep.memory.targetRoom != creep.room.name){
 			//move to new room
             exitDir = Game.map.findExit(creep.room, creep.memory.targetRoom);
 			exit = creep.pos.findClosestByRange(exitDir);
-
-
       // ignore swampCost
 			creep.moveTo(exit, {reusePath: 25 ,swampCost:2});
 		}else{
