@@ -12,7 +12,7 @@ let roleHarvester = {
         creep.say("❗ " +creep.ticksToLive);
 
         let homespawn = Game.getObjectById(creep.memory.home);
-		if(!creep.memory.target){
+		if(!creep.memory.target || ! creep.memory.targetRoom){
 			managerharvest.registerAsMiner(homespawn,creep);
 		}
 

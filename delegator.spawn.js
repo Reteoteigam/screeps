@@ -14,10 +14,10 @@ const managertransporter = require('manager.transport');
 
 
 //civil
-const MAX_BUILDER= 2;//2 beggining
+const MAX_BUILDER= 1;//2 beggining
 const ROLE_BUILDER = 'ROLE_BUILDER';
 
-let MAX_TRANSPORTER = 4;//4 normal
+let MAX_TRANSPORTER = 1;//4 normal
 const ROLE_TRANSPORTER = 'ROLE_TRANSPORTER';
 
 let MAX_HARVESTER = 2;
@@ -48,11 +48,12 @@ let delegatorSpawn = {
             let spawn = Game.spawns[id];
             LOGGER.debug("delegatorSpawn spawn.energy "+spawn.energy);
             //ROLE_HARVESTER
-			MAX_HARVESTER=managerMineEnergy.calculateMaxMiner(spawn);
-      LOGGER.error("äääääääääääääääääääää"+MAX_HARVESTER);
+		//	MAX_HARVESTER=managerMineEnergy.calculateMaxMiner(spawn);
+      LOGGER.debug("delegatorSpawn run MAX_HARVESTER: "+MAX_HARVESTER);
 			let inDoing = roleSpawn.run(spawn, ROLE_HARVESTER,MAX_HARVESTER,[WORK,WORK,WORK,WORK,WORK,MOVE]) //enought for one resource
 			//ROLE_TRANSPORTER
-			MAX_TRANSPORTER = managertransporter.calculateMaxTransporter(spawn)+2;
+			
+		//	MAX_TRANSPORTER = managertransporter.calculateMaxTransporter(spawn)+2;
             roleSpawn.run(spawn, ROLE_TRANSPORTER,MAX_TRANSPORTER,[CARRY,MOVE,CARRY,MOVE,CARRY,MOVE,CARRY,MOVE,CARRY,MOVE])
             //ROLE_BUILDER
             roleSpawn.run(spawn, ROLE_BUILDER,MAX_BUILDER,[WORK,WORK,CARRY,MOVE,WORK,WORK,CARRY,MOVE,WORK,WORK,CARRY,MOVE])

@@ -52,7 +52,7 @@ let managerMineEnergy = {
     }
 
     let mines = memoryObject.memory.managermine[INDEX_MINE];
-    let newMine = mines.find(e => e.miner === target.id);
+    var newMine = mines.find(e => e.miner == target.id);
     //describe order
     if (!newMine) {
       newMine = mines.find(e => e.miner === null);
@@ -68,8 +68,8 @@ let managerMineEnergy = {
         newMine.miner = target.id;
         LOGGER.error("managertransport registerAsTransporter at mine:" + newMine);
       }
-
     }
+    newMine.miner = target.id;
     target.memory.targetRoom = newMine.room;
     target.memory.target = newMine.source;
   },
@@ -84,8 +84,8 @@ let managerMineEnergy = {
     this.updateMines(memoryObject);
     //clean from INDEX_MINE
     let mines = memoryObject.memory.managermine[INDEX_MINE];
-    mines.forEach(this.filterDeathMiner);
-    mines = mines.filter(this.filterDeathSource); //later filter dangerousRooms
+    //mines.forEach(this.filterDeathSource);
+    mines.forEach(this.filterDeathMiner); //later filter dangerousRooms
     memoryObject.memory.managermine[INDEX_MINE] = mines;
   },
 
@@ -95,6 +95,28 @@ let managerMineEnergy = {
     for (var i = 0; i < sourceIDs.length; i++) {
       this.registerSource(memoryObject, sourceIDs[i], sourceRooms[i]);
     }
+    let mines = memoryObject.memory.managermine[INDEX_MINE];
+
+
+
+    mines.sort((a, b) => this.sortMines(a, b,memoryObject.room.name));
+  },
+
+  sortMines: function(mineA, mineB, targetRoom) {
+    roomA = mineA.room;
+    roomB = mineB.room;
+LOGGER.error("managerMineEnergy ##########" + roomA + " " + roomB + " "+targetRoom);
+    // if (roomName1 == roomName2) return 0;
+    //let posA = roomName1.split(/([N,E,S,W])/);
+    //    let posB = roomName2.split(/([N,E,S,W])/);
+    //let xDif = posA[1] == posB[1] ? Math.abs(posA[2] - posB[2]) : posA[2] + posB[2] + 1;
+    //let yDif = posA[3] == posB[3] ? Math.abs(posA[4] - posB[4]) : posA[4] + posB[4] + 1;
+    //if (diagonal) return Math.max(xDif, yDif); // count diagonal as 1
+    //return xDif + yDif; // count diagonal as 2
+
+    let distanceA = Game.map.getRoomLinearDistance(roomA, targetRoom);
+    let distanceB = Game.map.getRoomLinearDistance(roomB, targetRoom);
+return distanceA-distanceB;
   },
 
   registerSource: function(memoryObject, targetID, targetRoom) {
@@ -104,7 +126,7 @@ let managerMineEnergy = {
     }
 
     let mines = memoryObject.memory.managermine[INDEX_MINE];
-    let newMine = mines.find(e => e.source === targetID);
+    let newMine = mines.find(e => e.source == targetID);
     //describe order
     if (!newMine) {
       newMine = mines.find(e => e.source === null);
@@ -134,15 +156,7 @@ let managerMineEnergy = {
   },
 
   filterDeathSource: function(mine) {
-    let targetID = mine.source;
-    let is = true;
-    if (!Game.getObjectById(targetID)) {
-      mine.source = null;
-      LOGGER.error("managerMineEnergy filterDeathTransporter removed " + targetID);
-    }
-    is = !(!mine.miner && !mine.source && !mine.room);
-    // because of JS falsey ... or I write ===null ...
-    return is;
+    //resource not death but invis for me
   },
 
 

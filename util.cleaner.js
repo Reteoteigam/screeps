@@ -30,8 +30,9 @@ let utilCleaner = {
 			managerMap.restart(Game.spawns[id]);
 			managerMineEnergy.restart(Game.spawns[id]);
 			managerTransport.restart(Game.spawns[id]);
-
+    
 		}
+		this.clean();
 		return true;
 
 	}

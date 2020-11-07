@@ -133,7 +133,7 @@ let roleTransporter = {
 	transferTo: function(creep, target){
 		let error = creep.transfer(target, RESOURCE_ENERGY);
 		if(error == ERR_NOT_IN_RANGE) {
-			error = creep.moveTo(target, {visualizePathStyle: {stroke: '#00ff00'}, reusePath: 25});
+			error = creep.moveTo(target, {ignoreCreeps: true, visualizePathStyle: {stroke: '#00ff00'}, reusePath: 25});
 			LOGGER.debug("go transfering: " + target.pos);
 		}else{
 			error = creep.transfer(target, RESOURCE_ENERGY);
