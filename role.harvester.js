@@ -20,7 +20,10 @@ let roleHarvester = {
 			//move to new room
             exitDir = Game.map.findExit(creep.room, creep.memory.targetRoom);
 			exit = creep.pos.findClosestByRange(exitDir);
-			creep.moveTo(exit, {reusePath: 25});
+
+
+      // ignore swampCost
+			creep.moveTo(exit, {reusePath: 25 ,swampCost:2});
 		}else{
 			//harvest
 			source= Game.getObjectById(creep.memory.target);
