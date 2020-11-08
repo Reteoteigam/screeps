@@ -21,15 +21,15 @@ let roleTransporter = {
     var ratioStore = ( ( creep.store.getUsedCapacity() / ( creep.store.getCapacity() + 1 ) ) );
     LOGGER.debug( "roleTransporter ratioStore " + ratioStore );
     //run order
-    creep.memory.orderDoing == false;
+
     if ( creep.memory.orderDoing ) {
       //prefer 90% storage
+      let error = OK;
       if ( creep.memory.filling || ratioStore <= 0.8 ) {
         creep.memory.filling = true;
         let target = Game.getObjectById( creep.memory.from );
         if ( target ) {
-          let error = this.pickupOrWithdraw( creep, target );
-          LOGGER.error( "roleTransporter ##########pickupOrWithdraw: " + creep + error );
+          error = this.pickupOrWithdraw( creep, target );
         } else {
           creep.memory.orderDoing = false;
         }
@@ -38,12 +38,15 @@ let roleTransporter = {
         let target = Game.getObjectById( creep.memory.to );
         if ( target ) {
           error = this.transferTo( creep, target );
-          LOGGER.error( "roleTransporter ##########transferTo: " + creep + target + error );
         } else {
           creep.memory.orderDoing = false;
         }
       }
+      if ( error != OK ) {
+        creep.memory.orderDoing == false;
+      }
     }
+
 
     // DEFAULT:
     //improved to 30 -70% work

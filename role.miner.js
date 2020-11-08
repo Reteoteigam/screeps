@@ -3,12 +3,12 @@ const managerharvest = require( 'manager.mine.energy' );
 const managertransport = require( 'manager.transport' );
 
 
-let roleMiner = {
+module.exports = {
   /** @param {Creep} creep **/
   run: function( creep ) {
 
 
-    LOGGER.error( "roleMiner run: " + creep );
+    LOGGER.debug( "roleMiner run: " + creep );
     creep.say( "❗ " + creep.ticksToLive );
 
     let homespawn = Game.getObjectById( creep.memory.home );
@@ -95,15 +95,12 @@ let roleMiner = {
         } );
         target = targetList[ 0 ];
       }
-      LOGGER.error( "miner ###" + creep.name + " " + target );
-      let error = creep.transfer( target, RESOURCE_ENERGY );
-      if ( error != OK ) {
-        error = creep.drop( RESOURCE_ENERGY );
-        LOGGER.error( "miner ###" + creep.name + " " + error );
-      }
-
+    }
+    creep.memory.box = target;
+    let error = creep.transfer( target, RESOURCE_ENERGY );
+    if ( error != OK ) {
+      LOGGER.debug( "miner transfer was " + creep.name + " target " + target + " error " + error );
+      error = creep.drop( RESOURCE_ENERGY );
     }
   }
 }
-
-module.exports = roleMiner;

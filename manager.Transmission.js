@@ -1,3 +1,4 @@
+Transmission
 /*
  * Module code goes here. Use 'module.exports' to export things:
  * module.exports.thing = 'a thing';
@@ -8,9 +9,9 @@
  */
 
 const LOGGER = require( 'util.log' );
-const managermap = require( 'manager.map' );
+const managerTransport = require( 'manager.transport' );
 const PROTOTYPES = require( 'prototypes' );
-//const ORDER = require('order');
+
 
 const INDEX_INIT = 0;
 const INDEX_TRANSMISSION = 1;
@@ -55,37 +56,148 @@ module.exports = {
       return;
     }
     //clean from INDEX_TRANSMISSION
-
     let transmissions = memoryObject.memory.managerTransmission[ INDEX_TRANSMISSION ];
     transmissions.forEach( this.filterDeathFrom );
     transmissions = transmissions.filter( this.filterDeathTo );
     memoryObject.memory.managerTransmission[ INDEX_TRANSMISSION ] = transmissions;
   },
 
-  filterDeathFrom: function( order ) {
-    let targetID = order.from;
-    let target = Game.creeps[ targetID ];
-    LOGGER.error( "managerTransmission filterDeathLinks" + target );
+  filterDeathFrom: function( transmission ) {
+    let targetID = transmission.from;
+    let target = Game.getObjectById[ targetID ];
     if ( !target ) {
-      order.transporter = null;
-      LOGGER.error( "managerTransmission filterDeathFrom removed " + managerTransmission.printOrder( order ) );
+      transmission.from = null;
+      LOGGER.error( "managerTransmission filterDeathFrom removed " + targetID );
     }
   },
 
-  filterDeathTo: function( order ) {
-    let targetID = order.to;
+  filterDeathTo: function( transmission ) {
+    let targetID = transmission.to;
     let is = true;
     if ( !Game.getObjectById( targetID ) ) {
-      order.from = null;
+      transmission.to = null;
       LOGGER.error( "managerTransmission filterDeathTo removed " + targetID );
     }
-    is = !( !order.transporter && !order.from && !order.to );
+    is = !( !transmission.from && !transmission.to );
     // because of JS falsey ... or I write ===null ...
     return is;
   },
 
   run: function( memoryObject ) {
+    let links = memoryObject.room.find( FIND_MY_STRUCTURES, {
+      filter: {
+        structureType: STRUCTURE_LINK
+      }
+    } );
+    for ( var i = 0; i < links.length; i++ ) {
+      this.toLinkTask( memoryObject, links[ i ] );
+    }
+  },
 
+
+  toLinkTask: function( target, link ) {
+    //delegate to correct task
+    if ( link.pos.isNearTo( target ) ) {
+      this.transmissionTo( target, link );
+    } else {
+      this.transmissionFrom( target, link );
+    }
+
+    this.performTransmissions( target );
+
+  },
+
+  performTransmissions: function( memoryObject ) {
+    if ( !memoryObject.memory.managerTransmission || !memoryObject.memory.managerTransmission[ INDEX_INIT ] ) {
+      LOGGER.error( "managerTransmission performTransmissions No init for " + memoryObject );
+      return;
+    }
+
+    let transmissions = memoryObject.memory.managerTransmission[ INDEX_TRANSMISSION ];
+    transmissions = transmissions.filter( e => e.to != null && e.from != null );
+    for ( var i = 0; i < transmissions.length; i++ ) {
+      let transmission = transmissions[ i ];
+
+      let linkFrom = Game.getObjectById( transmission.from );
+      let linkTo = Game.getObjectById( transmission.to );
+
+      let lokalStorage = linkFrom.store.getUsedCapacity( RESOURCE_ENERGY );
+      if ( lokalStorage <= 103 ) {
+        continue;
+      }
+
+      let targetStorage = linkTo.store.getFreeCapacity( RESOURCE_ENERGY );
+      if ( targetStorage <= 103 ) {
+        managerTransport.orderFrom( memoryObject, linkTo );
+        continue;
+      }
+
+      let targetAmount = Math.min( lokalStorage, targetStorage );
+      targetAmount = Math.floor( targetAmount / 100 ) * 100;
+
+      if ( targetAmount < 100 ) {
+        return;
+      }
+
+      let error = linkFrom.transferEnergy( linkTo, targetAmount );
+      LOGGER.error( "managerTransmission transferEnergy failed: " + error );
+      if ( error != OK ) {
+        LOGGER.error( "managerTransmission transferEnergy failed: " + error );
+        return;
+      }
+
+
+
+
+    }
+  },
+
+  transmissionTo: function( memoryObject, target ) {
+    if ( !memoryObject.memory.managerTransmission || !memoryObject.memory.managerTransmission[ INDEX_INIT ] ) {
+      LOGGER.error( "managerTransmission transmissionTo No init for " + memoryObject );
+      return;
+    }
+
+    let transmissions = memoryObject.memory.managerTransmission[ INDEX_TRANSMISSION ];
+    transmissions = transmissions.filter( e => e.to === null );
+    if ( !transmissions ) {
+      LOGGER.debug( "managerTransmission transmissionTo nothing to do" );
+      return;
+    }
+    for ( var i = 0; i < transmissions.length; i++ ) {
+      transmissions[ i ].to = target.id;
+      LOGGER.debug( "managerTransmission transmissionTo add " + target + "pos " + target.pos );
+    }
+  },
+
+  transmissionFrom: function( memoryObject, target ) {
+    if ( !memoryObject.memory.managerTransmission || !memoryObject.memory.managerTransmission[ INDEX_INIT ] ) {
+      LOGGER.error( "managerTransmission transmissionFrom No init for " + memoryObject );
+      return;
+    }
+
+    let transmissions = memoryObject.memory.managerTransmission[ INDEX_TRANSMISSION ];
+    let newTransmission = transmissions.find( e => e.from === target.id );
+    //describe transmission
+    if ( !newTransmission ) {
+      let newTransmission = transmissions.find( e => e.from === null );
+      if ( !newTransmission ) {
+        newTransmission = new Transmission();
+        newTransmission.from = target.id;
+        newTransmission.to = null;
+        transmissions.push( newTransmission );
+        LOGGER.debug( "managerTransmission transmissionFrom add transmission:" + newTransmission );
+      } else {
+        newTransmission.from = target.id;
+        LOGGER.debug( "managerTransmission transmissionFrom add transmission:" + newTransmission );
+      }
+      //memoryObject.memory.managerTransmission[ INDEX_TRANSMISSION ] = transmissions;
+    }
+    LOGGER.debug( "managerTransmission transmissionFrom nothing to do" );
   }
+
+
+
+
 
 };

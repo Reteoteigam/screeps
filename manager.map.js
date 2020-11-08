@@ -64,7 +64,7 @@ let managermap = {
 
   cleanupLists: function( memoryObject ) {
     if ( !memoryObject.memory.managermap || !memoryObject.memory.managermap[ INDEX_INIT ] ) {
-      LOGGER.error( "managerharvest cleanupLists No init for " + memoryObject );
+      LOGGER.error( "managermap cleanupLists No init for " + memoryObject );
       return;
     }
 

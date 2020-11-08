@@ -33,15 +33,22 @@ module.exports.loop = function() {
   managerTransport.init( memoryObject );
   managerTransfer.init( memoryObject );
 
-  delegatorSpawn.run(memoryObject);
+  delegatorSpawn.run( memoryObject );
 
-  delegator.run(memoryObject);
-  managerTransfer.run(memoryObject);
-  
+  delegator.run( memoryObject );
+  managerTransfer.run( memoryObject );
+
   LOGGER.debug( "START TICK LOOP Game.cpu.tickLimit: " +
     Game.cpu.tickLimit +
     " Game.cpu.bucket: " +
     Game.cpu.bucket +
     " Game.cpu.getUsed: " +
     Math.ceil( Game.cpu.getUsed() ) )
+
+
+
+  if ( Game.cpu.unlocked &&  Game.cpu.bucket > 9000 ) {
+    let error = Game.cpu.generatePixel();
+    LOGGER.error( "Game.cpu.generatePixel() " + error );
+  }
 }

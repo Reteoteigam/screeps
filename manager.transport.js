@@ -64,6 +64,7 @@ let managertransport = {
     //clean from INDEX_ORDER
 
     let orders = memoryObject.memory.managertransport[ INDEX_ORDER ];
+    //can be improved into one iteration
     orders.forEach( this.filterDeathTransporter );
     orders.forEach( this.filterDeathTo );
     orders = orders.filter( this.filterDeathFrom );
@@ -73,10 +74,10 @@ let managertransport = {
   filterDeathTransporter: function( order ) {
     let targetID = order.transporter;
     let target = Game.creeps[ targetID ];
-    LOGGER.error( "managertransport filterDeathTransporter#######" + target );
+    LOGGER.debug( "managertransport filterDeathTransporter" + target );
     if ( !target ) {
       order.transporter = null;
-      LOGGER.error( "managertransport filterDeathTransporter removed " + managertransport.printOrder( order ) );
+      LOGGER.debug( "managertransport filterDeathTransporter removed " + managertransport.printOrder( order ) );
     }
   },
 
@@ -91,7 +92,7 @@ let managertransport = {
   filterDeathFrom: function( order ) {
     let targetID = order.from;
     let is = true;
-    if ( !Game.getObjectById( targetID ) ) {
+    if ( targetID && !Game.getObjectById( targetID ) ) {
       order.from = null;
       LOGGER.error( "managertransport filterDeathFrom removed " + targetID );
     }

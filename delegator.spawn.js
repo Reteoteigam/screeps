@@ -23,6 +23,9 @@ const ROLE_TRANSPORTER = 'ROLE_TRANSPORTER';
 let MAX_HARVESTER = 3;
 const ROLE_HARVESTER = 'ROLE_HARVESTER';
 
+let MAX_LINKER = 1;
+const ROLE_LINKER = 'ROLE_LINKER';
+
 const MAX_DISCOVERER = 1;
 const ROLE_DISCOVERER = "ROLE_DISCOVERER";
 //millitary
@@ -39,7 +42,7 @@ const ROLE_HEAL = 'ROLE_HEAL';
 let delegatorSpawn = {
 
   /** @param {message} the message **/
-  run: function(memoryObject) {
+  run: function( memoryObject ) {
     LOGGER.debug( "delegatorSpawn run" );
 
 
@@ -50,7 +53,8 @@ let delegatorSpawn = {
       //ROLE_HARVESTER
       //	MAX_HARVESTER=managerMineEnergy.calculateMaxMiner(spawn);
       LOGGER.debug( "delegatorSpawn run MAX_HARVESTER: " + MAX_HARVESTER );
-      let inDoing = roleSpawn.run( spawn, ROLE_HARVESTER, MAX_HARVESTER, [ WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK,
+      let inDoing = roleSpawn.run( spawn, ROLE_HARVESTER, MAX_HARVESTER, [ WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, MOVE, WORK,
+        WORK, WORK,
         WORK, WORK, WORK, WORK, WORK, CARRY, MOVE ] ) //enought for one resource
       //ROLE_TRANSPORTER
 
