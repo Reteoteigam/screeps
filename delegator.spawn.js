@@ -17,7 +17,7 @@ const managertransporter = require('manager.transport');
 const MAX_BUILDER= 1;//2 beggining
 const ROLE_BUILDER = 'ROLE_BUILDER';
 
-let MAX_TRANSPORTER = 1;//4 normal
+let MAX_TRANSPORTER = 2;//4 normal
 const ROLE_TRANSPORTER = 'ROLE_TRANSPORTER';
 
 let MAX_HARVESTER = 2;
@@ -50,13 +50,13 @@ let delegatorSpawn = {
             //ROLE_HARVESTER
 		//	MAX_HARVESTER=managerMineEnergy.calculateMaxMiner(spawn);
       LOGGER.debug("delegatorSpawn run MAX_HARVESTER: "+MAX_HARVESTER);
-			let inDoing = roleSpawn.run(spawn, ROLE_HARVESTER,MAX_HARVESTER,[WORK,WORK,WORK,WORK,WORK,MOVE]) //enought for one resource
+			let inDoing = roleSpawn.run(spawn, ROLE_HARVESTER,MAX_HARVESTER,[WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,MOVE]) //enought for one resource
 			//ROLE_TRANSPORTER
 			
 		//	MAX_TRANSPORTER = managertransporter.calculateMaxTransporter(spawn)+2;
-            roleSpawn.run(spawn, ROLE_TRANSPORTER,MAX_TRANSPORTER,[CARRY,MOVE,CARRY,MOVE,CARRY,MOVE,CARRY,MOVE,CARRY,MOVE])
+            roleSpawn.run(spawn, ROLE_TRANSPORTER,MAX_TRANSPORTER,[CARRY,MOVE,CARRY,MOVE,CARRY,MOVE,CARRY,MOVE,CARRY,MOVE,CARRY,MOVE,CARRY,MOVE,CARRY,MOVE,CARRY,MOVE])
             //ROLE_BUILDER
-            roleSpawn.run(spawn, ROLE_BUILDER,MAX_BUILDER,[WORK,WORK,CARRY,MOVE,WORK,WORK,CARRY,MOVE,WORK,WORK,CARRY,MOVE])
+            roleSpawn.run(spawn, ROLE_BUILDER,MAX_BUILDER,[WORK,WORK,CARRY,MOVE,WORK,WORK,CARRY,MOVE,WORK,WORK,CARRY,MOVE,WORK,WORK,CARRY,MOVE,WORK,WORK,CARRY,MOVE,WORK,WORK,CARRY,MOVE])
 			//ROLE_DISCOVERER
             roleSpawn.run(spawn, ROLE_DISCOVERER,MAX_DISCOVERER,[MOVE])
             //creepHealer
