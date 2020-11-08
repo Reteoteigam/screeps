@@ -3,7 +3,7 @@ let renewCreeps = require( 'util.renew' );
 
 
 let roleDiscoverer = require( 'role.discoverer' );
-let roleHarvester = require( 'role.harvester' );
+let roleHarvester = require( 'role.miner' );
 let tower = require( 'tower' );
 
 let militaryGroup = require( 'role.military.group' );

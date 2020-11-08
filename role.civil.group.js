@@ -7,7 +7,7 @@
  * mod.thing == 'a thing'; // true
  */
 let roleTransporter = require( 'role.transporter' );
-let roleHarvester = require( 'role.harvester' );
+let roleHarvester = require( 'role.miner' );
 let roleBuilder = require( 'role.builder' );
 
 let LOGGER = require( 'util.log' )

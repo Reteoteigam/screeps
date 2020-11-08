@@ -3,12 +3,12 @@ const managerharvest = require( 'manager.mine.energy' );
 const managertransport = require( 'manager.transport' );
 
 
-let roleHarvester = {
+let roleMiner = {
   /** @param {Creep} creep **/
   run: function( creep ) {
 
 
-    LOGGER.debug( "roleHarvester run: " + creep );
+    LOGGER.debug( "roleMiner run: " + creep );
     creep.say( "❗ " + creep.ticksToLive );
 
     let homespawn = Game.getObjectById( creep.memory.home );
@@ -59,15 +59,15 @@ let roleHarvester = {
             range: 1,
             reusePath: 25
           } );
-          LOGGER.debug( "roleHarvester go harvest: " + source.pos );
+          LOGGER.debug( "roleMiner go harvest: " + source.pos );
           break;
 
         default:
-          LOGGER.error( "roleHarvester harvest unknown error" + error );
+          LOGGER.error( "roleMiner harvest unknown error" + error );
       }
     }
-    LOGGER.debug( "roleHarvester done: " + creep );
+    LOGGER.debug( "roleMiner done: " + creep );
   }
 };
 
-module.exports = roleHarvester;
+module.exports = roleMiner;
