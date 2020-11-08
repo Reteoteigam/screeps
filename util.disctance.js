@@ -6,31 +6,32 @@
  * let mod = require('util.inspector');
  * mod.thing == 'a thing'; // true
  */
- let LOGGER = require('util.log')
- 
- let distance = {
-     
-     between: function(posA,posB){
-     
-     let pos = posA
-     
-     
-     let distanceX = poasA.x -posB.x;
-     let distancey = poasA.y -posB.y;
-     
-     distanceX
-     
-     
-     () + poasA-posB  
-     
-     
-     
-     + pos
-  
-         
-     }
-  
- }
- 
+let LOGGER = require( 'util.log' )
+
+let distance = {
+
+  between: function( posA, posB ) {
+
+    let pos = posA
+
+
+    let distanceX = poasA.x - posB.x;
+    let distancey = poasA.y - posB.y;
+
+    distanceX
+
+
+      () + poasA - posB
+
+
+
+      +
+      pos
+
+
+  }
+
+}
+
 
 module.exports = distance

@@ -6,10 +6,10 @@
  * let mod = require('util.mapping.sctructuretype');
  * mod.thing == 'a thing'; // true
  */
- 
- 
+
+
 const valueMap = new Map();
-valueMap.set(STRUCTURE_ROAD,1);
+valueMap.set( STRUCTURE_ROAD, 1 );
 
 
 const sortedStructures = [ STRUCTURE_ROAD,
@@ -32,13 +32,13 @@ const sortedStructures = [ STRUCTURE_ROAD,
      STRUCTURE_TERMINAL,
      STRUCTURE_NUKER,
      STRUCTURE_FACTORY,
-     STRUCTURE_INVADER_CORE];
+     STRUCTURE_INVADER_CORE ];
 let isInit = false;
 
 let mapping = {
-    valueOf: function(structureType){
-        return sortedStructures.indexOf(structureType); 
-    }
+  valueOf: function( structureType ) {
+    return sortedStructures.indexOf( structureType );
+  }
 };
 
 module.exports = mapping;

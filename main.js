@@ -22,7 +22,7 @@ LOGGER.debug("TICK");
 //	cleaner.restart();
 //	return;
 
-	if(true||Game.time%10==Math.floor(Math.random()*10+1)){
+	if(Game.time%10==0){
         cleaner.clean();
 	}
 

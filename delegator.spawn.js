@@ -6,18 +6,18 @@
  * let mod = require('util.renew');
  * mod.thing == 'a thing'; // true
  */
-let LOGGER = require('util.log');
+let LOGGER = require( 'util.log' );
 
-const roleSpawn= require('role.spawn');
-const managerMineEnergy = require('manager.mine.energy');
-const managertransporter = require('manager.transport');
+const roleSpawn = require( 'role.spawn' );
+const managerMineEnergy = require( 'manager.mine.energy' );
+const managertransporter = require( 'manager.transport' );
 
 
 //civil
-const MAX_BUILDER= 1;//2 beggining
+const MAX_BUILDER = 1; //2 beggining
 const ROLE_BUILDER = 'ROLE_BUILDER';
 
-let MAX_TRANSPORTER = 2;//4 normal
+let MAX_TRANSPORTER = 2; //4 normal
 const ROLE_TRANSPORTER = 'ROLE_TRANSPORTER';
 
 let MAX_HARVESTER = 2;
@@ -38,42 +38,45 @@ const ROLE_HEAL = 'ROLE_HEAL';
 
 let delegatorSpawn = {
 
-    /** @param {message} the message **/
-    run: function() {
-        LOGGER.debug("delegatorSpawn run");
+  /** @param {message} the message **/
+  run: function() {
+    LOGGER.debug( "delegatorSpawn run" );
 
 
     //return;
-        for (let id in Game.spawns) {
-            let spawn = Game.spawns[id];
-            LOGGER.debug("delegatorSpawn spawn.energy "+spawn.energy);
-            //ROLE_HARVESTER
-		//	MAX_HARVESTER=managerMineEnergy.calculateMaxMiner(spawn);
-      LOGGER.debug("delegatorSpawn run MAX_HARVESTER: "+MAX_HARVESTER);
-			let inDoing = roleSpawn.run(spawn, ROLE_HARVESTER,MAX_HARVESTER,[WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,MOVE]) //enought for one resource
-			//ROLE_TRANSPORTER
-			
-		//	MAX_TRANSPORTER = managertransporter.calculateMaxTransporter(spawn)+2;
-            roleSpawn.run(spawn, ROLE_TRANSPORTER,MAX_TRANSPORTER,[CARRY,MOVE,CARRY,MOVE,CARRY,MOVE,CARRY,MOVE,CARRY,MOVE,CARRY,MOVE,CARRY,MOVE,CARRY,MOVE,CARRY,MOVE])
-            //ROLE_BUILDER
-            roleSpawn.run(spawn, ROLE_BUILDER,MAX_BUILDER,[WORK,WORK,CARRY,MOVE,WORK,WORK,CARRY,MOVE,WORK,WORK,CARRY,MOVE,WORK,WORK,CARRY,MOVE,WORK,WORK,CARRY,MOVE,WORK,WORK,CARRY,MOVE])
-			//ROLE_DISCOVERER
-            roleSpawn.run(spawn, ROLE_DISCOVERER,MAX_DISCOVERER,[MOVE])
-            //creepHealer
-            //roleSpawn.run(spawn, ROLE_HEAL,MAX_HEAL,[TOUGH,MOVE,HEAL,MOVE])
-            ////creepTank
-            // roleSpawn.run(spawn,ROLE_TANK,MAX_TANK,[TOUGH,ATTACK,MOVE,TOUGH,ATTACK,MOVE])
-            ////creepScout
-            //roleSpawn.run(creepScout,MAX_SCOUT,[RANGED_ATTACK,MOVE,RANGED_ATTACK,MOVE])
-            roleSpawn.renew(spawn);
-            }
+    for ( let id in Game.spawns ) {
+      let spawn = Game.spawns[ id ];
+      LOGGER.debug( "delegatorSpawn spawn.energy " + spawn.energy );
+      //ROLE_HARVESTER
+      //	MAX_HARVESTER=managerMineEnergy.calculateMaxMiner(spawn);
+      LOGGER.debug( "delegatorSpawn run MAX_HARVESTER: " + MAX_HARVESTER );
+      let inDoing = roleSpawn.run( spawn, ROLE_HARVESTER, MAX_HARVESTER, [ WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK,
+        WORK, WORK, WORK, WORK, WORK, MOVE ] ) //enought for one resource
+      //ROLE_TRANSPORTER
 
-        LOGGER.debug("delegatorSpawn done");
-    },
-
-    increaseMaxHarvester: function(count){
-        MAX_HARVESTER=MAX_HARVESTER+count
+      //	MAX_TRANSPORTER = managertransporter.calculateMaxTransporter(spawn)+2;
+      roleSpawn.run( spawn, ROLE_TRANSPORTER, MAX_TRANSPORTER, [ CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY,
+        MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE ] )
+      //ROLE_BUILDER
+      roleSpawn.run( spawn, ROLE_BUILDER, MAX_BUILDER, [ WORK, WORK, CARRY, MOVE, WORK, WORK, CARRY, MOVE, WORK, WORK, CARRY, MOVE,
+        WORK, WORK, CARRY, MOVE, WORK, WORK, CARRY, MOVE, WORK, WORK, CARRY, MOVE ] )
+      //ROLE_DISCOVERER
+      roleSpawn.run( spawn, ROLE_DISCOVERER, MAX_DISCOVERER, [ MOVE ] )
+      //creepHealer
+      //roleSpawn.run(spawn, ROLE_HEAL,MAX_HEAL,[TOUGH,MOVE,HEAL,MOVE])
+      ////creepTank
+      // roleSpawn.run(spawn,ROLE_TANK,MAX_TANK,[TOUGH,ATTACK,MOVE,TOUGH,ATTACK,MOVE])
+      ////creepScout
+      //roleSpawn.run(creepScout,MAX_SCOUT,[RANGED_ATTACK,MOVE,RANGED_ATTACK,MOVE])
+      roleSpawn.renew( spawn );
     }
+
+    LOGGER.debug( "delegatorSpawn done" );
+  },
+
+  increaseMaxHarvester: function( count ) {
+    MAX_HARVESTER = MAX_HARVESTER + count
+  }
 
 
 
