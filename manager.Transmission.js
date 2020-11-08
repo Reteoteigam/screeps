@@ -64,7 +64,8 @@ module.exports = {
 
   filterDeathFrom: function( transmission ) {
     let targetID = transmission.from;
-    let target = Game.getObjectById[ targetID ];
+
+    let target = Game.structures[ targetID ];
     if ( !target ) {
       transmission.from = null;
       LOGGER.error( "managerTransmission filterDeathFrom removed " + targetID );
@@ -73,8 +74,8 @@ module.exports = {
 
   filterDeathTo: function( transmission ) {
     let targetID = transmission.to;
-    let is = true;
-    if ( !Game.getObjectById( targetID ) ) {
+    let target = Game.structures[ targetID ];
+    if ( !target ) {
       transmission.to = null;
       LOGGER.error( "managerTransmission filterDeathTo removed " + targetID );
     }
@@ -121,6 +122,10 @@ module.exports = {
       let linkFrom = Game.getObjectById( transmission.from );
       let linkTo = Game.getObjectById( transmission.to );
 
+      if ( linkFrom.cooldown > 0 || linkTo.cooldown > 0 ) {
+        continue;
+      }
+
       let lokalStorage = linkFrom.store.getUsedCapacity( RESOURCE_ENERGY );
       if ( lokalStorage <= 103 ) {
         continue;
@@ -140,7 +145,6 @@ module.exports = {
       }
 
       let error = linkFrom.transferEnergy( linkTo, targetAmount );
-      LOGGER.error( "managerTransmission transferEnergy failed: " + error );
       if ( error != OK ) {
         LOGGER.error( "managerTransmission transferEnergy failed: " + error );
         return;

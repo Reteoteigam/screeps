@@ -130,7 +130,7 @@ let discoverer = {
       LOGGER.debug( "discoverer moveTo " + exit + " " + result );
     }
     if ( creep.ticksToLive < 5 ) {
-      homespawn.memory.roomUndiscovered.push( creep.memory.targetRoom );
+      managerMap.stopDiscovering( homespawn, creep.memory.targetRoom );
       creep.suicide();
     }
     LOGGER.debug( "discoverer done: " + creep );

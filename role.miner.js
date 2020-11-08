@@ -40,21 +40,9 @@ module.exports = {
         case OK:
           //drop or transfer RESOURCE_ENERGY
           this.dropOrTransfer( creep );
-
-          // calculate the from target
-          let look = creep.pos.look();
-          look.forEach( function( lookObject ) {
-            if ( lookObject.type == LOOK_STRUCTURES && lookObject.structureType == STRUCTURE_CONTAINER && lookObject.store[
-                RESOURCE_ENERGY ] > 50 ) {
-              managertransport.orderFrom( homespawn, lookObject );
-              return;
-            }
-            if ( lookObject.type == LOOK_RESOURCES && lookObject.amount >= 50 ) {
-              managertransport.orderFrom( homespawn, lookObject );
-              return;
-            }
-          } );
-
+          if ( Game.time % 2 == 0 ) {
+            this.placeOrders( homespawn, creep.pos );
+          }
           break;
 
         case ERR_NOT_IN_RANGE:
@@ -73,6 +61,23 @@ module.exports = {
       }
     }
     LOGGER.debug( "roleMiner done: " + creep );
+  },
+
+  placeOrders: function( homespawn, position ) {
+    let looks = position.lookFor( LOOK_STRUCTURES );
+    if ( looks.length > 0 ) {
+      let structure = looks[ 0 ];
+      if ( STRUCTURE_CONTAINER == structure.structureType ) {
+        LOGGER.error( "miner placeOrders orderFrom structure" + structure );
+        managertransport.orderFrom( homespawn, structure );
+      }
+    }
+    looks = position.lookFor( LOOK_RESOURCES );
+    if ( looks.length > 0 ) {
+      let resource = looks[ 0 ];
+      LOGGER.error( "miner placeOrders orderFrom resource" + resource );
+      managertransport.orderFrom( homespawn, resource );
+    }
   },
 
   dropOrTransfer: function( creep ) {
@@ -101,6 +106,8 @@ module.exports = {
     if ( error != OK ) {
       LOGGER.debug( "miner transfer was " + creep.name + " target " + target + " error " + error );
       error = creep.drop( RESOURCE_ENERGY );
+
+
     }
   }
 }

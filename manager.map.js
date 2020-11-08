@@ -167,6 +167,7 @@ let managermap = {
     for ( let i = 0; i < discoveringList.length; i++ ) {
       if ( discoveringList[ i ] == stopDiscovering ) {
         discoveringList.splice( i, 1 );
+        memoryObject.memory.managermap[ INDEX_DISCOVERING ].push( stopDiscovering );
         return;
       }
     }
