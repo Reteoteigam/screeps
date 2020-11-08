@@ -19,7 +19,7 @@ let roleTransporter = {
     }
 
     var ratioStore = ( ( creep.store.getUsedCapacity() / ( creep.store.getCapacity() + 1 ) ) );
-    LOGGER.error( "roleTransporter ######### # # # ratioStore " + ratioStore );
+    LOGGER.debug( "roleTransporter ratioStore " + ratioStore );
     //run order
     if ( creep.memory.orderDoing ) {
       //prefer 90% storage

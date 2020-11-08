@@ -14,13 +14,13 @@ const managertransporter = require( 'manager.transport' );
 
 
 //civil
-const MAX_BUILDER = 1; //2 beggining
+const MAX_BUILDER = 4; //2 beggining
 const ROLE_BUILDER = 'ROLE_BUILDER';
 
-let MAX_TRANSPORTER = 2; //4 normal
+let MAX_TRANSPORTER = 6; //4 normal
 const ROLE_TRANSPORTER = 'ROLE_TRANSPORTER';
 
-let MAX_HARVESTER = 2;
+let MAX_HARVESTER = 3;
 const ROLE_HARVESTER = 'ROLE_HARVESTER';
 
 const MAX_DISCOVERER = 1;
