@@ -72,9 +72,11 @@ let managertransport = {
 
   filterDeathTransporter: function( order ) {
     let targetID = order.transporter;
-    if ( !Game.creeps[ targetID ] ) {
+    let target = Game.creeps[ targetID ];
+    LOGGER.error( "managertransport filterDeathTransporter#######" + target );
+    if ( !target ) {
       order.transporter = null;
-      LOGGER.error( "managertransport filterDeathTransporter removed " + targetID );
+      LOGGER.error( "managertransport filterDeathTransporter removed " + managertransport.printOrder( order ) );
     }
   },
 

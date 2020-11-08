@@ -39,7 +39,7 @@ const ROLE_HEAL = 'ROLE_HEAL';
 let delegatorSpawn = {
 
   /** @param {message} the message **/
-  run: function() {
+  run: function(memoryObject) {
     LOGGER.debug( "delegatorSpawn run" );
 
 
@@ -51,7 +51,7 @@ let delegatorSpawn = {
       //	MAX_HARVESTER=managerMineEnergy.calculateMaxMiner(spawn);
       LOGGER.debug( "delegatorSpawn run MAX_HARVESTER: " + MAX_HARVESTER );
       let inDoing = roleSpawn.run( spawn, ROLE_HARVESTER, MAX_HARVESTER, [ WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK,
-        WORK, WORK, WORK, WORK, WORK, MOVE ] ) //enought for one resource
+        WORK, WORK, WORK, WORK, WORK, CARRY, MOVE ] ) //enought for one resource
       //ROLE_TRANSPORTER
 
       //	MAX_TRANSPORTER = managertransporter.calculateMaxTransporter(spawn)+2;

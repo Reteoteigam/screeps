@@ -12,10 +12,10 @@ let civilGroup = require( 'role.civil.group' );
 let delegator = {
 
   /** @param {Creep} creep **/
-  run: function() {
+  run: function(memoryObject) {
 
 
-    tower.run();
+    tower.run(memoryObject);
 
 
     for ( let name in Game.creeps ) {

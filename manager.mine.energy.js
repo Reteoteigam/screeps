@@ -47,15 +47,18 @@ let managerMineEnergy = {
 
   registerAsMiner: function( memoryObject, target ) {
     if ( !memoryObject.memory.managermine || !memoryObject.memory.managermine[ INDEX_INIT ] ) {
-      LOGGER.error( "managertransport orderTo No init for " + memoryObject );
+      LOGGER.error( "managerMineEnergy orderTo No init for " + memoryObject );
       return;
     }
 
     let mines = memoryObject.memory.managermine[ INDEX_MINE ];
     var newMine = mines.find( e => e.miner == target.id );
+    LOGGER.error( "managerMineEnergy registerAsTransporter## 1 " + newMine );
+
     //describe order
     if ( !newMine ) {
       newMine = mines.find( e => e.miner === null );
+      LOGGER.error( "managerMineEnergy registerAsTransporter## 2" + newMine );
       if ( !newMine ) {
         newMine = new Mine();
         newMine.miner = target.id;
@@ -63,12 +66,13 @@ let managerMineEnergy = {
         newMine.room = null;
 
         mines.push( newMine );
-        LOGGER.error( "managertransport registerAsTransporter add mine:" + newMine );
+        LOGGER.error( "managerMineEnergy registerAsTransporter add mine:" + newMine );
       } else {
         newMine.miner = target.id;
-        LOGGER.error( "managertransport registerAsTransporter at mine:" + newMine );
+        LOGGER.error( "managerMineEnergy registerAsTransporter at mine:" + newMine );
       }
     }
+    LOGGER.error( "managerMineEnergy registerAsTransporter## 3 " + newMine );
     newMine.miner = target.id;
     target.memory.targetRoom = newMine.room;
     target.memory.target = newMine.source;
@@ -105,7 +109,7 @@ let managerMineEnergy = {
   sortMines: function( mineA, mineB, targetRoom ) {
     roomA = mineA.room;
     roomB = mineB.room;
-    LOGGER.error( "managerMineEnergy sortMines" + roomA + " " + roomB + " " + targetRoom );
+    LOGGER.debug( "managerMineEnergy sortMines" + roomA + " " + roomB + " " + targetRoom );
     // if (roomName1 == roomName2) return 0;
     //let posA = roomName1.split(/([N,E,S,W])/);
     //    let posB = roomName2.split(/([N,E,S,W])/);
@@ -137,11 +141,11 @@ let managerMineEnergy = {
         newMine.room = targetRoom;
 
         mines.push( newMine );
-        LOGGER.error( "managerMineEnergy registerSource add mine:" + newMine );
+        LOGGER.debug( "managerMineEnergy registerSource add mine:" + newMine );
       } else {
         newMine.source = targetID;
         newMine.room = targetRoom;
-        LOGGER.error( "managerMineEnergy registerSource at mine:" + newMine );
+        LOGGER.debug( "managerMineEnergy registerSource at mine:" + newMine );
       }
     }
   },
@@ -151,7 +155,7 @@ let managerMineEnergy = {
     let targetID = mine.miner;
     if ( !Game.getObjectById( targetID ) ) {
       mine.miner = null;
-      LOGGER.error( "managerMineEnergy filterDeathMiner removed " + targetID );
+      LOGGER.debug( "managerMineEnergy filterDeathMiner removed " + targetID );
     }
   },
 

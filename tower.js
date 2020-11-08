@@ -11,12 +11,20 @@ let LOGGER = require( "util.log" );
 
 
 let tower = {
-  run: function() {
+  run: function( memoryObject ) {
 
-    let tower = Game.getObjectById( '0f533566c66d883' );
-    if ( !tower ) {
-      return;
+    LOGGER.error( "####" + memoryObject );
+    let targetList = memoryObject.room.find( FIND_MY_STRUCTURES, {
+      filter: {
+        structureType: STRUCTURE_TOWER
+      }
+    } );
+
+    for ( var i = 0; i < targetList.length; i++ ) {
+      this.doTowerTask( targetList[ i ] );
     }
+
+
     // for(let name in Game.structures) {
     //     let structure = Game.structures[name];
 
@@ -29,15 +37,23 @@ let tower = {
     // {align: 'left', opacity: 0.8});
     // }
 
-    let closestHostile = tower.pos.findClosestByRange( FIND_HOSTILE_CREEPS );
+
+
+    // }
+
+
+  },
+
+  doTowerTask: function( aTower ) {
+    let closestHostile = aTower.pos.findClosestByRange( FIND_HOSTILE_CREEPS );
     if ( closestHostile ) {
-      tower.attack( closestHostile );
+      aTower.attack( closestHostile );
       return;
     }
 
 
 
-    let closestDamagedStructure = tower.room.find( FIND_STRUCTURES, {
+    let closestDamagedStructure = aTower.room.find( FIND_STRUCTURES, {
       filter: ( structure ) =>
         ( ( structure.structureType != STRUCTURE_WALL && structure.structureType != STRUCTURE_RAMPART ) && structure.hits <
           structure.hitsMax ) ||
@@ -46,14 +62,10 @@ let tower = {
     } );
     closestDamagedStructure.sort( ( a, b ) => a.hits - b.hits );
     if ( closestDamagedStructure && closestDamagedStructure.length > 0 ) {
-      LOGGER.debug( "[tower] repair" + closestDamagedStructure[ 0 ].pos );
-      tower.repair( closestDamagedStructure[ 0 ] )
+      LOGGER.debug( "[aTower] repair" + closestDamagedStructure[ 0 ].pos );
+      LOGGER.error( "######-->>" + aTower );
+      aTower.repair( closestDamagedStructure[ 0 ] );
     }
-
-    // }
-
-
   }
-};
-
+}
 module.exports = tower

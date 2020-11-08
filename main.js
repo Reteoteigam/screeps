@@ -4,7 +4,8 @@ LOGGER.debug( "INIT" );
 
 const managermap = require( 'manager.map' );
 const managerMineEnergy = require( 'manager.mine.energy' );
-const managertransport = require( 'manager.transport' );
+const managerTransport = require( 'manager.transport' );
+const managerTransfer = require( 'manager.Transmission' );
 const cleaner = require( 'util.cleaner' );
 
 let delegator = require( 'delegator' );
@@ -29,12 +30,14 @@ module.exports.loop = function() {
   let memoryObject = Game.spawns[ startBaseName ];
   managermap.init( memoryObject );
   managerMineEnergy.init( memoryObject );
-  managertransport.init( memoryObject );
+  managerTransport.init( memoryObject );
+  managerTransfer.init( memoryObject );
 
+  delegatorSpawn.run(memoryObject);
 
-  delegatorSpawn.run();
-
-  delegator.run();
+  delegator.run(memoryObject);
+  managerTransfer.run(memoryObject);
+  
   LOGGER.debug( "START TICK LOOP Game.cpu.tickLimit: " +
     Game.cpu.tickLimit +
     " Game.cpu.bucket: " +
