@@ -8,11 +8,11 @@ let roleMiner = {
   run: function( creep ) {
 
 
-    LOGGER.debug( "roleMiner run: " + creep );
+    LOGGER.error( "roleMiner run: " + creep );
     creep.say( "❗ " + creep.ticksToLive );
 
     let homespawn = Game.getObjectById( creep.memory.home );
-    if ( !creep.memory.target && !creep.memory.targetRoom ) {
+    if ( !creep.memory.target || !creep.memory.targetRoom ) {
       managerharvest.registerAsMiner( homespawn, creep );
     }
 
@@ -101,11 +101,6 @@ let roleMiner = {
         error = creep.drop( RESOURCE_ENERGY );
         LOGGER.error( "miner ###" + creep.name + " " + error );
       }
-
-
-
-
-
 
     }
   }

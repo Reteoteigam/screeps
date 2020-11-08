@@ -50,15 +50,18 @@ let managerMineEnergy = {
       LOGGER.error( "managerMineEnergy orderTo No init for " + memoryObject );
       return;
     }
+    //keepListsOkay
+    this.cleanupLists(memoryObject);
 
     let mines = memoryObject.memory.managermine[ INDEX_MINE ];
     var newMine = mines.find( e => e.miner == target.id );
-    LOGGER.error( "managerMineEnergy registerAsTransporter## 1 target:" +target+" mine:"+ newMine );
+    LOGGER.error( "managerMineEnergy registerAsMiner## 1 target:" +target+" ID "+target.id +"newMine "+newMine);
 
     //describe order
     if ( !newMine ) {
       newMine = mines.find( e => e.miner === null );
-      LOGGER.error( "managerMineEnergy registerAsTransporter## 2 target:" +target+" mine:"+ newMine );
+      LOGGER.error( "managerMineEnergy registerAsMiner## 2 target:" +target+" ID "+target.id +"newMine "+newMine);
+
       if ( !newMine ) {
         newMine = new Mine();
         newMine.miner = target.id;
@@ -66,14 +69,17 @@ let managerMineEnergy = {
         newMine.room = null;
 
         mines.push( newMine );
-        LOGGER.error( "managerMineEnergy registerAsTransporter add mine:" + newMine );
+        LOGGER.error( "managerMineEnergy registerAsMiner add mine:" + newMine );
+
       } else {
         newMine.miner = target.id;
-        LOGGER.error( "managerMineEnergy registerAsTransporter at mine:" + newMine );
+        LOGGER.error( "managerMineEnergy registerAsMiner at mine:" + newMine );
+
       }
     }
-    LOGGER.error( "managerMineEnergy registerAsTransporter## 3  target:" +target+" mine:"+ newMine );
+    LOGGER.error( "managerMineEnergy registerAsMiner## 3  target::" +target+" ID "+target.id +"newMine "+newMine);
     newMine.miner = target.id;
+
     target.memory.targetRoom = newMine.room;
     target.memory.target = newMine.source;
   },
@@ -162,10 +168,6 @@ let managerMineEnergy = {
   filterDeathSource: function( mine ) {
     //resource not death but invis for me
   },
-
-
-
-
 
   calculateMaxMiner: function( memoryObject ) {
     if ( !memoryObject.memory.managermine[ INDEX_INIT ] ) {

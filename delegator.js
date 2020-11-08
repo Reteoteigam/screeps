@@ -21,6 +21,11 @@ let delegator = {
     for ( let name in Game.creeps ) {
       let creep = Game.creeps[ name ];
       //if(!renewCreeps.renewTicks(creep)){
+
+      if(creep.spawning){
+          LOGGER.error("delegator crepp still in spawn"+creep);
+         continue;
+      }
       if ( true ) {
         let role = creep.memory.role;
         switch ( role ) {
