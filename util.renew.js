@@ -31,7 +31,7 @@ let renewCreeps = {
         let tickToReturn = distance * ticksPerField;
         let pointOfNoReturn = creep.ticksToLive - distance * ticksPerField;
 
-        LOGGER.info( "################### INIT ####################" );
+        LOGGER.info( "renewCreeps ################### INIT ####################" );
         LOGGER.info( "!!!!!!creep.memory.selfMaintain: " + !creep.memory.selfMaintain );
         LOGGER.info( "creep.ticksToLive<=450: " + ( creep.ticksToLive <= 1500 ) );
         LOGGER.info( "pointOfNoReturn <= 200: " + ( pointOfNoReturn <= 1500 ) );
@@ -41,7 +41,7 @@ let renewCreeps = {
         LOGGER.info( "creep.ticksToLive: " + ( creep.ticksToLive ) );
         LOGGER.info( "ticksPerField: " + ( ticksPerField ) );
         LOGGER.info( "distance: " + ( distance ) );
-        LOGGER.info( "################### INIT ####################" );
+        LOGGER.info( "renew ################### INIT ####################" );
 
         if ( creep.ticksToLive <= 1500 && pointOfNoReturn <= 1500 && pointOfNoReturn >= 1 && creep.memory.resetPathTicks <= 0 ) {
           creep.memory.renewPath = utilpath.calculatePath( creep.pos, spawn.pos );
@@ -53,7 +53,7 @@ let renewCreeps = {
       }
       if ( creep.memory.selfMaintain ) {
 
-        LOGGER.info( "################### INIT #################### 1 " + creep.memory.renewPath.path );
+        LOGGER.info( "renew ################### INIT #################### 1 " + creep.memory.renewPath.path );
         // let error= creep.moveByPath(creep.memory.renewPath);
         let error = creep.moveByPath( creep.memory.renewPath.path );
         if ( error == OK ) {
@@ -61,20 +61,20 @@ let renewCreeps = {
           // creep.memory.renewPath.splice(0,2);
           // creep.memory.renewPath.pop();
 
-          LOGGER.info( "################### INIT #################### 2 " + !creep.memory.renewPath.path );
+          LOGGER.info( "renew ################### INIT #################### 2 " + !creep.memory.renewPath.path );
 
 
 
 
 
         } else {
-          LOGGER.info( "#############DO MOVE!!!! 3 " + error );
+          LOGGER.info( "renew #############DO MOVE!!!! 3 " + error );
           resetPathTicks = -1;
         }
 
 
         error = Game.getObjectById( creep.memory.home ).renewCreep( creep );
-        LOGGER.info( "#############DO HEAL!!!! 3 " + error );
+        LOGGER.info( "renew #############DO HEAL!!!! 3 " + error );
 
       }
     }

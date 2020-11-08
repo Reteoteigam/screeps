@@ -29,7 +29,7 @@ let roleTransporter = {
         let target = Game.getObjectById( creep.memory.from );
         if ( target ) {
           let error = this.pickupOrWithdraw( creep, target );
-          LOGGER.error( "##########pickupOrWithdraw: " + creep + error );
+          LOGGER.error( "roleTransporter ##########pickupOrWithdraw: " + creep + error );
         } else {
           creep.memory.orderDoing = false;
         }
@@ -38,7 +38,7 @@ let roleTransporter = {
         let target = Game.getObjectById( creep.memory.to );
         if ( target ) {
           error = this.transferTo( creep, target );
-          LOGGER.error( "##########transferTo: " + creep + target + error );
+          LOGGER.error( "roleTransporter ##########transferTo: " + creep + target + error );
         } else {
           creep.memory.orderDoing = false;
         }

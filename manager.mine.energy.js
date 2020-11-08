@@ -53,12 +53,12 @@ let managerMineEnergy = {
 
     let mines = memoryObject.memory.managermine[ INDEX_MINE ];
     var newMine = mines.find( e => e.miner == target.id );
-    LOGGER.error( "managerMineEnergy registerAsTransporter## 1 " + newMine );
+    LOGGER.error( "managerMineEnergy registerAsTransporter## 1 target:" +target+" mine:"+ newMine );
 
     //describe order
     if ( !newMine ) {
       newMine = mines.find( e => e.miner === null );
-      LOGGER.error( "managerMineEnergy registerAsTransporter## 2" + newMine );
+      LOGGER.error( "managerMineEnergy registerAsTransporter## 2 target:" +target+" mine:"+ newMine );
       if ( !newMine ) {
         newMine = new Mine();
         newMine.miner = target.id;
@@ -72,7 +72,7 @@ let managerMineEnergy = {
         LOGGER.error( "managerMineEnergy registerAsTransporter at mine:" + newMine );
       }
     }
-    LOGGER.error( "managerMineEnergy registerAsTransporter## 3 " + newMine );
+    LOGGER.error( "managerMineEnergy registerAsTransporter## 3  target:" +target+" mine:"+ newMine );
     newMine.miner = target.id;
     target.memory.targetRoom = newMine.room;
     target.memory.target = newMine.source;

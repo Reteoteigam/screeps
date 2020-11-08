@@ -13,7 +13,7 @@ let LOGGER = require( "util.log" );
 let tower = {
   run: function( memoryObject ) {
 
-    LOGGER.error( "####" + memoryObject );
+    LOGGER.error( "tower ####" + memoryObject );
     let targetList = memoryObject.room.find( FIND_MY_STRUCTURES, {
       filter: {
         structureType: STRUCTURE_TOWER
@@ -63,7 +63,7 @@ let tower = {
     closestDamagedStructure.sort( ( a, b ) => a.hits - b.hits );
     if ( closestDamagedStructure && closestDamagedStructure.length > 0 ) {
       LOGGER.debug( "[aTower] repair" + closestDamagedStructure[ 0 ].pos );
-      LOGGER.error( "######-->>" + aTower );
+      LOGGER.error( "tower ######-->>" + aTower );
       aTower.repair( closestDamagedStructure[ 0 ] );
     }
   }

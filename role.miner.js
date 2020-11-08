@@ -95,11 +95,11 @@ let roleMiner = {
         } );
         target = targetList[ 0 ];
       }
-      LOGGER.error( "###" + creep.name + " " + target );
+      LOGGER.error( "miner ###" + creep.name + " " + target );
       let error = creep.transfer( target, RESOURCE_ENERGY );
       if ( error != OK ) {
         error = creep.drop( RESOURCE_ENERGY );
-        LOGGER.error( "###" + creep.name + " " + error );
+        LOGGER.error( "miner ###" + creep.name + " " + error );
       }
 
 
