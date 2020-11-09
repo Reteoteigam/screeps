@@ -19,9 +19,9 @@ let renewCreeps = {
 
     LOGGER.debug( creep.memory.home );
     creep.memory.resetPathTicks--;
-    if ( creep.memory.role == 'ROLE_HARVESTER' ) {
+    if ( creep.memory.role == 'ROLE_MINER' ) {
 
-      if ( creep.memory.role == 'ROLE_HARVESTER' && creep.memory.resetPathTicks <= 0 ) {
+      if ( creep.memory.role == 'ROLE_MINER' && creep.memory.resetPathTicks <= 0 ) {
         let spawn = Game.getObjectById( creep.memory.home );
         let distanceRoom = Game.map.getRoomLinearDistance( spawn.room.name, creep.room.name );
         let distancePos = Math.ceil( Math.sqrt( Math.pow( creep.pos.x - spawn.pos.x, 2 ) + Math.pow( creep.pos.y - spawn.pos.y, 2 ) ) );

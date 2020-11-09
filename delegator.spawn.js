@@ -21,7 +21,7 @@ let MAX_TRANSPORTER = 6; //4 normal
 const ROLE_TRANSPORTER = 'ROLE_TRANSPORTER';
 
 let MAX_HARVESTER = 3;
-const ROLE_HARVESTER = 'ROLE_HARVESTER';
+const ROLE_MINER = 'ROLE_MINER';
 
 let MAX_LINKER = 1;
 const ROLE_LINKER = 'ROLE_LINKER';
@@ -50,10 +50,10 @@ let delegatorSpawn = {
     for ( let id in Game.spawns ) {
       let spawn = Game.spawns[ id ];
       LOGGER.debug( "delegatorSpawn spawn.energy " + spawn.energy );
-      //ROLE_HARVESTER
+      //ROLE_MINER
       //	MAX_HARVESTER=managerMineEnergy.calculateMaxMiner(spawn);
       LOGGER.debug( "delegatorSpawn run MAX_HARVESTER: " + MAX_HARVESTER );
-      let inDoing = roleSpawn.run( spawn, ROLE_HARVESTER, MAX_HARVESTER, [ WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, MOVE, WORK,
+      let inDoing = roleSpawn.run( spawn, ROLE_MINER, MAX_HARVESTER, [ WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, MOVE, WORK,
         WORK, WORK,
         WORK, WORK, WORK, WORK, WORK, CARRY, MOVE ] ) //enought for one resource
       //ROLE_TRANSPORTER

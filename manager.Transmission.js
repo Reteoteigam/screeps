@@ -64,9 +64,7 @@ module.exports = {
 
   filterDeathFrom: function( transmission ) {
     let targetID = transmission.from;
-
-    let target = Game.structures[ targetID ];
-    if ( !target ) {
+    if ( targetID && !Game.structures[ targetID ]; ) {
       transmission.from = null;
       LOGGER.error( "managerTransmission filterDeathFrom removed " + targetID );
     }
@@ -74,8 +72,7 @@ module.exports = {
 
   filterDeathTo: function( transmission ) {
     let targetID = transmission.to;
-    let target = Game.structures[ targetID ];
-    if ( !target ) {
+    ( targetID && !Game.structures[ targetID ]; ) {
       transmission.to = null;
       LOGGER.error( "managerTransmission filterDeathTo removed " + targetID );
     }

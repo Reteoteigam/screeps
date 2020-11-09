@@ -9,22 +9,30 @@ let tower = require( 'tower' );
 let militaryGroup = require( 'role.military.group' );
 let civilGroup = require( 'role.civil.group' );
 
-let delegator = {
+module.exports = {
 
   /** @param {Creep} creep **/
-  run: function(memoryObject) {
+  run: function( memoryObject ) {
 
 
-    tower.run(memoryObject);
+    tower.run( memoryObject );
 
 
     for ( let name in Game.creeps ) {
       let creep = Game.creeps[ name ];
       //if(!renewCreeps.renewTicks(creep)){
 
-      if(creep.spawning){
-          LOGGER.error("delegator crepp still in spawn"+creep);
-         continue;
+      if ( creep.ticksToLive >= ) {
+
+      }
+      if ( Game.flags.Flag1 !== undefined ) {
+        creep.moveTo( Game.flags.Flag1 );
+      }
+
+
+      if ( creep.spawning ) {
+        LOGGER.error( "delegator crepp still in spawn" + creep );
+        continue;
       }
       if ( true ) {
         let role = creep.memory.role;
@@ -42,8 +50,8 @@ let delegator = {
             civilGroup.run( creep );
             break;
 
-          case "ROLE_HARVESTER":
-            LOGGER.debug( "ROLE_HARVESTER" );
+          case "ROLE_MINER":
+            LOGGER.debug( "ROLE_MINER" );
             roleHarvester.run( creep );
             break;
 
@@ -60,6 +68,4 @@ let delegator = {
 
     }
   }
-};
-
-module.exports = delegator;
+}

@@ -83,7 +83,7 @@ let managertransport = {
 
   filterDeathTo: function( order ) {
     let targetID = order.to;
-    if ( !Game.getObjectById( targetID ) ) {
+    if ( targetID && !Game.getObjectById( targetID ) ) {
       order.to = null;
       LOGGER.error( "managertransport filterDeathTo removed " + targetID );
     }

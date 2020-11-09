@@ -51,16 +51,16 @@ let managerMineEnergy = {
       return;
     }
     //keepListsOkay
-    this.cleanupLists(memoryObject);
+    this.cleanupLists( memoryObject );
 
     let mines = memoryObject.memory.managermine[ INDEX_MINE ];
     var newMine = mines.find( e => e.miner == target.id );
-    LOGGER.error( "managerMineEnergy registerAsMiner## 1 target:" +target+" ID "+target.id +"newMine "+newMine);
+    LOGGER.error( "managerMineEnergy registerAsMiner## 1 target:" + target + " ID " + target.id + "newMine " + newMine );
 
     //describe order
     if ( !newMine ) {
       newMine = mines.find( e => e.miner === null );
-      LOGGER.error( "managerMineEnergy registerAsMiner## 2 target:" +target+" ID "+target.id +"newMine "+newMine);
+      LOGGER.error( "managerMineEnergy registerAsMiner## 2 target:" + target + " ID " + target.id + "newMine " + newMine );
 
       if ( !newMine ) {
         newMine = new Mine();
@@ -77,7 +77,7 @@ let managerMineEnergy = {
 
       }
     }
-    LOGGER.error( "managerMineEnergy registerAsMiner## 3  target::" +target+" ID "+target.id +"newMine "+newMine);
+    LOGGER.error( "managerMineEnergy registerAsMiner## 3  target::" + target + " ID " + target.id + "newMine " + newMine );
     newMine.miner = target.id;
 
     target.memory.targetRoom = newMine.room;
@@ -159,7 +159,7 @@ let managerMineEnergy = {
 
   filterDeathMiner: function( mine ) {
     let targetID = mine.miner;
-    if ( !Game.getObjectById( targetID ) ) {
+    if ( targetID && !Game.getObjectById( targetID ) ) {
       mine.miner = null;
       LOGGER.debug( "managerMineEnergy filterDeathMiner removed " + targetID );
     }

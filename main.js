@@ -18,13 +18,21 @@ const startBaseName = "Spawn1";
 module.exports.loop = function() {
   LOGGER.debug( "TICK" );
 
-  if ( !Memory.spawns.spawn1 ) {
-    Memory.spawns.spawn1 = {};
+  //init memory
+  if ( !Memory.spawns ) {
+    Memory.spawns = {};
+  }
+  if ( !Memory.spawns.Spawn1 ) {
+    LOGGER.error( "main init shard Memory.spawns.spawn1:" + Memory.spawns.spawn1 );
+    Memory.spawns.Spawn1 = {};
   }
 
   if ( !Memory.shardData || !Memory.shardData.name ) {
+    LOGGER.error( "test" );
+    delete Memory.shardData;
     Memory.shardData = {
       name: Game.shard.name
+
     };
     cleaner.restart();
     return;
