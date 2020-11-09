@@ -22,6 +22,8 @@ module.exports = {
       exit = creep.pos.findClosestByRange( exitDir );
       // ignore swampCost
       if ( creep.fatigue <= 0 ) {
+        //build manager
+        creep.room.createConstructionSite( creep.pos, STRUCTURE_ROAD );
         creep.moveTo( exit, {
           visualizePathStyle: {
             stroke: '#00ffff'
@@ -46,6 +48,9 @@ module.exports = {
           break;
 
         case ERR_NOT_IN_RANGE:
+          //build manager
+          creep.room.createConstructionSite( creep.pos, STRUCTURE_ROAD );
+
           creep.moveTo( source, {
             visualizePathStyle: {
               stroke: '#00ffff'

@@ -19,7 +19,7 @@ let roleBuilder = {
     //repair
     //first core
     var homecontroller = homespawn.room.controller;
-    if ( homecontroller.ticksToDowngrade < 300 ) {
+    if ( homecontroller.ticksToDowngrade < 5000 ) {
       let error = creep.upgradeController( homecontroller )
       switch ( error ) {
         case OK:

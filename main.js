@@ -18,7 +18,17 @@ const startBaseName = "Spawn1";
 module.exports.loop = function() {
   LOGGER.debug( "TICK" );
 
+  if ( !Memory.spawns.spawn1 ) {
+    Memory.spawns.spawn1 = {};
+  }
 
+  if ( !Memory.shardData || !Memory.shardData.name ) {
+    Memory.shardData = {
+      name: Game.shard.name
+    };
+    cleaner.restart();
+    return;
+  }
 
   //	cleaner.restart();
   //	return;
@@ -47,7 +57,7 @@ module.exports.loop = function() {
 
 
 
-  if ( Game.cpu.unlocked &&  Game.cpu.bucket > 9000 ) {
+  if ( Game.cpu.unlocked && Game.cpu.bucket > 9000 ) {
     let error = Game.cpu.generatePixel();
     LOGGER.error( "Game.cpu.generatePixel() " + error );
   }

@@ -125,7 +125,8 @@ let discoverer = {
         visualizePathStyle: {
           stroke: '#999999'
         },
-        reusePath: 25
+        reusePath: 25,
+        swampCost: 2
       } );
       LOGGER.debug( "discoverer moveTo " + exit + " " + result );
     }
