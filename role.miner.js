@@ -42,7 +42,7 @@ module.exports = {
         case OK:
           //drop or transfer RESOURCE_ENERGY
           this.dropOrTransfer( creep );
-          if ( Game.time % 2 == 0 ) {
+          if ( Game.time % 13 == 0 ) {
             this.placeOrders( homespawn, creep.pos );
           }
           break;
@@ -86,6 +86,9 @@ module.exports = {
   },
 
   dropOrTransfer: function( creep ) {
+    if ( creep.store.getFreeCapacity( RESOURCE_ENERGY ) >= 1 ) {
+      return;
+    }
     //find _MY will not work if player was not the builder
     let target = Game.getObjectById( creep.memory.box );
     if ( !target ) {
@@ -107,12 +110,17 @@ module.exports = {
       }
     }
     creep.memory.box = target;
+
     let error = creep.transfer( target, RESOURCE_ENERGY );
     if ( error != OK ) {
       LOGGER.debug( "miner transfer was " + creep.name + " target " + target + " error " + error );
-      error = creep.drop( RESOURCE_ENERGY );
+      if ( creep.store.getFreeCapacity( RESOURCE_ENERGY ) < 10 ) {
+        error = creep.drop( RESOURCE_ENERGY );
 
 
+
+
+      }
     }
   }
 }
