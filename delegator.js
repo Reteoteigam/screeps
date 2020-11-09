@@ -21,9 +21,7 @@ module.exports = {
     for ( let name in Game.creeps ) {
       let creep = Game.creeps[ name ];
       //if(!renewCreeps.renewTicks(creep)){
-      if ( creep.ticksToLive >= 1490 && Game.flags.Flag1 !== undefined ) {
-        creep.moveTo( Game.flags.Flag1 );
-      }
+
 
       if ( creep.spawning ) {
         LOGGER.error( "delegator crepp still in spawn" + creep );
@@ -39,15 +37,11 @@ module.exports = {
             militaryGroup.group( creep );
             break;
 
+          case "ROLE_MINER":
           case "ROLE_BUILDER":
           case "ROLE_TRANSPORTER":
             LOGGER.debug( "CIVIL_GROUP" );
             civilGroup.run( creep );
-            break;
-
-          case "ROLE_MINER":
-            LOGGER.debug( "ROLE_MINER" );
-            roleHarvester.run( creep );
             break;
 
           case "ROLE_DISCOVERER":
@@ -59,6 +53,9 @@ module.exports = {
             LOGGER.debug( "UNKNOWN ROLE" + role );
             break;
         }
+      }
+            if ( creep.ticksToLive >= 1490 && Game.flags.Flag1 !== undefined ) {
+        creep.moveTo( Game.flags.Flag1 );
       }
 
     }

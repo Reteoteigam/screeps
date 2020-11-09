@@ -28,8 +28,13 @@ let group = {
         roleTransporter.run( creep );
         break;
 
+ case "ROLE_MINER":
+  LOGGER.debug( "ROLE_MINER" );
+            roleHarvester.run( creep );
+            break;
+
       default:
-        LOGGER.error( "group UNKNOWN ROLE" + role );
+        LOGGER.error( "group UNKNOWN ROLE" + creep.memory.role );
         break;
     }
 

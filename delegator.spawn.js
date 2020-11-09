@@ -67,11 +67,11 @@ module.exports = {
       //ROLE_DISCOVERER
       roleSpawn.run( spawn, ROLE_DISCOVERER, MAX_DISCOVERER, [ MOVE ] )
       //creepHealer
-      //roleSpawn.run(spawn, ROLE_HEAL,MAX_HEAL,[TOUGH,MOVE,HEAL,MOVE])
-      ////creepTank
-      // roleSpawn.run(spawn,ROLE_TANK,MAX_TANK,[TOUGH,ATTACK,MOVE,TOUGH,ATTACK,MOVE])
-      ////creepScout
-      //roleSpawn.run(creepScout,MAX_SCOUT,[RANGED_ATTACK,MOVE,RANGED_ATTACK,MOVE])
+      roleSpawn.run(spawn, ROLE_HEAL,MAX_HEAL,[TOUGH,MOVE,HEAL,MOVE])
+      //creepTank
+       roleSpawn.run(spawn,ROLE_TANK,MAX_TANK,[TOUGH,ATTACK,MOVE,TOUGH,ATTACK,MOVE])
+      //creepScout
+      roleSpawn.run(spawn,ROLE_SCOUT,MAX_SCOUT,[RANGED_ATTACK,MOVE,RANGED_ATTACK,MOVE])
       roleSpawn.renew( spawn );
     }
 

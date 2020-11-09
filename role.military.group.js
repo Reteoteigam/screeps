@@ -6,7 +6,7 @@
  * let mod = require('role.military.group');
  * mod.thing == 'a thing'; // true
  */
-let scouting = false;
+let scouting = true;
 const LOGGER = require( 'util.log' )
 let roleMilitaryHealer = require( 'role.military.healer' );
 let roleMilitaryScout = require( 'role.military.scout' );
