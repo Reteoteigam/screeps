@@ -19,23 +19,25 @@ module.exports.loop = function() {
   LOGGER.debug( "TICK" );
 
   //init memory
-  if ( !Memory.spawns ) {
-    Memory.spawns = {};
-  }
-  if ( !Memory.spawns.Spawn1 ) {
-    LOGGER.error( "main init shard Memory.spawns.spawn1:" + Memory.spawns.spawn1 );
-    Memory.spawns.Spawn1 = {};
-  }
+  if ( false ) {
+    if ( !Memory.spawns ) {
+      Memory.spawns = {};
+    }
+    if ( !Memory.spawns.Spawn1 ) {
+      LOGGER.error( "main init shard Memory.spawns.spawn1:" + Memory.spawns.spawn1 );
+      Memory.spawns.Spawn1 = {};
+    }
 
-  if ( !Memory.shardData || !Memory.shardData.name ) {
-    LOGGER.error( "test" );
-    delete Memory.shardData;
-    Memory.shardData = {
-      name: Game.shard.name
+    if ( !Memory.shardData || !Memory.shardData.name ) {
+      LOGGER.error( "test" );
+      delete Memory.shardData;
+      Memory.shardData = {
+        name: Game.shard.name
 
-    };
-    cleaner.restart();
-    return;
+      };
+      cleaner.restart();
+      return;
+    }
   }
 
   //	cleaner.restart();

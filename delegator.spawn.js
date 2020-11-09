@@ -39,7 +39,7 @@ const MAX_HEAL = 1;
 const ROLE_HEAL = 'ROLE_HEAL';
 
 
-let delegatorSpawn = {
+module.exports = {
 
   /** @param {message} the message **/
   run: function( memoryObject ) {
@@ -84,6 +84,4 @@ let delegatorSpawn = {
 
 
 
-};
-
-module.exports = delegatorSpawn;
+}

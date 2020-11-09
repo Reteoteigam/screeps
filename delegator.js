@@ -21,14 +21,9 @@ module.exports = {
     for ( let name in Game.creeps ) {
       let creep = Game.creeps[ name ];
       //if(!renewCreeps.renewTicks(creep)){
-
-      if ( creep.ticksToLive >= ) {
-
-      }
-      if ( Game.flags.Flag1 !== undefined ) {
+      if ( creep.ticksToLive >= 1490 && Game.flags.Flag1 !== undefined ) {
         creep.moveTo( Game.flags.Flag1 );
       }
-
 
       if ( creep.spawning ) {
         LOGGER.error( "delegator crepp still in spawn" + creep );
