@@ -89,7 +89,12 @@ let roleBuilder = {
       return;
     } else {
       if ( creep.upgradeController( homecontroller ) == ERR_NOT_IN_RANGE ) {
-        creep.moveTo( homecontroller );
+        creep.moveTo( homecontroller, {
+          visualizePathStyle: {
+            stroke: '#ffff00'
+          },
+          reusePath: 25
+        } );
         creep.upgradeController( homecontroller );
       }
     }

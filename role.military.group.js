@@ -33,25 +33,30 @@ let group = {
 
 
     if ( scouting && creep.ticksToLive > 1000 ) {
-      LOGGER.debug( "move from " + creep.pos + " to " + Game.flags[ "Group" ].pos );
-      creep.moveTo( Game.flags[ "Group" ], {
-        visualizePathStyle: {
-          stroke: '#ff0000'
-        },
-        reusePath: 25
-      } );
+      let flagTo = Game.flags[ "Group" ];
+      if ( flagTo ) {
+        LOGGER.debug( "move from " + creep.pos + " to " + flagTo.pos );
+        creep.moveTo( flagTo, {
+          visualizePathStyle: {
+            stroke: '#ff0000'
+          },
+          reusePath: 10
+        } );
+      }
+
     }
 
     if ( creep.ticksToLive < 200 ) {
-      LOGGER.debug( "move from " + creep.pos + " to " + Game.flags[ "Home" ].pos );
-      let target = Game.flags[ "Home" ].pos;
-
-      creep.moveTo( target, {
-        visualizePathStyle: {
-          stroke: '#ff0000'
-        },
-        reusePath: 25
-      } );
+      let flagTo = Game.flags[ "Home" ];
+      if ( flagTo ) {
+        LOGGER.debug( "move from " + creep.pos + " to " + flagTo.pos );
+        creep.moveTo( flagTo, {
+          visualizePathStyle: {
+            stroke: '#ff0000'
+          },
+          reusePath: 10
+        } );
+      }
     }
 
 
