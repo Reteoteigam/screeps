@@ -32,7 +32,7 @@ let group = {
     //LOGGER.debug(creep.pos.findClosestByRange(FIND_HOSTILE_CREEPS));
 
 
-    if ( scouting && creep.ticksToLive > 1000 ) {
+    if ( scouting && creep.ticksToLive >= 500 ) {
       let flagTo = Game.flags[ "Group" ];
       if ( flagTo ) {
         LOGGER.debug( "move from " + creep.pos + " to " + flagTo.pos );
@@ -46,7 +46,7 @@ let group = {
 
     }
 
-    if ( creep.ticksToLive < 200 ) {
+    if ( creep.ticksToLive < 500 ) {
       let flagTo = Game.flags[ "Home" ];
       if ( flagTo ) {
         LOGGER.debug( "move from " + creep.pos + " to " + flagTo.pos );

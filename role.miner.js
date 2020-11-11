@@ -80,7 +80,7 @@ module.exports = {
     looks = position.lookFor( LOOK_RESOURCES );
     if ( looks.length > 0 ) {
       let resource = looks[ 0 ];
-      LOGGER.error( "miner placeOrders orderFrom resource" + resource );
+      LOGGER.debug( "miner placeOrders orderFrom resource" + resource );
       managertransport.orderFrom( homespawn, resource );
     }
   },

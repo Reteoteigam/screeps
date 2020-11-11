@@ -170,10 +170,10 @@ let managertransport = {
     }
 
     let orders = memoryObject.memory.managertransport[ INDEX_ORDER ];
-    let newOrder = orders.find( e => e.transporter === target.id );
+    let newOrder = orders.find( e => e.transporter == target.id );
     //describe order
     if ( !newOrder ) {
-      newOrder = orders.find( e => e.transporter === null );
+      newOrder = orders.find( e => e.transporter == null );
       if ( !newOrder ) {
         newOrder = new Order();
         newOrder.transporter = target.id;

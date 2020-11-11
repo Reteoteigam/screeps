@@ -54,7 +54,7 @@ module.exports = {
             break;
         }
       }
-            if ( creep.ticksToLive >= 1490 && Game.flags.Flag1 !== undefined ) {
+      if ( creep.ticksToLive >= 1400 && Game.flags.Flag1 !== undefined ) {
         creep.moveTo( Game.flags.Flag1 );
       }
 

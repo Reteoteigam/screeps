@@ -14,13 +14,13 @@ const managertransporter = require( 'manager.transport' );
 
 
 //civil
-const MAX_BUILDER = 4; //2 beggining
+const MAX_BUILDER = 1; //2 beggining
 const ROLE_BUILDER = 'ROLE_BUILDER';
 
-let MAX_TRANSPORTER = 6; //4 normal
+let MAX_TRANSPORTER = 1; //4 normal
 const ROLE_TRANSPORTER = 'ROLE_TRANSPORTER';
 
-let MAX_HARVESTER = 3;
+let MAX_HARVESTER = 1;
 const ROLE_MINER = 'ROLE_MINER';
 
 let MAX_LINKER = 1;
@@ -29,13 +29,13 @@ const ROLE_LINKER = 'ROLE_LINKER';
 const MAX_DISCOVERER = 1;
 const ROLE_DISCOVERER = "ROLE_DISCOVERER";
 //millitary
-const MAX_SCOUT = 1;
+const MAX_SCOUT = 0;
 const ROLE_SCOUT = 'ROLE_SCOUT';
 
-const MAX_TANK = 1;
+const MAX_TANK = 0;
 const ROLE_TANK = 'ROLE_TANK';
 
-const MAX_HEAL = 1;
+const MAX_HEAL = 0;
 const ROLE_HEAL = 'ROLE_HEAL';
 
 
@@ -67,11 +67,11 @@ module.exports = {
       //ROLE_DISCOVERER
       roleSpawn.run( spawn, ROLE_DISCOVERER, MAX_DISCOVERER, [ MOVE ] )
       //creepHealer
-      roleSpawn.run(spawn, ROLE_HEAL,MAX_HEAL,[TOUGH,MOVE,HEAL,MOVE])
+      roleSpawn.run(spawn, ROLE_HEAL,MAX_HEAL,[TOUGH,MOVE,HEAL,MOVE,TOUGH,MOVE,HEAL,MOVE,TOUGH,MOVE,HEAL,MOVE,TOUGH,MOVE,HEAL,MOVE,TOUGH,MOVE,HEAL,MOVE])
       //creepTank
-       roleSpawn.run(spawn,ROLE_TANK,MAX_TANK,[TOUGH,ATTACK,MOVE,TOUGH,ATTACK,MOVE])
+       roleSpawn.run(spawn,ROLE_TANK,MAX_TANK,[TOUGH,ATTACK,MOVE,TOUGH,ATTACK,MOVE,TOUGH,ATTACK,MOVE,TOUGH,ATTACK,MOVE,TOUGH,ATTACK,MOVE,TOUGH,ATTACK,MOVE])
       //creepScout
-      roleSpawn.run(spawn,ROLE_SCOUT,MAX_SCOUT,[RANGED_ATTACK,MOVE,RANGED_ATTACK,MOVE])
+      roleSpawn.run(spawn,ROLE_SCOUT,MAX_SCOUT,[RANGED_ATTACK,MOVE,RANGED_ATTACK,MOVE,RANGED_ATTACK,MOVE,RANGED_ATTACK,MOVE,RANGED_ATTACK,MOVE,RANGED_ATTACK,MOVE])
       roleSpawn.renew( spawn );
     }
 

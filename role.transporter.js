@@ -25,6 +25,7 @@ let roleTransporter = {
     if ( creep.memory.orderDoing ) {
       //prefer 90% storage
       let error = OK;
+
       if ( creep.memory.filling || ratioStore <= 0.8 ) {
         creep.memory.filling = true;
         let target = Game.getObjectById( creep.memory.from );
@@ -45,6 +46,10 @@ let roleTransporter = {
       if ( error != OK ) {
         creep.memory.orderDoing == false;
       }
+    }
+
+    if ( creep.memory.orderDoing ) {
+      //return;
     }
 
 
@@ -170,6 +175,7 @@ let roleTransporter = {
         LOGGER.debug( "go transfering: " + target.pos );
       }
     }
+    creep.say( "🔄: T" + target.pos.x + " " + target.pos.y );
     return error;
   },
 

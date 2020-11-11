@@ -1,5 +1,5 @@
 const LOGGER = require( 'util.log' );
-const operationMove = require( 'util.operation.move' );
+
 
 let inspector = require( 'util.inspector' );
 
