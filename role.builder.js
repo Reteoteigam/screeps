@@ -8,18 +8,22 @@ let roleBuilder = {
   run: function( creep ) {
     LOGGER.debug( "roleBuilder run: " + creep );
 
-    creep.memory.building = false;
-    let homespawn = Game.getObjectById( creep.memory.home );
+    creep.memory.building =false;
 
+    let homespawn = Game.getObjectById( creep.memory.home );
     //orderEnergy if need
     if ( ( creep.store.getUsedCapacity() / creep.store.getCapacity() ) <= 0.3 ) {
       managertransport.orderTo( homespawn, creep );
     }
-
     //repair
     //first core
     var homecontroller = homespawn.room.controller;
+    //notschalter
     if ( homecontroller.ticksToDowngrade < 5000 ) {
+        creep.memory.target2Build=homecontroller;
+    }
+    
+    if ( creep.memory.target=homecontroller && homecontroller.ticksToDowngrade < 20000 ) {
       let error = creep.upgradeController( homecontroller )
       switch ( error ) {
         case OK:
@@ -39,10 +43,9 @@ let roleBuilder = {
       }
       creep.memory.building = true;
       creep.say( "🚧" + homecontroller.structureType );
-
       return;
     }
-
+    creep.memory.target2Build=null;
     let repairSites = creep.room.find( FIND_STRUCTURES, {
       filter: object => object.hits < object.hitsMax * 0.9
     } );
