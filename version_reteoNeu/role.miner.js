@@ -6,7 +6,7 @@ var roleMiner = {
 
         // 1. Suche einen Container direkt neben der Quelle
         var container = source.pos.findInRange(FIND_STRUCTURES, 1, {
-            filter: s => s.structureType == STRUCTURE_CONTAINER
+            filter: s => s.structureType === STRUCTURE_CONTAINER
         })[0];
 
         // 2. Positionierung: Wenn ein Container da ist, stell dich drauf
@@ -23,7 +23,7 @@ var roleMiner = {
         }
 
         // 3. Ernten (Energie fällt automatisch in den Container, wenn man draufsteht)
-        if(creep.harvest(source) == OK) {
+        if(creep.harvest(source) === OK) {
             // Wir loggen nur alle 50 Ticks, um das Log nicht zu fluten
             if(Game.time % 50 === 0) LOGGER.debug(creep.name + " erntet fleißig.");
         }

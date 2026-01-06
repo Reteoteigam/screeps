@@ -38,7 +38,7 @@ var roleHauler = {
             } else {
                 // Belieferung von Upgradern/Buildern
                 var worker = creep.pos.findClosestByRange(FIND_MY_CREEPS, {
-                    filter: (c) => (c.memory.role == 'upgrader' || c.memory.role == 'builder')
+                    filter: (c) => (c.memory.role === 'upgrader' || c.memory.role === 'builder')
                         && c.store.getFreeCapacity(RESOURCE_ENERGY) > 0
                 });
                 if(worker) {

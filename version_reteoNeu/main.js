@@ -33,8 +33,8 @@ module.exports.loop = function () {
     else if(!spawn.spawning) {
         let spawned = false;
         for (let i = 0; i < sources.length; i++) {
-            let miners = _.filter(creeps, (c) => c.memory.role == 'miner' && c.memory.sourceId == sources[i].id);
-            let haulers = _.filter(creeps, (c) => c.memory.role == 'hauler' && c.memory.sourceId == sources[i].id);
+            let miners = _.filter(creeps, (c) => c.memory.role === 'miner' && c.memory.sourceId === sources[i].id);
+            let haulers = _.filter(creeps, (c) => c.memory.role === 'hauler' && c.memory.sourceId === sources[i].id);
 
             if(miners.length < 1) {
                 spawn.spawnCreep([WORK, WORK, MOVE], 'Miner' + i, {memory: {role: 'miner', sourceId: sources[i].id}});
@@ -48,7 +48,7 @@ module.exports.loop = function () {
 
         if(!spawned) {
             for(let role in creepsConfig) {
-                let count = _.filter(creeps, (c) => c.memory.role == role).length;
+                let count = _.filter(creeps, (c) => c.memory.role === role).length;
                 if(count < creepsConfig[role]) {
                     spawn.spawnCreep([WORK, CARRY, MOVE], role.charAt(0).toUpperCase() + Game.time, {memory: {role: role}});
                     break;
