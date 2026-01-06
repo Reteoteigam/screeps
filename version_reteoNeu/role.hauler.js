@@ -25,9 +25,12 @@ var roleHauler = {
             }
         } else {
             // LIEFERLOGIK (bleibt gleich wie vorher: Spawn -> Worker)
+            // role.hauler.js (Auszug der Lieferlogik)
             var target = creep.pos.findClosestByRange(FIND_STRUCTURES, {
-                filter: (s) => (s.structureType == STRUCTURE_SPAWN || s.structureType == STRUCTURE_EXTENSION)
-                    && s.store.getFreeCapacity(RESOURCE_ENERGY) > 0
+                filter: (s) => (s.structureType === STRUCTURE_SPAWN ||
+                        s.structureType === STRUCTURE_EXTENSION ||
+                        s.structureType === STRUCTURE_TOWER) &&
+                    s.store.getFreeCapacity(RESOURCE_ENERGY) > 0
             });
 
             if(target) {

@@ -11,22 +11,27 @@ const creepsConfig = {
 };
 
 module.exports.loop = function () {
-    // Nur alle 10 Ticks ein Status-Update im Log
-    if(Game.time % 10 === 0) LOGGER.debug("Tick: " + Game.time + " | CPU Bucket: " + Game.cpu.bucket);
+    // Zentrales Logging über util.log
+    LOGGER.debug("Tick: " + Game.time);
 
+    // 1. Memory Cleanup
     for(var name in Memory.creeps) {
         if(!Game.creeps[name]) {
             delete Memory.creeps[name];
-            LOGGER.debug('Grabstein für: ' + name);
+            LOGGER.debug('Speicher bereinigt: ' + name);
         }
     }
 
     var spawn = Game.spawns['HQ'] || Object.values(Game.spawns)[0];
     if(!spawn) return;
 
+    // 2. Tower Management aufrufen
+    manageTowers(spawn.room);
+
     var creeps = _.values(Game.creeps);
     var sources = spawn.room.find(FIND_SOURCES);
 
+    // 3. Spawning Logik
     if(creeps.length === 0) {
         spawn.spawnCreep([WORK, CARRY, MOVE], 'Emergency', {memory: {role: 'harvester'}});
     }
@@ -57,6 +62,7 @@ module.exports.loop = function () {
         }
     }
 
+    // 4. Rollen ausführen
     for(var name in Game.creeps) {
         var creep = Game.creeps[name];
         switch(creep.memory.role) {
@@ -68,3 +74,29 @@ module.exports.loop = function () {
         }
     }
 }
+
+    // Funktion zur Steuerung der Türme (kann später in eigenes Modul)
+    function manageTowers(room) {
+        var towers = room.find(FIND_STRUCTURES, {
+            filter: (s) => s.structureType === STRUCTURE_TOWER
+        });
+
+        for(let tower of towers) {
+            // 1. Priorität: Angreifen
+            var closestHostile = tower.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
+            if(closestHostile) {
+                tower.attack(closestHostile);
+                continue; // Wenn angegriffen wird, nicht reparieren
+            }
+
+            // 2. Priorität: Reparieren (nur wenn Energie > 50% vorhanden ist)
+            if(tower.store[RESOURCE_ENERGY] > tower.store.getCapacity(RESOURCE_ENERGY) * 0.5) {
+                var closestDamagedStructure = tower.pos.findClosestByRange(FIND_STRUCTURES, {
+                    filter: (s) => s.hits < s.hitsMax && s.structureType !== STRUCTURE_WALL
+                });
+                if(closestDamagedStructure) {
+                    tower.repair(closestDamagedStructure);
+                }
+            }
+        }
+    }
