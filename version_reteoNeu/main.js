@@ -4,6 +4,7 @@ var roleHauler = require('role.hauler');
 var roleUpgrader = require('role.upgrader');
 var roleBuilder = require('role.builder');
 var roleHarvester = require('role.harvester');
+var managerConstruction = require('manager.construction');
 
 const creepsConfig = {
     upgrader: 2,
@@ -23,10 +24,13 @@ module.exports.loop = function () {
     }
 
     var spawn = Game.spawns['HQ'] || Object.values(Game.spawns)[0];
-    if(!spawn) return;
+    if(spawn) {
+        // Tower Management
+        manageTowers(spawn.room);
 
-    // 2. Tower Management aufrufen
-    manageTowers(spawn.room);
+        // Automatischer Hausbau
+        managerConstruction.run(spawn.room);
+    }
 
     var creeps = _.values(Game.creeps);
     var sources = spawn.room.find(FIND_SOURCES);
